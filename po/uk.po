@@ -170,7 +170,7 @@ msgstr "Додати рядок"
 
 #: ../src/list.c:776
 msgid "Delete row"
-msgstr "Прибрати рядок"
+msgstr "Видалити рядок"
 
 #: ../src/list.c:783
 msgid "Duplicate row"
@@ -259,15 +259,15 @@ msgstr "ТИП"
 
 #: ../src/option.c:132
 msgid "Set the dialog image"
-msgstr "Задати картинку діалогу"
+msgstr "Задати зображення діалогу"
 
 #: ../src/option.c:133 ../src/option.c:464 ../src/option.c:476
 msgid "IMAGE"
-msgstr "КАРТИНКА"
+msgstr "ЗОБРАЖЕННЯ"
 
 #: ../src/option.c:138
 msgid "Show image above main widget"
-msgstr "Показувати картинку над основним віджетом"
+msgstr "Показувати зображення над основним віджетом"
 
 #: ../src/option.c:144
 msgid "Use specified icon theme instead of default"
@@ -304,11 +304,11 @@ msgstr "Не використовувати розмітку pango в текст
 
 #: ../src/option.c:180
 msgid "Don't close dialog if Escape was pressed"
-msgstr "Не закривати диалог, якшо натиснуто Escape"
+msgstr "Не закривати діалог, якшо натиснуто Escape"
 
 #: ../src/option.c:186
 msgid "Set window borders"
-msgstr "Задати краї вікна"
+msgstr "Встановити межі вікна"
 
 #: ../src/option.c:187 ../src/option.c:266 ../src/option.c:597
 #: ../src/option.c:823 ../src/option.c:829 ../src/option.c:835
@@ -327,7 +327,7 @@ msgstr "Текст діалогу може буди виділеним"
 
 #: ../src/option.c:205
 msgid "Set window sticky"
-msgstr "Вікно - на всіх стільницях"
+msgstr "Вікно на всіх стільницях"
 
 #: ../src/option.c:211
 msgid "Set window unresizable"
@@ -355,7 +355,7 @@ msgstr "Не показувати вікна в панелі завдань"
 
 #: ../src/option.c:247
 msgid "Set window maximized"
-msgstr "Задати вікну максимальний розмір вікна"
+msgstr "Задати вікну максимальний розмір"
 
 #: ../src/option.c:253
 msgid "Set window fulscreen"
@@ -363,7 +363,7 @@ msgstr "Розгорнути вікно на весь екран"
 
 #: ../src/option.c:259
 msgid "Special type of dialog for XEMBED"
-msgstr "Спеціальний режим діалога для вбудовування"
+msgstr "Особливий режим діалогу для вбудовування"
 
 #: ../src/option.c:260 ../src/option.c:948 ../src/option.c:1046
 msgid "KEY"
@@ -371,7 +371,7 @@ msgstr "КЛЮЧ"
 
 #: ../src/option.c:265
 msgid "Tab nubmer of this dialog"
-msgstr "Номер вкладки для цього діалога"
+msgstr "Номер вкладки для цього діалогу"
 
 #: ../src/option.c:272
 msgid "XID of parent window"
@@ -391,7 +391,7 @@ msgstr "Вивести ідентифікатор вікна на stderr"
 
 #: ../src/option.c:291
 msgid "Add path for search icons by name"
-msgstr "Додати каталог для пошуку зображень"
+msgstr "Додати каталог для пошуку іконок"
 
 #: ../src/option.c:292
 msgid "PATH"
@@ -399,7 +399,7 @@ msgstr "КАТАЛОГ"
 
 #: ../src/option.c:301
 msgid "Display calendar dialog"
-msgstr "Зобразити діалог для вибору дати"
+msgstr "Відобразити діалог для вибору дати"
 
 #: ../src/option.c:307
 msgid "Set the calendar day"
@@ -520,7 +520,7 @@ msgstr "Задати текст для поля вводу"
 
 #: ../src/option.c:439
 msgid "Hide the entry text"
-msgstr "Сховати введений текст (Пароль)"
+msgstr "Приховати введений текст (Пароль)"
 
 #: ../src/option.c:445
 msgid "Use completion instead of combo-box"
@@ -552,7 +552,7 @@ msgstr "Дія для правої іконки"
 
 #: ../src/option.c:491
 msgid "Display file selection dialog"
-msgstr "Відобразити діалог для вибору файлу"
+msgstr "Відобразити діалог для вибору файла"
 
 #: ../src/option.c:497
 msgid "Alias for --file"
@@ -568,7 +568,7 @@ msgstr "Дозволити вибір декількох файлів"
 
 #: ../src/option.c:515
 msgid "Activate directory-only selection"
-msgstr "Активувати виділення тільки по каталогам"
+msgstr "Активувати виділення тільки по каталогах"
 
 #: ../src/option.c:521
 msgid "Activate save mode"
@@ -576,7 +576,7 @@ msgstr "Активувати режим зберігання"
 
 #: ../src/option.c:527 ../src/option.c:602 ../src/option.c:792
 msgid "Set output separator character"
-msgstr "Установити вихідний розділювач"
+msgstr "Встановити вихідний розділювач"
 
 #: ../src/option.c:528 ../src/option.c:603 ../src/option.c:609
 #: ../src/option.c:793 ../src/option.c:994 ../src/option.c:1000
@@ -828,7 +828,7 @@ msgstr "Задати кількість рядків у списку"
 
 #: ../src/option.c:870
 msgid "Set double-click action"
-msgstr "Дія для подвійного клацання мишки"
+msgstr "Дія для подвійного натискання мишки"
 
 #: ../src/option.c:876
 msgid "Use regex in search"
@@ -885,7 +885,7 @@ msgstr "Задати позицію ярлика вкладки (top, bottom, le
 
 #: ../src/option.c:965
 msgid "Set tab borders"
-msgstr "Задати краї вкладок"
+msgstr "Задати межі вкладок"
 
 #: ../src/option.c:975
 msgid "Display notification"
@@ -893,7 +893,7 @@ msgstr "Відобразити діалог повідомлень"
 
 #: ../src/option.c:981
 msgid "Set left-click action"
-msgstr "Дія для лівого клацання мишки"
+msgstr "Дія для лівої кнопки мишки"
 
 #: ../src/option.c:987
 msgid "Listen for commands on stdin"
@@ -986,7 +986,7 @@ msgstr "Закрити діалог по досягненні 100%"
 
 #: ../src/option.c:1134
 msgid "Right-To-Left progress bar direction"
-msgstr "Напрямок індикатору Справа Наліво"
+msgstr "Напрямок індикатору Справа-Наліво"
 
 #: ../src/option.c:1140
 msgid "Show log window"
@@ -1047,7 +1047,7 @@ msgstr "Відобразити вертикальну шкалу"
 
 #: ../src/option.c:1222
 msgid "Invert direction"
-msgstr "Інвертувати напрямок"
+msgstr "Зворотній напрямок"
 
 #: ../src/option.c:1228
 msgid "Add mark to scale (may be used multiple times)"
@@ -1166,7 +1166,7 @@ msgstr "Зображення"
 #: ../src/option.c:1674
 #, c-format
 msgid "Unknown color mode: %s\n"
-msgstr "Невідомий режим коліру: '%s'\n"
+msgstr "Невідомий режим кольору: '%s'\n"
 
 #: ../src/option.c:1693
 #, c-format
@@ -1191,7 +1191,7 @@ msgstr "Невідомий тип урізання: %s\n"
 #: ../src/option.c:1791
 #, c-format
 msgid "Unknown orientation: %s\n"
-msgstr "Невідома оріентація: %s\n"
+msgstr "Невідома орієнтація: %s\n"
 
 #: ../src/option.c:1806
 #, c-format
@@ -1464,7 +1464,7 @@ msgstr "Неправильна послідовність UTF-8 при чита�
 
 #: ../src/browser.c:132
 msgid "scalable "
-msgstr "масштабовний "
+msgstr "масштабований "
 
 #: ../src/browser.c:142
 msgid "built-in"
@@ -1473,11 +1473,11 @@ msgstr "вбудований"
 #. initialize GTK+ and parse the command line arguments
 #: ../src/browser.c:200
 msgid "- Icon browser"
-msgstr "- Переглядач іконок"
+msgstr "- Навігатор іконок"
 
 #: ../src/browser.c:213
 msgid "Icon browser"
-msgstr "Переглядач іконок"
+msgstr "Навігатор іконок"
 
 #: ../src/browser.c:247
 msgid "<b>Name:</b>"
@@ -1501,7 +1501,7 @@ msgstr "Іконки"
 
 #: ../data/yad-icon-browser.desktop.in.h:1
 msgid "Icon Browser"
-msgstr "Переглядач іконок"
+msgstr "Павігатор іконок"
 
 #: ../data/yad-icon-browser.desktop.in.h:2
 msgid "Inspect GTK Icon Theme"
