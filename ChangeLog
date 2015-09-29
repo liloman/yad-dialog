@@ -1,3 +1,19 @@
+2015-09-29 11:42  v1c0nt
+
+	* configure.ac: bump version
+
+2015-09-29 08:50  v1c0nt
+
+	* NEWS, src/html.c: fix segfault in html dialog
+
+2015-09-11 05:15  v1c0nt
+
+	* po/uk.po:
+
+2015-09-10 11:07  v1c0nt
+
+	* ChangeLog, NEWS, configure.ac: bump version. prepare to release
+
 2015-09-10 05:31  v1c0nt
 
 	* data/yad.1, po/ru.po, po/uk.po, src/file.c, src/form.c,
