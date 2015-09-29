@@ -245,7 +245,7 @@ html_create_widget (GtkWidget * dlg)
 
   settings = webkit_web_view_get_settings (view);
   g_get_charset (&enc);
-  g_object_set (G_OBJECT (settings), "default-encoding", enc);
+  g_object_set (G_OBJECT (settings), "default-encoding", enc, NULL);
 
   g_signal_connect (view, "hovering-over-link", G_CALLBACK (link_hover_cb), NULL);
   g_signal_connect (view, "navigation-policy-decision-requested", G_CALLBACK (link_cb), NULL);

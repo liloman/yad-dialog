@@ -2,7 +2,7 @@ Version 0.31.0
     - add separators to list dialog
     - use YAD_OPTIONS variable for specify default yad arguments
     - add --no-rules-hint option to list dialog
-    - add parameters for controlling palletes in color selection
+    - add parameters for controlling palettes in color selection
     - remove some entries from settings file
     - set default open command and date format through the settings file
     - add additional filter settings for file selection dialogs
