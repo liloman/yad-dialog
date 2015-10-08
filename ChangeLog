@@ -1,3 +1,12 @@
+2015-10-08 10:01  v1c0nt
+
+	* configure.ac, src/list.c: fix segfault in list dialog when
+	  separators enabled but --sep-value is unset
+
+2015-09-29 13:04  v1c0nt
+
+	* ChangeLog:
+
 2015-09-29 13:04  v1c0nt
 
 	* ChangeLog: release 0.31.1

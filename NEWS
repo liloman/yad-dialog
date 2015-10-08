@@ -1,3 +1,9 @@
+Version 0.31.2
+    - fix segfault in list dialog when separators enabled but --sep-value is unset
+
+Version 0.31.1
+    - fix segfault in html dialog
+
 Version 0.31.0
     - add separators to list dialog
     - use YAD_OPTIONS variable for specify default yad arguments
