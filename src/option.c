@@ -252,6 +252,12 @@ static GOptionEntry general_options[] = {
    &options.data.fullscreen,
    N_("Set window fulscreen"),
    NULL},
+  {"splash", 0,
+   0,
+   G_OPTION_ARG_NONE,
+   &options.data.splash,
+   N_("Open window as a splashscreen"),
+   NULL},
   {"plug", 0,
    0,
    G_OPTION_ARG_INT,
@@ -2026,6 +2032,7 @@ yad_options_init (void)
   options.data.skip_taskbar = FALSE;
   options.data.maximized = FALSE;
   options.data.fullscreen = FALSE;
+  options.data.splash = FALSE;
 
   /* Initialize common data */
   options.common_data.uri = NULL;

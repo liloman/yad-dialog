@@ -189,6 +189,7 @@ typedef struct {
   gboolean skip_taskbar;
   gboolean maximized;
   gboolean fullscreen;
+  gboolean splash;
 } YadData;
 
 typedef struct {
