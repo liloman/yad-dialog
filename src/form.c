@@ -245,7 +245,7 @@ set_field_value (guint num, gchar * value)
             i++;
           }
         if (def >= 0)
-          gtk_entry_set_text (GTK_ENTRY (w), s[def]);
+          gtk_entry_set_text (GTK_ENTRY (w), s[def] + 1);
         g_strfreev (s);
         break;
       }

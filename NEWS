@@ -1,3 +1,6 @@
+Version 0.31.3
+    - fix setting default value for completion entry in form dialog
+
 Version 0.31.2
     - fix segfault in list dialog when separators enabled but --sep-value is unset
 
