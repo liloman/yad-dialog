@@ -347,6 +347,7 @@ main (gint argc, gchar * argv[])
 
   data->icon_list = gtk_tree_view_new ();
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (data->icon_list), TRUE);
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (data->icon_list), TRUE);
   gtk_container_add (GTK_CONTAINER (w), data->icon_list);
 
   sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (data->icon_list));
