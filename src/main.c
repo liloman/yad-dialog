@@ -430,7 +430,9 @@ create_dialog (void)
         }
       else
         {
-          if (options.mode == YAD_MODE_PROGRESS || options.mode == YAD_MODE_MULTI_PROGRESS)
+          if (options.mode == YAD_MODE_PROGRESS || 
+              options.mode == YAD_MODE_MULTI_PROGRESS ||
+              options.mode == YAD_MODE_DND)
             gtk_dialog_add_buttons (GTK_DIALOG (dlg), GTK_STOCK_CLOSE, YAD_RESPONSE_OK, NULL);
           else
             {
