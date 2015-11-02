@@ -148,7 +148,10 @@ create_dialog (void)
   /* create dialog window */
   dlg = gtk_dialog_new ();
   if (options.data.splash)
-    gtk_window_set_type_hint (GTK_WINDOW (dlg), GDK_WINDOW_TYPE_HINT_SPLASHSCREEN);
+    {
+      gtk_window_set_type_hint (GTK_WINDOW (dlg), GDK_WINDOW_TYPE_HINT_SPLASHSCREEN);
+      gtk_window_set_accept_focus (GTK_WINDOW (dlg), FALSE);
+    }
   else
     gtk_window_set_type_hint (GTK_WINDOW (dlg), GDK_WINDOW_TYPE_HINT_NORMAL);
   gtk_window_set_title (GTK_WINDOW (dlg), options.data.dialog_title);
