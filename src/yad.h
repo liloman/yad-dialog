@@ -190,6 +190,7 @@ typedef struct {
   gboolean maximized;
   gboolean fullscreen;
   gboolean splash;
+  gboolean focus;
 } YadData;
 
 typedef struct {

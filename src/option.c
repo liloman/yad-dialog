@@ -252,6 +252,12 @@ static GOptionEntry general_options[] = {
    &options.data.fullscreen,
    N_("Set window fulscreen"),
    NULL},
+  {"no-focus", 0,
+   G_OPTION_FLAG_REVERSE,
+   G_OPTION_ARG_NONE,
+   &options.data.focus,
+   N_("Don't focus dialog window"),
+   NULL},
   {"splash", 0,
    0,
    G_OPTION_ARG_NONE,
@@ -2033,6 +2039,7 @@ yad_options_init (void)
   options.data.maximized = FALSE;
   options.data.fullscreen = FALSE;
   options.data.splash = FALSE;
+  options.data.focus = TRUE;
 
   /* Initialize common data */
   options.common_data.uri = NULL;

@@ -148,10 +148,7 @@ create_dialog (void)
   /* create dialog window */
   dlg = gtk_dialog_new ();
   if (options.data.splash)
-    {
-      gtk_window_set_type_hint (GTK_WINDOW (dlg), GDK_WINDOW_TYPE_HINT_SPLASHSCREEN);
-      gtk_window_set_accept_focus (GTK_WINDOW (dlg), FALSE);
-    }
+    gtk_window_set_type_hint (GTK_WINDOW (dlg), GDK_WINDOW_TYPE_HINT_SPLASHSCREEN);
   else
     gtk_window_set_type_hint (GTK_WINDOW (dlg), GDK_WINDOW_TYPE_HINT_NORMAL);
   gtk_window_set_title (GTK_WINDOW (dlg), options.data.dialog_title);
@@ -203,6 +200,7 @@ create_dialog (void)
   gtk_window_set_decorated (GTK_WINDOW (dlg), !options.data.undecorated);
   gtk_window_set_skip_taskbar_hint (GTK_WINDOW (dlg), options.data.skip_taskbar);
   gtk_window_set_skip_pager_hint (GTK_WINDOW (dlg), options.data.skip_taskbar);
+  gtk_window_set_accept_focus (GTK_WINDOW (dlg), options.data.focus);
 
   /* create timeout indicator widget */
   if (options.data.timeout)
