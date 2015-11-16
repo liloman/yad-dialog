@@ -233,6 +233,8 @@ create_dialog (void)
         {
 #if !GTK_CHECK_VERSION(3,0,0)
           gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_LEFT_TO_RIGHT);
+#else
+          gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_HORIZONTAL);
 #endif
           gtk_box_pack_start (GTK_BOX (vbox), topb, FALSE, FALSE, 2);
         }
@@ -240,6 +242,8 @@ create_dialog (void)
         {
 #if !GTK_CHECK_VERSION(3,0,0)
           gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_LEFT_TO_RIGHT);
+#else
+          gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_HORIZONTAL);
 #endif
           gtk_box_pack_end (GTK_BOX (vbox), topb, FALSE, FALSE, 2);
         }
@@ -247,6 +251,8 @@ create_dialog (void)
         {
 #if !GTK_CHECK_VERSION(3,0,0)
           gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_BOTTOM_TO_TOP);
+#else
+          gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_VERTICAL);
 #endif
           gtk_box_pack_start (GTK_BOX (hbox), topb, FALSE, FALSE, 2);
         }
@@ -254,6 +260,8 @@ create_dialog (void)
         {
 #if !GTK_CHECK_VERSION(3,0,0)
           gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_BOTTOM_TO_TOP);
+#else
+          gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_VERTICAL);
 #endif
           gtk_box_pack_end (GTK_BOX (hbox), topb, FALSE, FALSE, 2);
         }
