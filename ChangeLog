@@ -1,3 +1,7 @@
+2015-11-19 05:45  v1c0nt
+
+	* ChangeLog, NEWS, data/yad.1: prepare to release
+
 2015-11-19 05:35  v1c0nt
 
 	* ChangeLog, configure.ac, data/yad.1, po/ru.po, po/uk.po,
