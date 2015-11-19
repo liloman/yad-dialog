@@ -1,3 +1,10 @@
+Version 0.32.0
+    - enable rules-hint for icons list in icon browser
+    - add --splash options (thanks to Konstantin Baierer)
+    - add --no-focus option
+    - fix timeout progressbar layout for gtk3 builds
+    - add --num-output option for output index of active element in combo-boxes
+
 Version 0.31.3
     - fix setting default value for completion entry in form dialog
 
