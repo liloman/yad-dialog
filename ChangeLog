@@ -1,3 +1,53 @@
+2015-11-17 20:46  v1c0nt
+
+	* src/main.c: fix timeout progressbar vertical orientation for gtk3
+
+2015-11-16 16:02  v1c0nt
+
+	* src/main.c: fix timeout progress layout for gtk3
+
+2015-11-03 09:37  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/main.c, src/option.c,
+	  src/yad.h: add --no-focus option
+
+2015-11-02 11:51  v1c0nt
+
+	* src/main.c: unfocus splash dialogs
+
+2015-11-01 15:53  v1c0nt
+
+	* src/main.c: use single close button as a default buttons set for
+	  dnd dialog
+
+2015-10-31 16:22  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/main.c, src/option.c,
+	  src/yad.h: add --splash options. thanks to Konstantin Baierer
+	  (https://github.com/kba)
+
+2015-10-31 15:34  v1c0nt
+
+	* configure.ac, src/browser.c: add rules-hint for icons list in
+	  icon browser
+
+2015-10-31 14:54  v1c0nt
+
+	* configure.ac: release 0.31.3
+
+2015-10-31 14:52  v1c0nt
+
+	* NEWS, src/form.c: fix set default value for completion entry in
+	  form dialog
+
+2015-10-08 18:27  v1c0nt
+
+	* data/yad.1: update man page
+
+2015-10-08 10:04  v1c0nt
+
+	* ChangeLog, NEWS: release 0.32.2
+
 2015-10-08 10:01  v1c0nt
 
 	* configure.ac, src/list.c: fix segfault in list dialog when

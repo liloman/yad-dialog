@@ -1073,7 +1073,10 @@ form_print_field (guint fn)
       break;
     case YAD_FIELD_COMBO:
     case YAD_FIELD_COMBO_ENTRY:
-      if (options.common_data.quoted_output)
+      if (options.common_data.num_output && fld->type == YAD_FIELD_COMBO)
+        g_printf ("%d%s", gtk_combo_box_get_active (GTK_COMBO_BOX (g_slist_nth_data (fields, fn))) + 1,
+                  options.common_data.separator);
+      else if (options.common_data.quoted_output)
         {
 #if GTK_CHECK_VERSION(2,24,0)
           buf = g_shell_quote (gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT (g_slist_nth_data (fields, fn))));

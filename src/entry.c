@@ -323,11 +323,18 @@ entry_print_result (void)
   if (options.entry_data.numeric)
     g_print ("%lf\n", gtk_spin_button_get_value (GTK_SPIN_BUTTON (entry)));
   else if (is_combo)
+    {
+      if (options.common_data.num_output)
+        g_print ("%d\n", gtk_combo_box_get_active (GTK_COMBO_BOX (entry)) + 1);
+      else
+        {
 #if GTK_CHECK_VERSION(2,24,0)
-    g_print ("%s\n", gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT (entry)));
+          g_print ("%s\n", gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT (entry)));
 #else
-    g_print ("%s\n", gtk_combo_box_get_active_text (GTK_COMBO_BOX (entry)));
+          g_print ("%s\n", gtk_combo_box_get_active_text (GTK_COMBO_BOX (entry)));
 #endif
+        }
+    }
   else
     g_print ("%s\n", gtk_entry_get_text (GTK_ENTRY (entry)));
 }

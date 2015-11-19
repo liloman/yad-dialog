@@ -369,6 +369,7 @@ typedef struct {
   gboolean listen;
   gboolean preview;
   gboolean quoted_output;
+  gboolean num_output;
   GList *filters;
   key_t key;
 } YadCommonData;
