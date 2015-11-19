@@ -416,7 +416,7 @@ msgstr "ШАБЛОН"
 
 #: ../src/option.c:160
 msgid "Set command handler"
-msgstr ""
+msgstr "Задати команду-обробник"
 
 #: ../src/option.c:160 ../src/option.c:248 ../src/option.c:252
 #: ../src/option.c:373
@@ -424,28 +424,24 @@ msgid "CMD"
 msgstr "КОМАНДА"
 
 #: ../src/option.c:162
-#, fuzzy
 msgid "Listen for data on stdin"
-msgstr "Читати команди зі стандартного вводу"
+msgstr "Читати дані зі стандартного вводу"
 
 #: ../src/option.c:164
-#, fuzzy
 msgid "Set common separator character"
-msgstr "Встановити вихідний розділювач"
+msgstr "Встановити загальний розділювач"
 
 #: ../src/option.c:164 ../src/option.c:166
 msgid "SEPARATOR"
 msgstr "РОЗДІЛЮВАЧ"
 
 #: ../src/option.c:166
-#, fuzzy
 msgid "Set item separator character"
-msgstr "Встановити вихідний розділювач"
+msgstr "Встановити розділювач для елементів"
 
 #: ../src/option.c:168
-#, fuzzy
 msgid "Allow changes to text in some cases"
-msgstr "Дозволити змінювати текст у режимі вибору варіанта"
+msgstr "Дозволити змінювати текст у деяких режимах"
 
 #: ../src/option.c:170
 msgid "Quote dialogs output"
@@ -457,25 +453,23 @@ msgstr "Виводити число замість тексту для спис�
 
 #: ../src/option.c:174
 msgid "Specify font name to use"
-msgstr ""
+msgstr "Задати ім'я використовуємого шрифту"
 
 #: ../src/option.c:174
 msgid "FONTNAME"
 msgstr "НАЗВА_ШРИФТУ"
 
 #: ../src/option.c:176
-#, fuzzy
 msgid "Allow multiple selection"
-msgstr "Дозволити вибір декількох рядків"
+msgstr "Дозволити вибір декількох елементів"
 
 #: ../src/option.c:178
 msgid "Enable preview"
 msgstr "Додати попередній перегляд"
 
 #: ../src/option.c:180
-#, fuzzy
 msgid "Set source filename"
-msgstr "Назва файлу"
+msgstr "Задати ім'я файлу"
 
 #: ../src/option.c:180 ../src/option.c:198 ../src/option.c:212
 #: ../src/option.c:531 ../src/option.c:537
@@ -483,9 +477,8 @@ msgid "FILENAME"
 msgstr "НАЗВА ФАЙЛУ"
 
 #: ../src/option.c:182
-#, fuzzy
 msgid "Set vertical orientation"
-msgstr "Дія для лівої кнопки мишки"
+msgstr "Викорістовувати вертикальну орієнтацію"
 
 #: ../src/option.c:184
 msgid "Identifier of embedded dialogs"
@@ -651,7 +644,7 @@ msgstr "Синонім для --font"
 
 #: ../src/option.c:276
 msgid "Set text string for preview"
-msgstr ""
+msgstr "Задати текстову стрічку для передогляду"
 
 #: ../src/option.c:282
 msgid "Display form dialog"
@@ -659,7 +652,7 @@ msgstr "Відобразити діалог форми вводу"
 
 #: ../src/option.c:284
 msgid "Add field to form (see man page for list of possible types)"
-msgstr ""
+msgstr "Додати поле до форми (дивись сторінку керівництва для отримання списку типів)"
 
 #: ../src/option.c:284 ../src/option.c:383
 msgid "LABEL[:TYPE]"
@@ -723,7 +716,7 @@ msgstr "Читати дані з файлів .desktop у вказаному к�
 
 #: ../src/option.c:318
 msgid "DIR"
-msgstr ""
+msgstr "КАТАЛОГ"
 
 #: ../src/option.c:320
 msgid "Use compact (list) view"
@@ -763,7 +756,7 @@ msgstr "Відобразити діалог зі списком"
 
 #: ../src/option.c:341
 msgid "Set the column header (see man page for list of possible types)"
-msgstr ""
+msgstr "Задати заголовок стовпчика (дивись сторінку керівництва для отримання списку типів)"
 
 #: ../src/option.c:341
 msgid "COLUMN[:TYPE]"
@@ -794,11 +787,9 @@ msgid "Print all data from list"
 msgstr "Виводити таблицю повністю"
 
 #: ../src/option.c:355
-#, fuzzy
 msgid "Set ellipsize mode for text columns (none, start, middle or end)"
 msgstr ""
-"Задати тип урізання для текстових стовпчиків (ТИП - NONE, START, MIDDLE або "
-"END)"
+"Задати тип урізання для текстових стовпчиків (none, start, middle або end)"
 
 #: ../src/option.c:357
 msgid ""
@@ -853,9 +844,8 @@ msgid "Display multi progress bars dialog"
 msgstr "Відобразити діалог з декількома індикаторами виконання"
 
 #: ../src/option.c:383
-#, fuzzy
 msgid "Add the progress bar (norm, rtl or pulse)"
-msgstr "Додати індикатор виконання (ТИП - NORM, RTL або PULSE)"
+msgstr "Додати індикатор виконання (norm, rtl або pulse)"
 
 #: ../src/option.c:385
 msgid "Set alignment of bar labels (left, center or right)"
@@ -915,9 +905,8 @@ msgid "Display paned dialog"
 msgstr "Відобразити діалог з панелями"
 
 #: ../src/option.c:424
-#, fuzzy
 msgid "Set orientation (hor[izontal] or vert[ical])"
-msgstr "Задати оріентицію (ТИП - hor[izontal] або vert[ical])"
+msgstr "Задати оріентицію (hor[izontal] або vert[ical])"
 
 #: ../src/option.c:426
 msgid "Set initial splitter position"
@@ -928,9 +917,8 @@ msgid "Display printing dialog"
 msgstr "Відобразити діалог друку"
 
 #: ../src/option.c:434
-#, fuzzy
 msgid "Set source type (text, image or raw)"
-msgstr "Задати тип даних (ТИП - TEXT, IMAGE або RAW)"
+msgstr "Задати тип даних (text, image або raw)"
 
 #: ../src/option.c:436
 msgid "Add headers to page"
@@ -1047,9 +1035,8 @@ msgid "Enable text wrapping"
 msgstr "Дозволити перенос тексту"
 
 #: ../src/option.c:503
-#, fuzzy
 msgid "Set justification (left, right, center or fill)"
-msgstr "Встановити вирівнювання (ТИП - left, right, center або fill)"
+msgstr "Встановити вирівнювання (left, right, center або fill)"
 
 #: ../src/option.c:505
 msgid "Set text margins"
@@ -1188,14 +1175,12 @@ msgstr "Показувати основні параметри"
 
 #. Adds common option entries
 #: ../src/option.c:1374
-#, fuzzy
 msgid "Common options"
-msgstr "Параметри діалогу форми"
+msgstr "Загальні параметри"
 
 #: ../src/option.c:1374
-#, fuzzy
 msgid "Show common options"
-msgstr "Показувати параметри діалогу форми"
+msgstr "Показувати загальні параметри діалогів"
 
 #. Adds calendar option entries
 #: ../src/option.c:1380
@@ -1479,76 +1464,3 @@ msgstr "Павігатор іконок"
 #: ../data/yad-icon-browser.desktop.in.h:2
 msgid "Inspect GTK Icon Theme"
 msgstr "Перегляд теми іконок GTK"
-
-#~ msgid "Set command for process d-n-d data"
-#~ msgstr "Команда для обробки отриманих даних"
-
-#~ msgid "Set the filename"
-#~ msgstr "Задати назву файлу"
-
-#~ msgid "Allow multiple files to be selected"
-#~ msgstr "Дозволити вибір декількох файлів"
-
-#~ msgid "Set initial font"
-#~ msgstr "Задати початковий шрифт"
-
-#~ msgid "Set preview text"
-#~ msgstr "Задати текст зразка"
-
-#~ msgid ""
-#~ "Add field to form (TYPE - H, RO, NUM, CHK, CB, CBE, CE, FL, SFL, MFL, "
-#~ "DIR, CDIR, MDIR, FN, DT, SCL, CLR, BTN, FBTN, LBL or TXT)"
-#~ msgstr ""
-#~ "Додати поле до форми (Тип поля: Н, RO, NUM, CHK, CB, CBE, CE, FL, SFL, "
-#~ "MFL, DIR, CDIR, MDIR, FN, MFL, DT, SCL, CLR, BTN, FBTN, LBL або TXT)"
-
-#~ msgid "Set separator character for combobox or scale data"
-#~ msgstr "Задати розділювач для даних списку або числового поля"
-
-#~ msgid "Output number instead of text for combo-boxes"
-#~ msgstr "Виводити число замість тексту для списків значень"
-
-#~ msgid "MIME"
-#~ msgstr "MIME"
-
-#~ msgid "DIRECTORY"
-#~ msgstr "КАТАЛОГ"
-
-#~ msgid "Read data from stdin"
-#~ msgstr "Читати дані зі стандартного вводу"
-
-#~ msgid ""
-#~ "Set the column header (TYPE - TEXT, NUM, FLT, CHK, RD, IMG, HD or TIP)"
-#~ msgstr ""
-#~ "Задати заголовок стовпчика (ТИП - TEXT, NUM, FLT, CHK, RD, IMG, HD або "
-#~ "TIP)"
-
-#~ msgid "Allow changes to text"
-#~ msgstr "Дозволити змінювати текст"
-
-#~ msgid "Listen for data on stdin in addition to command-line"
-#~ msgstr "Отримувати дані з потоку вводу додатково до командного рядка"
-
-#~ msgid "Show vertical bars"
-#~ msgstr "Відобразити вертикальні індикатори"
-
-#~ msgid "Set separator character for menu values"
-#~ msgstr "Встановити розділювач для значень меню"
-
-#~ msgid "Set separator character for menu items"
-#~ msgstr "Встановити розділювач для елементів меню"
-
-#~ msgid "Enable preview in print dialog"
-#~ msgstr "Додати попередній перегляд до діалогу друку"
-
-#~ msgid "Use specified font"
-#~ msgstr "Використовувати вказаний шрифт"
-
-#~ msgid "Show vertical scale"
-#~ msgstr "Відобразити вертикальну шкалу"
-
-#~ msgid "Open file"
-#~ msgstr "Відкрити файл"
-
-#~ msgid "Listen for data on stdin in addition to file"
-#~ msgstr "Отримувати дані з потоку вводу додатково до файлу"
