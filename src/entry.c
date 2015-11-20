@@ -282,6 +282,10 @@ entry_create_widget (GtkWidget * dlg)
           g_object_unref (completion_model);
 
           gtk_entry_completion_set_text_column (completion, 0);
+
+          if (options.common_data.complete_regex)
+            gtk_entry_completion_set_match_func (completion, check_complete, NULL, NULL);
+
           g_object_unref (completion);
         }
 

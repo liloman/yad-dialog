@@ -687,6 +687,9 @@ form_create_widget (GtkWidget * dlg)
                   gtk_entry_completion_set_model (c, GTK_TREE_MODEL (m));
                   gtk_entry_completion_set_text_column (c, 0);
 
+                  if (options.common_data.complete_regex)
+                    gtk_entry_completion_set_match_func (c, check_complete, NULL, NULL);
+
                   g_object_unref (m);
                   g_object_unref (c);
                 }

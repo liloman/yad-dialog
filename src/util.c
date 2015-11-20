@@ -426,3 +426,17 @@ escape_str (gchar *str)
 
   return res;
 }
+
+gboolean
+check_complete (GtkEntryCompletion *c, const gchar *key, GtkTreeIter *iter, gpointer data)
+{
+  gchar *value;
+  GtkTreeModel *model = gtk_entry_completion_get_model (c);
+
+  if (!model)
+    return FALSE;
+
+  gtk_tree_model_get (model, iter, 0, &value, -1);
+
+  return g_regex_match_simple (key, value, G_REGEX_EXTENDED | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTEMPTY);
+}

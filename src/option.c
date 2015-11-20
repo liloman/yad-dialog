@@ -182,6 +182,8 @@ static GOptionEntry common_options[] = {
     N_("Set vertical orientation"), NULL },
   { "key", 0, 0, G_OPTION_ARG_INT, &options.common_data.key,
     N_("Identifier of embedded dialogs"), N_("KEY") },
+  { "complete-regex", 0, 0, G_OPTION_ARG_NONE, &options.common_data.complete_regex,
+    N_("Use regular expretions for entry completions"), NULL },
   { NULL }
 };
 
@@ -1209,6 +1211,7 @@ yad_options_init (void)
   options.common_data.num_output = FALSE;
   options.common_data.filters = NULL;
   options.common_data.key = -1;
+  options.common_data.complete_regex = FALSE;
 
   /* Initialize calendar data */
   options.calendar_data.day = -1;
@@ -1371,7 +1374,7 @@ yad_create_context (void)
   g_option_context_add_group (tmp_ctx, a_group);
 
   /* Adds common option entries */
-  a_group = g_option_group_new ("general", _("Common options"), _("Show common options"), NULL, NULL);
+  a_group = g_option_group_new ("common", _("Common options"), _("Show common options"), NULL, NULL);
   g_option_group_add_entries (a_group, common_options);
   g_option_group_set_translation_domain (a_group, GETTEXT_PACKAGE);
   g_option_context_add_group (tmp_ctx, a_group);
