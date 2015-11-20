@@ -441,7 +441,7 @@ create_dialog (void)
         }
       else
         {
-          if (options.mode == YAD_MODE_PROGRESS || 
+          if (options.mode == YAD_MODE_PROGRESS ||
               options.mode == YAD_MODE_MULTI_PROGRESS ||
               options.mode == YAD_MODE_DND)
             gtk_dialog_add_buttons (GTK_DIALOG (dlg), GTK_STOCK_CLOSE, YAD_RESPONSE_OK, NULL);
@@ -697,9 +697,9 @@ main (gint argc, gchar ** argv)
     {
       gchar *cmd, **args = NULL;
       gint cnt;
-      
+
       cmd = g_strdup_printf ("yad %s", g_getenv ("YAD_OPTIONS"));
-      
+
       if (g_shell_parse_argv (cmd, &cnt, &args, &err))
         {
           g_option_context_parse (ctx, &cnt, &args, &err);
@@ -707,16 +707,16 @@ main (gint argc, gchar ** argv)
             {
               g_printerr (_("Unable to parse YAD_OPTIONS: %s\n"), err->message);
               g_error_free (err);
-              err = NULL;          
+              err = NULL;
             }
         }
       else
         {
           g_printerr (_("Unable to parse YAD_OPTIONS: %s\n"), err->message);
           g_error_free (err);
-          err = NULL;          
+          err = NULL;
         }
-        
+
       g_free (cmd);
     }
   /* parse command line */
@@ -818,6 +818,12 @@ main (gint argc, gchar ** argv)
       case YAD_MODE_NOTIFICATION:
         ret = yad_notification_run ();
         break;
+
+#ifdef HAVE_NOTIFY
+      case YAD_MODE_SEND_NOTIFY:
+        yad_send_notify ();
+        break;
+#endif
 
       case YAD_MODE_PRINT:
         ret = yad_print_run ();

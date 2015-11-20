@@ -209,7 +209,7 @@ update_preview (GtkFileChooser * chooser, GtkWidget *p)
       GdkPixbuf *pb;
 
       chs = g_checksum_new (G_CHECKSUM_MD5);
-      g_checksum_update (chs, uri, -1);
+      g_checksum_update (chs, (const guchar *) uri, -1);
       /* first try to get preview from large thumbnail */
       file = g_strdup_printf ("%s/%s.png", large_path, g_checksum_get_string (chs));
       if (g_file_test (file, G_FILE_TEST_EXISTS))
@@ -285,7 +285,7 @@ get_tabs (key_t key, gboolean create)
     {
       if ((shmid = shmget (key, (settings.max_tab + 1) * sizeof (YadNTabs), IPC_CREAT | IPC_EXCL | 0644)) == -1)
         {
-          g_printerr ("yad: cannot create shared memory for key %ld: %s\n", key, strerror (errno));
+          g_printerr ("yad: cannot create shared memory for key %d: %s\n", key, strerror (errno));
           return NULL;
         }
     }
@@ -294,7 +294,7 @@ get_tabs (key_t key, gboolean create)
       if ((shmid = shmget (key, (settings.max_tab + 1) * sizeof (YadNTabs), 0)) == -1)
         {
           if (errno != ENOENT)
-            g_printerr ("yad: cannot get shared memory for key %ld: %s\n", key, strerror (errno));
+            g_printerr ("yad: cannot get shared memory for key %d: %s\n", key, strerror (errno));
           return NULL;
         }
     }
@@ -302,7 +302,7 @@ get_tabs (key_t key, gboolean create)
   /* attach shared memory */
   if ((t = shmat (shmid, NULL, 0)) == (YadNTabs *) - 1)
     {
-      g_printerr ("yad: cannot attach shared memory for key %ld: %s\n", key, strerror (errno));
+      g_printerr ("yad: cannot attach shared memory for key %d: %s\n", key, strerror (errno));
       return NULL;
     }
 

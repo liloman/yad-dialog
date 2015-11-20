@@ -66,6 +66,9 @@ typedef enum {
   YAD_MODE_PRINT,
   YAD_MODE_PROGRESS,
   YAD_MODE_SCALE,
+#ifdef HAVE_NOTIFY
+  YAD_MODE_SEND_NOTIFY,
+#endif
   YAD_MODE_TEXTINFO,
   YAD_MODE_ABOUT,
   YAD_MODE_VERSION
@@ -344,6 +347,16 @@ typedef struct {
   GSList *marks;
 } YadScaleData;
 
+#ifdef HAVE_NOTIFY
+typedef struct {
+  gchar **icons;
+  gchar *appname;
+  gchar **cats;
+  GList *hints;
+  GNotificationPriority prio;
+} YadSendNotifyData;
+#endif
+
 typedef struct {
   gchar *fore;
   gchar *back;
@@ -400,6 +413,9 @@ typedef struct {
   YadPrintData print_data;
   YadProgressData progress_data;
   YadScaleData scale_data;
+#ifdef HAVE_NOTIFY
+  YadSendNotifyData send_notify_data;
+#endif
   YadTextData text_data;
 
   gchar *gtkrc_file;
@@ -497,6 +513,8 @@ void dnd_init (GtkWidget * w);
 gint yad_notification_run (void);
 gint yad_print_run (void);
 gint yad_about (void);
+
+void yad_send_notify ();
 
 void notebook_close_childs (void);
 void paned_close_childs (void);
