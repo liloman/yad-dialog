@@ -33,10 +33,6 @@ if HTML
 yad_SOURCES += html.c
 endif
 
-if NOTIFY
-yad_SOURCES += send-notify.c
-endif
-
 yad_CFLAGS = $(GTK_CFLAGS) $(HTML_CFLAGS) $(NOTIFY_CFLAGS)
 yad_LDADD = $(GTK_LIBS) $(HTML_LIBS) $(NOTIFY_LIBS)
 

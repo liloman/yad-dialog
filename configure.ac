@@ -41,16 +41,6 @@ AC_SUBST([GTK_LIBS])
 
 GTK_DISABLE_DEPRECATED
 
-dnl check for notifications support
-PKG_CHECK_MODULES([NOTYFY], [gio-2.0 >= 2.40.0], [have_notify=yes], [have_notify=no])
-AC_SUBST([NOTIFY_CFLAGS])
-AC_SUBST([NOTIFY_LIBS])
-AM_CONDITIONAL([NOTIFY], [test x$have_notify == xyes])
-
-if test x$have_notify = xyes; then
-    AC_DEFINE([HAVE_NOTIFY], [1], [Define this if you have GNotification support])
-fi
-
 dnl rgb.txt
 with_rgb="/etc/X11/rgb.txt"
 AC_ARG_WITH([rgb],
@@ -123,7 +113,6 @@ echo
 echo "Build configuratioh:"
 echo "  GTK+ version         - $with_gtk"
 echo "  Path to rgb.txt      - $with_rgb"
-echo "  Enable notifications - $have_notify"
 echo "  HTML widget          - $have_html"
 echo "  Icon browser         - $build_ib"
 echo

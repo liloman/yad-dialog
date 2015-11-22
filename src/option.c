@@ -47,11 +47,6 @@ static gboolean parse_signal (const gchar *, const gchar *, gpointer, GError **)
 #endif
 static gboolean add_image_path (const gchar *, const gchar *, gpointer, GError **);
 
-#ifdef HAVE_NOTIFY
-static gboolean set_urgency (const gchar *, const gchar *, gpointer, GError **);
-static gboolean add_hint (const gchar *, const gchar *, gpointer, GError **);
-#endif
-
 static gboolean about_mode = FALSE;
 static gboolean version_mode = FALSE;
 static gboolean calendar_mode = FALSE;
@@ -73,9 +68,6 @@ static gboolean paned_mode = FALSE;
 static gboolean print_mode = FALSE;
 static gboolean progress_mode = FALSE;
 static gboolean scale_mode = FALSE;
-#ifdef HAVE_NOTIFY
-static gboolean send_notify_mode = FALSE;
-#endif
 static gboolean text_mode = FALSE;
 
 static GOptionEntry general_options[] = {
@@ -499,26 +491,6 @@ static GOptionEntry scale_options[] = {
     N_("Add mark to scale (may be used multiple times)"), N_("NAME:VALUE") },
   { NULL }
 };
-
-#ifdef HAVE_NOTIFY
-static GOptionEntry send_notify_options[] = {
-  { "send-notify", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &send_notify_mode,
-    N_("Send notification"), NULL },
-  { "urgency", 'u', 0, G_OPTION_ARG_CALLBACK, set_urgency,
-    N_("Specifies the urgency level (low, normal, critical)"), N_("LEVEL") },
-  { "expire-time", 't', 0, G_OPTION_ARG_INT, &options.data.timeout,
-    N_("Specify the timeout in milliseconds"), N_("TIME") },
-  { "app-name", 'a', 0, G_OPTION_ARG_STRING, &options.send_notify_data.appname,
-    N_("Specify the app name for the icon"), N_("NAME") },
-  { "icon", 'i', 0, G_OPTION_ARG_STRING_ARRAY, &options.send_notify_data.icons,
-    N_("Specify an icon filename or stock icon to display"), N_("ICON[,ICON...]") },
-  { "category", 'c', 0, G_OPTION_ARG_STRING_ARRAY, &options.send_notify_data.cats,
-    N_("Specify the notification category"), N_("TYPE[,TYPE...]") },
-   { "hint", 'h', 0, G_OPTION_ARG_CALLBACK, add_hint,
-     N_("Specify basic extra data to pass. Valid types are int, double, string and byte"), N_("TYPE:NAME:VALUE") },
-  { NULL }
-};
-#endif
 
 static GOptionEntry text_options[] = {
   { "text-info", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &text_mode,
@@ -1121,32 +1093,6 @@ parse_signal (const gchar * option_name, const gchar * value, gpointer data, GEr
 }
 #endif
 
-#ifdef HAVE_NOTIFY
-static gboolean
-set_urgency (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
-{
-  if (strncasecmp (value, "low", 3) == 0)
-    options.send_notify_data.prio = G_NOTIFICATION_PRIORITY_LOW;
-  else if (strncasecmp (value, "normal", 6) == 0)
-    options.send_notify_data.prio = G_NOTIFICATION_PRIORITY_NORMAL;
-  else if (strncasecmp (value, "high", 4) == 0)
-    options.send_notify_data.prio = G_NOTIFICATION_PRIORITY_HIGH;
-  else if (strncasecmp (value, "urgent", 6) == 0)
-    options.send_notify_data.prio = G_NOTIFICATION_PRIORITY_URGENT;
-  else
-    g_printerr (_("Unknown urgency: %s\n"), value);
-
-  return TRUE;
-}
-
-static gboolean
-add_hint (const gchar *name, const gchar *value, gpointer data, GError **err)
-{
-  options.send_notify_data.hints = g_list_append (options.send_notify_data.hints, (gchar *) value);
-  return TRUE;
-}
-#endif
-
 void
 yad_set_mode (void)
 {
@@ -1186,10 +1132,6 @@ yad_set_mode (void)
     options.mode = YAD_MODE_PROGRESS;
   else if (scale_mode)
     options.mode = YAD_MODE_SCALE;
-#ifdef HAVE_NOTIFY
-  else if (send_notify_mode)
-    options.mode = YAD_MODE_SEND_NOTIFY;
-#endif
   else if (text_mode)
     options.mode = YAD_MODE_TEXTINFO;
   else if (about_mode)
@@ -1405,15 +1347,6 @@ yad_options_init (void)
   options.scale_data.invert = FALSE;
   options.scale_data.marks = NULL;
 
-#ifdef HAVE_NOTIFY
-  /* Initialize send notify data */
-  options.send_notify_data.icons = NULL;
-  options.send_notify_data.appname = NULL;
-  options.send_notify_data.cats = NULL;
-  options.send_notify_data.hints = NULL;
-  options.send_notify_data.prio = G_NOTIFICATION_PRIORITY_NORMAL;
-#endif
-
   /* Initialize text data */
   options.text_data.fore = NULL;
   options.text_data.back = NULL;
@@ -1527,14 +1460,6 @@ yad_create_context (void)
   g_option_group_add_entries (a_group, notification_options);
   g_option_group_set_translation_domain (a_group, GETTEXT_PACKAGE);
   g_option_context_add_group (tmp_ctx, a_group);
-
-#ifdef HAVE_NOTIFY
-  /* Adds send_notify option entries */
-  a_group = g_option_group_new ("send_notify", _("Notify options"), _("Show notify message options"), NULL, NULL);
-  g_option_group_add_entries (a_group, send_notify_options);
-  g_option_group_set_translation_domain (a_group, GETTEXT_PACKAGE);
-  g_option_context_add_group (tmp_ctx, a_group);
-#endif
 
   /* Adds paned option entries */
   a_group = g_option_group_new ("paned", _("Paned dialog options"), _("Show paned dialog options"), NULL, NULL);

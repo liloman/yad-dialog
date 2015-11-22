@@ -819,12 +819,6 @@ main (gint argc, gchar ** argv)
         ret = yad_notification_run ();
         break;
 
-#ifdef HAVE_NOTIFY
-      case YAD_MODE_SEND_NOTIFY:
-        yad_send_notify ();
-        break;
-#endif
-
       case YAD_MODE_PRINT:
         ret = yad_print_run ();
         break;
