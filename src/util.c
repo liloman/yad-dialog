@@ -438,5 +438,5 @@ check_complete (GtkEntryCompletion *c, const gchar *key, GtkTreeIter *iter, gpoi
 
   gtk_tree_model_get (model, iter, 0, &value, -1);
 
-  return g_regex_match_simple (key, value, G_REGEX_EXTENDED | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTEMPTY);
+  return g_regex_match_simple (key, value, G_REGEX_CASELESS | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTEMPTY);
 }
