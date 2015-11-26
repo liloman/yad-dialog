@@ -187,6 +187,7 @@ menu_cb (WebKitWebView * view, GtkWidget * menu, WebKitHitTestResult * hit, gboo
 
   if (!is_link)
     {
+      /* add open item */
       mi = gtk_separator_menu_item_new ();
       gtk_widget_show (mi);
       gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), mi);
@@ -196,6 +197,15 @@ menu_cb (WebKitWebView * view, GtkWidget * menu, WebKitHitTestResult * hit, gboo
       gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), mi);
       g_signal_connect (G_OBJECT (mi), "activate", G_CALLBACK (open_cb), NULL);
 
+      /* add quit item */
+      mi = gtk_separator_menu_item_new ();
+      gtk_widget_show (mi);
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), mi);
+
+      mi = gtk_image_menu_item_new_from_stock ("gtk-quit", NULL);
+      gtk_widget_show (mi);
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), mi);
+      g_signal_connect (G_OBJECT (mi), "activate", G_CALLBACK (gtk_main_quit), NULL);
     }
 
   return FALSE;

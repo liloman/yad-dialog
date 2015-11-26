@@ -418,6 +418,12 @@ create_dialog (void)
     }
 
   /* add buttons */
+#ifdef HAVE_HTML
+  /* enable no-buttons mode if --browser is specified and sets no custom buttons */
+  if (options.mode == YAD_MODE_HTML && options.html_data.browser && !options.data.buttons)
+    options.data.no_buttons = TRUE;
+#endif
+
   if (!options.data.no_buttons)
     {
       if (options.data.buttons)
@@ -446,14 +452,14 @@ create_dialog (void)
               options.mode == YAD_MODE_DND)
             gtk_dialog_add_buttons (GTK_DIALOG (dlg), GTK_STOCK_CLOSE, YAD_RESPONSE_OK, NULL);
           else
-            {
-              if (gtk_alternative_dialog_button_order (NULL))
-                gtk_dialog_add_buttons (GTK_DIALOG (dlg),
-                                        GTK_STOCK_OK, YAD_RESPONSE_OK, GTK_STOCK_CANCEL, YAD_RESPONSE_CANCEL, NULL);
-              else
-                gtk_dialog_add_buttons (GTK_DIALOG (dlg),
-                                        GTK_STOCK_CANCEL, YAD_RESPONSE_CANCEL, GTK_STOCK_OK, YAD_RESPONSE_OK, NULL);
-            }
+              {
+                if (gtk_alternative_dialog_button_order (NULL))
+                  gtk_dialog_add_buttons (GTK_DIALOG (dlg),
+                                          GTK_STOCK_OK, YAD_RESPONSE_OK, GTK_STOCK_CANCEL, YAD_RESPONSE_CANCEL, NULL);
+                else
+                  gtk_dialog_add_buttons (GTK_DIALOG (dlg),
+                                          GTK_STOCK_CANCEL, YAD_RESPONSE_CANCEL, GTK_STOCK_OK, YAD_RESPONSE_OK, NULL);
+              }
           gtk_dialog_set_default_response (GTK_DIALOG (dlg), YAD_RESPONSE_OK);
         }
       gtk_button_box_set_layout (GTK_BUTTON_BOX (gtk_dialog_get_action_area (GTK_DIALOG (dlg))),
@@ -462,9 +468,6 @@ create_dialog (void)
 
   /* show widgets */
   gtk_widget_show_all (gtk_dialog_get_content_area (GTK_DIALOG (dlg)));
-  if (options.data.no_buttons)
-    gtk_widget_hide (bbox);
-
   /* parse geometry, if given. must be after showing widget */
   if (options.data.geometry && !options.data.maximized && !options.data.fullscreen)
     {
@@ -472,6 +475,9 @@ create_dialog (void)
       gtk_window_parse_geometry (GTK_WINDOW (dlg), options.data.geometry);
     }
   gtk_widget_show (dlg);
+
+  if (options.data.no_buttons)
+    gtk_widget_hide (bbox);
 
   /* set maximized or fixed size after showing widget */
   if (options.data.maximized)
@@ -841,7 +847,7 @@ main (gint argc, gchar ** argv)
 
 #ifndef G_OS_WIN32
         /* add YAD_XID variable */
-        str = g_strdup_printf ("0x%X", GDK_WINDOW_XID (gtk_widget_get_window (dialog)));
+        str = g_strdup_printf ("0x%X", (guint) GDK_WINDOW_XID (gtk_widget_get_window (dialog)));
         g_setenv ("YAD_XID", str, TRUE);
 #endif
 
