@@ -82,7 +82,7 @@ picture_fit_to_window ()
   factor = MIN (ww / width, wh / height);
   if (factor < 1.0)
     {
-      GdkPixbuf *pb = gdk_pixbuf_scale_simple (orig_pb, width * factor, height * factor, GDK_INTERP_HYPER);
+      GdkPixbuf *pb = gdk_pixbuf_scale_simple (g_object_ref (orig_pb), width * factor, height * factor, GDK_INTERP_HYPER);
       if (pb)
         gtk_image_set_from_pixbuf (GTK_IMAGE (picture), pb);
     }
@@ -93,6 +93,12 @@ change_size_cb (GtkWidget *w, gint type)
 {
   gdouble width, height;
   GdkPixbuf *new_pb, *pb = gtk_image_get_pixbuf (GTK_IMAGE (picture));
+
+  if (!pb)
+    {
+      g_printerr ("picture: can't get pixbuf\n");
+      return;
+    }
 
   width = gdk_pixbuf_get_width (pb);
   height = gdk_pixbuf_get_height (pb);
@@ -130,6 +136,12 @@ static void
 rotate_cb (GtkWidget *w, gint type)
 {
   GdkPixbuf *new_pb, *pb = gtk_image_get_pixbuf (GTK_IMAGE (picture));
+
+  if (!pb)
+    {
+      g_printerr ("picture: can't get pixbuf\n");
+      return;
+    }
 
   switch (type)
     {
