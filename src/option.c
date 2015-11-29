@@ -294,6 +294,8 @@ static GOptionEntry form_options[] = {
     N_("Make form scrollable"), NULL },
   { "output-by-row", 0, 0, G_OPTION_ARG_NONE, &options.form_data.output_by_row,
     N_("Order output fields by rows"), NULL },
+  { "focus-field", 0, 0, G_OPTION_ARG_INT, &options.form_data.focus_field,
+    N_("Set focused field"), N_("NUMBER") },
   { NULL }
 };
 
@@ -1287,6 +1289,7 @@ yad_options_init (void)
   options.form_data.columns = 1;
   options.form_data.scroll = FALSE;
   options.form_data.output_by_row = FALSE;
+  options.form_data.focus_field = 1;
 
 #ifdef HAVE_HTML
   /* Initialize html data */

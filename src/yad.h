@@ -252,6 +252,7 @@ typedef struct {
   guint columns;
   gboolean scroll;
   gboolean output_by_row;
+  guint focus_field;
 } YadFormData;
 
 #ifdef HAVE_HTML
