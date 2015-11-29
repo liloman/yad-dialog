@@ -673,7 +673,7 @@ msgstr "Сделать форму прокручиваемой"
 
 #: ../src/option.c:296
 msgid "Order output fields by rows"
-msgstr "Упорядочить вівод по строкам"
+msgstr "Упорядочить вывод по строкам"
 
 #: ../src/option.c:303
 msgid "Display HTML dialog"
