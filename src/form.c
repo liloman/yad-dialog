@@ -584,8 +584,7 @@ select_date_cb (GtkEntry * entry, GtkEntryIconPosition pos, GdkEventButton * eve
 GtkWidget *
 form_create_widget (GtkWidget * dlg)
 {
-  GtkWidget *sw, *vp, *tbl;
-  GtkWidget *w = NULL;
+  GtkWidget *tbl, *w = NULL;
   GList *filt;
 
   if (options.form_data.fields)
@@ -611,21 +610,11 @@ form_create_widget (GtkWidget * dlg)
 
       if (options.form_data.scroll)
         {
-          /* create scrolled container */
-          GtkAdjustment *hadj, *vadj;
-
-          sw = gtk_scrolled_window_new (NULL, NULL);
+          GtkWidget *sw = gtk_scrolled_window_new (NULL, NULL);
           gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_NONE);
           gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-          hadj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (sw));
-          vadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (sw));
-
-          vp = gtk_viewport_new (hadj, vadj);
-          gtk_viewport_set_shadow_type (GTK_VIEWPORT (vp), GTK_SHADOW_NONE);
-          gtk_container_add (GTK_CONTAINER (sw), vp);
-
-          gtk_container_add (GTK_CONTAINER (vp), tbl);
+          gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), tbl);
           w = sw;
         }
       else

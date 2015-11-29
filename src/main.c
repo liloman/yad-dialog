@@ -312,6 +312,7 @@ create_dialog (void)
       gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
       gtk_box_pack_start (GTK_BOX (hbox2), image, FALSE, FALSE, 2);
     }
+
   if (options.data.dialog_text)
     {
       /* for dnd's tooltip we don't need text label */
@@ -357,57 +358,60 @@ create_dialog (void)
   /* add main widget */
   switch (options.mode)
     {
-      case YAD_MODE_CALENDAR:
-        main_widget = calendar_create_widget (dlg);
-        break;
-      case YAD_MODE_COLOR:
-        main_widget = color_create_widget (dlg);
-        break;
-      case YAD_MODE_DND:
-        dnd_init (dlg);
-        break;
-      case YAD_MODE_ENTRY:
-        main_widget = entry_create_widget (dlg);
-        break;
-      case YAD_MODE_FILE:
-        main_widget = file_create_widget (dlg);
-        break;
-      case YAD_MODE_FONT:
-        main_widget = font_create_widget (dlg);
-        break;
-      case YAD_MODE_FORM:
-        main_widget = form_create_widget (dlg);
-        break;
+    case YAD_MODE_CALENDAR:
+      main_widget = calendar_create_widget (dlg);
+      break;
+    case YAD_MODE_COLOR:
+      main_widget = color_create_widget (dlg);
+      break;
+    case YAD_MODE_DND:
+      dnd_init (dlg);
+      break;
+    case YAD_MODE_ENTRY:
+      main_widget = entry_create_widget (dlg);
+      break;
+    case YAD_MODE_FILE:
+      main_widget = file_create_widget (dlg);
+      break;
+    case YAD_MODE_FONT:
+      main_widget = font_create_widget (dlg);
+      break;
+    case YAD_MODE_FORM:
+      main_widget = form_create_widget (dlg);
+      break;
 #ifdef HAVE_HTML
-      case YAD_MODE_HTML:
-        main_widget = html_create_widget (dlg);
-        break;
+    case YAD_MODE_HTML:
+      main_widget = html_create_widget (dlg);
+      break;
 #endif
-      case YAD_MODE_ICONS:
-        main_widget = icons_create_widget (dlg);
-        break;
-      case YAD_MODE_LIST:
-        main_widget = list_create_widget (dlg);
-        break;
-      case YAD_MODE_MULTI_PROGRESS:
-        main_widget = multi_progress_create_widget (dlg);
-        break;
-      case YAD_MODE_NOTEBOOK:
-        main_widget = notebook_create_widget (dlg);
-        break;
+    case YAD_MODE_ICONS:
+      main_widget = icons_create_widget (dlg);
+      break;
+    case YAD_MODE_LIST:
+      main_widget = list_create_widget (dlg);
+      break;
+    case YAD_MODE_MULTI_PROGRESS:
+      main_widget = multi_progress_create_widget (dlg);
+      break;
+    case YAD_MODE_NOTEBOOK:
+      main_widget = notebook_create_widget (dlg);
+      break;
     case YAD_MODE_PANED:
-        main_widget = paned_create_widget (dlg);
-        break;
-     case YAD_MODE_PROGRESS:
-        main_widget = progress_create_widget (dlg);
-        break;
-      case YAD_MODE_SCALE:
-        main_widget = scale_create_widget (dlg);
-        break;
-      case YAD_MODE_TEXTINFO:
-        main_widget = text_create_widget (dlg);
-        break;
-      default: ;
+      main_widget = paned_create_widget (dlg);
+      break;
+    case YAD_MODE_PICTURE:
+      main_widget = picture_create_widget (dlg);
+      break;
+    case YAD_MODE_PROGRESS:
+      main_widget = progress_create_widget (dlg);
+      break;
+    case YAD_MODE_SCALE:
+      main_widget = scale_create_widget (dlg);
+      break;
+    case YAD_MODE_TEXTINFO:
+      main_widget = text_create_widget (dlg);
+      break;
+    default: ;
     }
 
   if (main_widget)
@@ -425,13 +429,13 @@ create_dialog (void)
         gtk_box_pack_start (GTK_BOX (vbox), main_widget, TRUE, TRUE, 2);
     }
 
-  /* add buttons */
 #ifdef HAVE_HTML
   /* enable no-buttons mode if --browser is specified and sets no custom buttons */
   if (options.mode == YAD_MODE_HTML && options.html_data.browser && !options.data.buttons)
     options.data.no_buttons = TRUE;
 #endif
 
+  /* add buttons */
   if (!options.data.no_buttons)
     {
       if (options.data.buttons)
@@ -455,19 +459,18 @@ create_dialog (void)
         }
       else
         {
-          if (options.mode == YAD_MODE_PROGRESS ||
-              options.mode == YAD_MODE_MULTI_PROGRESS ||
-              options.mode == YAD_MODE_DND)
+          if (options.mode == YAD_MODE_PROGRESS || options.mode == YAD_MODE_MULTI_PROGRESS ||
+              options.mode == YAD_MODE_DND || options.mode == YAD_MODE_PICTURE)
             gtk_dialog_add_buttons (GTK_DIALOG (dlg), GTK_STOCK_CLOSE, YAD_RESPONSE_OK, NULL);
           else
-              {
-                if (gtk_alternative_dialog_button_order (NULL))
-                  gtk_dialog_add_buttons (GTK_DIALOG (dlg),
-                                          GTK_STOCK_OK, YAD_RESPONSE_OK, GTK_STOCK_CANCEL, YAD_RESPONSE_CANCEL, NULL);
-                else
-                  gtk_dialog_add_buttons (GTK_DIALOG (dlg),
-                                          GTK_STOCK_CANCEL, YAD_RESPONSE_CANCEL, GTK_STOCK_OK, YAD_RESPONSE_OK, NULL);
-              }
+            {
+              if (gtk_alternative_dialog_button_order (NULL))
+                gtk_dialog_add_buttons (GTK_DIALOG (dlg),
+                                        GTK_STOCK_OK, YAD_RESPONSE_OK, GTK_STOCK_CANCEL, YAD_RESPONSE_CANCEL, NULL);
+              else
+                gtk_dialog_add_buttons (GTK_DIALOG (dlg),
+                                        GTK_STOCK_CANCEL, YAD_RESPONSE_CANCEL, GTK_STOCK_OK, YAD_RESPONSE_OK, NULL);
+            }
           gtk_dialog_set_default_response (GTK_DIALOG (dlg), YAD_RESPONSE_OK);
         }
       gtk_button_box_set_layout (GTK_BUTTON_BOX (gtk_dialog_get_action_area (GTK_DIALOG (dlg))),
@@ -581,48 +584,51 @@ create_plug (void)
   /* add main widget */
   switch (options.mode)
     {
-      case YAD_MODE_CALENDAR:
-        main_widget = calendar_create_widget (win);
-        break;
-      case YAD_MODE_COLOR:
-        main_widget = color_create_widget (win);
-        break;
-      case YAD_MODE_ENTRY:
-        main_widget = entry_create_widget (win);
-        break;
-      case YAD_MODE_FILE:
-        main_widget = file_create_widget (win);
-        break;
-      case YAD_MODE_FONT:
-        main_widget = font_create_widget (win);
-        break;
-      case YAD_MODE_FORM:
-        main_widget = form_create_widget (win);
-        break;
+    case YAD_MODE_CALENDAR:
+      main_widget = calendar_create_widget (win);
+      break;
+    case YAD_MODE_COLOR:
+      main_widget = color_create_widget (win);
+      break;
+    case YAD_MODE_ENTRY:
+      main_widget = entry_create_widget (win);
+      break;
+    case YAD_MODE_FILE:
+      main_widget = file_create_widget (win);
+      break;
+    case YAD_MODE_FONT:
+      main_widget = font_create_widget (win);
+      break;
+    case YAD_MODE_FORM:
+      main_widget = form_create_widget (win);
+      break;
 #ifdef HAVE_HTML
-      case YAD_MODE_HTML:
-        main_widget = html_create_widget (win);
-        break;
+    case YAD_MODE_HTML:
+      main_widget = html_create_widget (win);
+      break;
 #endif
-      case YAD_MODE_ICONS:
-        main_widget = icons_create_widget (win);
-        break;
-      case YAD_MODE_LIST:
-        main_widget = list_create_widget (win);
-        break;
-      case YAD_MODE_MULTI_PROGRESS:
-        main_widget = multi_progress_create_widget (win);
-        break;
-      case YAD_MODE_PROGRESS:
-        main_widget = progress_create_widget (win);
-        break;
-      case YAD_MODE_SCALE:
-        main_widget = scale_create_widget (win);
-        break;
-      case YAD_MODE_TEXTINFO:
-        main_widget = text_create_widget (win);
-        break;
-      default:;
+    case YAD_MODE_ICONS:
+      main_widget = icons_create_widget (win);
+      break;
+    case YAD_MODE_LIST:
+      main_widget = list_create_widget (win);
+      break;
+    case YAD_MODE_MULTI_PROGRESS:
+      main_widget = multi_progress_create_widget (win);
+      break;
+    case YAD_MODE_PICTURE:
+      main_widget = picture_create_widget (win);
+      break;
+    case YAD_MODE_PROGRESS:
+      main_widget = progress_create_widget (win);
+      break;
+    case YAD_MODE_SCALE:
+      main_widget = scale_create_widget (win);
+      break;
+    case YAD_MODE_TEXTINFO:
+      main_widget = text_create_widget (win);
+      break;
+    default:;
     }
   if (main_widget)
     gtk_box_pack_start (GTK_BOX (vbox), main_widget, TRUE, TRUE, 2);
@@ -642,40 +648,40 @@ print_result (void)
 {
   switch (options.mode)
     {
-      case YAD_MODE_CALENDAR:
-        calendar_print_result ();
-        break;
-      case YAD_MODE_COLOR:
-        color_print_result ();
-        break;
-      case YAD_MODE_ENTRY:
-        entry_print_result ();
-        break;
-      case YAD_MODE_FILE:
-        file_print_result ();
-        break;
-      case YAD_MODE_FONT:
-        font_print_result ();
-        break;
-      case YAD_MODE_FORM:
-        form_print_result ();
-        break;
-      case YAD_MODE_LIST:
-        list_print_result ();
-        break;
-      case YAD_MODE_NOTEBOOK:
-        notebook_print_result ();
-        break;
-      case YAD_MODE_PANED:
-        paned_print_result ();
-        break;
-      case YAD_MODE_SCALE:
-        scale_print_result ();
-        break;
-      case YAD_MODE_TEXTINFO:
-        text_print_result ();
-        break;
-      default:;
+    case YAD_MODE_CALENDAR:
+      calendar_print_result ();
+      break;
+    case YAD_MODE_COLOR:
+      color_print_result ();
+      break;
+    case YAD_MODE_ENTRY:
+      entry_print_result ();
+      break;
+    case YAD_MODE_FILE:
+      file_print_result ();
+      break;
+    case YAD_MODE_FONT:
+      font_print_result ();
+      break;
+    case YAD_MODE_FORM:
+      form_print_result ();
+      break;
+    case YAD_MODE_LIST:
+      list_print_result ();
+      break;
+    case YAD_MODE_NOTEBOOK:
+      notebook_print_result ();
+      break;
+    case YAD_MODE_PANED:
+      paned_print_result ();
+      break;
+    case YAD_MODE_SCALE:
+      scale_print_result ();
+      break;
+    case YAD_MODE_TEXTINFO:
+      text_print_result ();
+      break;
+    default:;
     }
 }
 
@@ -821,63 +827,71 @@ main (gint argc, gchar ** argv)
 
   switch (options.mode)
     {
-      case YAD_MODE_ABOUT:
-        ret = yad_about ();
-        break;
+    case YAD_MODE_ABOUT:
+      ret = yad_about ();
+      break;
 
-      case YAD_MODE_VERSION:
-        g_print ("%s (GTK+ %d.%d.%d)\n", VERSION, gtk_major_version, gtk_minor_version, gtk_micro_version);
-        break;
+    case YAD_MODE_VERSION:
+      g_print ("%s (GTK+ %d.%d.%d)\n", VERSION, gtk_major_version, gtk_minor_version, gtk_micro_version);
+      break;
 
-      case YAD_MODE_NOTIFICATION:
-        ret = yad_notification_run ();
-        break;
+    case YAD_MODE_NOTIFICATION:
+      ret = yad_notification_run ();
+      break;
 
-      case YAD_MODE_PRINT:
-        ret = yad_print_run ();
-        break;
+    case YAD_MODE_PRINT:
+      ret = yad_print_run ();
+      break;
 
-      default:
-        dialog = create_dialog ();
-        g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (dlg_response_cb), &ret);
-        gtk_widget_show_all (dialog);
+    default:
+      dialog = create_dialog ();
+      g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (dlg_response_cb), &ret);
+      gtk_widget_show_all (dialog);
 
 #ifndef G_OS_WIN32
-        /* add YAD_XID variable */
-        str = g_strdup_printf ("0x%X", (guint) GDK_WINDOW_XID (gtk_widget_get_window (dialog)));
-        g_setenv ("YAD_XID", str, TRUE);
+      /* add YAD_XID variable */
+      str = g_strdup_printf ("0x%X", (guint) GDK_WINDOW_XID (gtk_widget_get_window (dialog)));
+      g_setenv ("YAD_XID", str, TRUE);
 #endif
 
-        if (options.mode == YAD_MODE_NOTEBOOK)
-          notebook_swallow_childs ();
-        else if (options.mode == YAD_MODE_PANED)
-          paned_swallow_childs ();
+      /* make some specific init actions */
+      if (options.mode == YAD_MODE_NOTEBOOK)
+        notebook_swallow_childs ();
+      else if (options.mode == YAD_MODE_PANED)
+        paned_swallow_childs ();
+      else if (options.mode == YAD_MODE_PICTURE)
+        {
+          if (options.picture_data.size == YAD_PICTURE_FIT)
+            picture_fit_to_window ();
+        }
 
-        gtk_main ();
+      /* run main loop */
+      gtk_main ();
 
-        if (options.data.always_print)
-          print_result ();
-        else if (ret != YAD_RESPONSE_TIMEOUT && ret != YAD_RESPONSE_ESC)
-          {
-            /* standard OK button pressed */
-            if (ret == YAD_RESPONSE_OK && options.data.buttons == NULL)
-              print_result ();
-            /* custom even button pressed */
-            else if (options.data.buttons && !(ret & 1))
-              print_result ();
-          }
+      /* print results */
+      if (options.data.always_print)
+        print_result ();
+      else if (ret != YAD_RESPONSE_TIMEOUT && ret != YAD_RESPONSE_ESC)
+        {
+          /* standard OK button pressed */
+          if (ret == YAD_RESPONSE_OK && options.data.buttons == NULL)
+            print_result ();
+          /* custom even button pressed */
+          else if (options.data.buttons && !(ret & 1))
+            print_result ();
+        }
 #ifndef G_OS_WIN32
-        if (options.mode == YAD_MODE_NOTEBOOK)
-          notebook_close_childs ();
-        else if (options.mode == YAD_MODE_PANED)
-          paned_close_childs ();
-        /* autokill option for progress dialog */
-        if (!options.kill_parent)
-          {
-            if ((options.mode == YAD_MODE_PROGRESS || options.mode == YAD_MODE_MULTI_PROGRESS) &&
-                options.progress_data.autokill && ret != YAD_RESPONSE_OK)
-              kill (getppid (), SIGHUP);
-          }
+      if (options.mode == YAD_MODE_NOTEBOOK)
+        notebook_close_childs ();
+      else if (options.mode == YAD_MODE_PANED)
+        paned_close_childs ();
+      /* autokill option for progress dialog */
+      if (!options.kill_parent)
+        {
+          if ((options.mode == YAD_MODE_PROGRESS || options.mode == YAD_MODE_MULTI_PROGRESS) &&
+              options.progress_data.autokill && ret != YAD_RESPONSE_OK)
+            kill (getppid (), SIGHUP);
+        }
 #endif
     }
 

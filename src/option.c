@@ -42,6 +42,7 @@ static gboolean set_expander (const gchar *, const gchar *, gpointer, GError **)
 static gboolean set_orient (const gchar *, const gchar *, gpointer, GError **);
 static gboolean set_print_type (const gchar *, const gchar *, gpointer, GError **);
 static gboolean set_progress_log (const gchar *, const gchar *, gpointer, GError **);
+static gboolean set_size (const gchar *, const gchar *, gpointer, GError **);
 #ifndef G_OS_WIN32
 static gboolean parse_signal (const gchar *, const gchar *, gpointer, GError **);
 #endif
@@ -65,6 +66,7 @@ static gboolean multi_progress_mode = FALSE;
 static gboolean notebook_mode = FALSE;
 static gboolean notification_mode = FALSE;
 static gboolean paned_mode = FALSE;
+static gboolean picture_mode = FALSE;
 static gboolean print_mode = FALSE;
 static gboolean progress_mode = FALSE;
 static gboolean scale_mode = FALSE;
@@ -426,6 +428,16 @@ static GOptionEntry paned_options[] = {
     N_("Set orientation (hor[izontal] or vert[ical])"), N_("TYPE") },
   { "splitter", 0, 0, G_OPTION_ARG_INT, &options.paned_data.splitter,
     N_("Set initial splitter position"), N_("POS") },
+  { NULL }
+};
+
+static GOptionEntry picture_options[] = {
+  { "picture", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &picture_mode,
+    N_("Display picture dialog"), NULL },
+  { "size", 0, 0, G_OPTION_ARG_CALLBACK, set_size,
+    N_("Set initial size (fit or orig)"), N_("TYPE") },
+  { "inc", 0, 0, G_OPTION_ARG_INT, &options.picture_data.inc,
+    N_("Set increment for picture scaling (default - 5)"), N_("NUMBER") },
   { NULL }
 };
 
@@ -985,6 +997,19 @@ set_progress_log (const gchar * option_name, const gchar * value, gpointer data,
 }
 
 static gboolean
+set_size (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
+{
+  if (strcasecmp (value, "fit") == 0)
+    options.picture_data.size = YAD_PICTURE_FIT;
+  else if (strcasecmp (value, "orig") == 0)
+    options.picture_data.size = YAD_PICTURE_ORIG;
+  else
+    g_printerr (_("Unknown size type: %s\n"), value);
+
+  return TRUE;
+}
+
+static gboolean
 add_image_path (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
 {
   if (value)
@@ -1126,6 +1151,8 @@ yad_set_mode (void)
     options.mode = YAD_MODE_NOTIFICATION;
   else if (paned_mode)
     options.mode = YAD_MODE_PANED;
+  else if (picture_mode)
+    options.mode = YAD_MODE_PICTURE;
   else if (print_mode)
     options.mode = YAD_MODE_PRINT;
   else if (progress_mode)
@@ -1317,6 +1344,10 @@ yad_options_init (void)
   options.paned_data.orient = GTK_ORIENTATION_VERTICAL;
   options.paned_data.splitter = -1;
 
+  /* Initialize picture data */
+  options.picture_data.size = YAD_PICTURE_ORIG;
+  options.picture_data.inc = 5;
+
   /* Initialize print data */
   options.print_data.type = YAD_PRINT_TEXT;
   options.print_data.headers = FALSE;
@@ -1464,6 +1495,12 @@ yad_create_context (void)
   /* Adds paned option entries */
   a_group = g_option_group_new ("paned", _("Paned dialog options"), _("Show paned dialog options"), NULL, NULL);
   g_option_group_add_entries (a_group, paned_options);
+  g_option_group_set_translation_domain (a_group, GETTEXT_PACKAGE);
+  g_option_context_add_group (tmp_ctx, a_group);
+
+  /* Adds picture option entries */
+  a_group = g_option_group_new ("picture", _("Picture dialog options"), _("Show picture dialog options"), NULL, NULL);
+  g_option_group_add_entries (a_group, picture_options);
   g_option_group_set_translation_domain (a_group, GETTEXT_PACKAGE);
   g_option_context_add_group (tmp_ctx, a_group);
 

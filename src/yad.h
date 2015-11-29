@@ -63,6 +63,7 @@ typedef enum {
   YAD_MODE_NOTEBOOK,
   YAD_MODE_NOTIFICATION,
   YAD_MODE_PANED,
+  YAD_MODE_PICTURE,
   YAD_MODE_PRINT,
   YAD_MODE_PROGRESS,
   YAD_MODE_SCALE,
@@ -113,6 +114,11 @@ typedef enum {
   YAD_COLUMN_ATTR_BACK,
   YAD_COLUMN_ATTR_FONT
 } YadColumnType;
+
+typedef enum {
+  YAD_PICTURE_FIT,
+  YAD_PICTURE_ORIG
+} YadPictureType;
 
 typedef enum {
   YAD_PRINT_TEXT = 0,
@@ -312,6 +318,11 @@ typedef struct {
 } YadPanedData;
 
 typedef struct {
+  YadPictureType size;
+  gint inc;
+} YadPictureData;
+
+typedef struct {
   YadPrintType type;
   gboolean headers;
 } YadPrintData;
@@ -397,6 +408,7 @@ typedef struct {
   YadNotebookData notebook_data;
   YadNotificationData notification_data;
   YadPanedData paned_data;
+  YadPictureData picture_data;
   YadPrintData print_data;
   YadProgressData progress_data;
   YadScaleData scale_data;
@@ -472,6 +484,7 @@ GtkWidget *list_create_widget (GtkWidget * dlg);
 GtkWidget *multi_progress_create_widget (GtkWidget * dlg);
 GtkWidget *notebook_create_widget (GtkWidget * dlg);
 GtkWidget *paned_create_widget (GtkWidget * dlg);
+GtkWidget *picture_create_widget (GtkWidget * dlg);
 GtkWidget *progress_create_widget (GtkWidget * dlg);
 GtkWidget *scale_create_widget (GtkWidget * dlg);
 GtkWidget *text_create_widget (GtkWidget * dlg);
@@ -479,6 +492,7 @@ GtkWidget *text_create_widget (GtkWidget * dlg);
 gboolean file_confirm_overwrite (GtkDialog * dlg);
 void notebook_swallow_childs (void);
 void paned_swallow_childs (void);
+void picture_fit_to_window (void);
 
 void calendar_print_result (void);
 void color_print_result (void);

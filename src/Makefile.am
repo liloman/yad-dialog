@@ -20,6 +20,7 @@ yad_SOURCES = 			\
 	notification.c		\
 	option.c		\
 	paned.c			\
+	picture.c       \
 	print.c			\
 	progress.c		\
 	scale.c			\
@@ -33,8 +34,8 @@ if HTML
 yad_SOURCES += html.c
 endif
 
-yad_CFLAGS = $(GTK_CFLAGS) $(HTML_CFLAGS) $(NOTIFY_CFLAGS)
-yad_LDADD = $(GTK_LIBS) $(HTML_LIBS) $(NOTIFY_LIBS)
+yad_CFLAGS = $(GTK_CFLAGS) $(HTML_CFLAGS)
+yad_LDADD = $(GTK_LIBS) $(HTML_LIBS)
 
 if BUILD_IB
 bin_PROGRAMS += yad-icon-browser
