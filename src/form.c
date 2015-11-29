@@ -581,6 +581,67 @@ select_date_cb (GtkEntry * entry, GtkEntryIconPosition pos, GdkEventButton * eve
     }
 }
 
+static gboolean
+handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer data)
+{
+  if ((cond == G_IO_IN) || (cond == G_IO_IN + G_IO_HUP))
+    {
+      guint cnt = 0;
+      GError *err = NULL;
+      GString *string = g_string_new (NULL);
+
+      while (ch->is_readable != TRUE);
+
+      do
+        {
+          gint status;
+
+          if (cnt == n_fields)
+            {
+              /* stop handling when get all fields */
+              g_io_channel_shutdown (ch, TRUE, NULL);
+              return FALSE;
+            }
+
+          do
+            {
+              status = g_io_channel_read_line_string (ch, string, NULL, &err);
+
+              while (gtk_events_pending ())
+                gtk_main_iteration ();
+            }
+          while (status == G_IO_STATUS_AGAIN);
+
+          if (status != G_IO_STATUS_NORMAL)
+            {
+              if (err)
+                {
+                  g_printerr ("yad_form_handle_stdin(): %s\n", err->message);
+                  g_error_free (err);
+                  err = NULL;
+                }
+              /* stop handling */
+              g_io_channel_shutdown (ch, TRUE, NULL);
+              return FALSE;
+            }
+
+          strip_new_line (string->str);
+          set_field_value (cnt, string->str);
+          cnt++;
+        }
+      while (g_io_channel_get_buffer_condition (ch) == G_IO_IN);
+      g_string_free (string, TRUE);
+    }
+
+  if ((cond != G_IO_IN) && (cond != G_IO_IN + G_IO_HUP))
+    {
+      g_io_channel_shutdown (ch, TRUE, NULL);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 GtkWidget *
 form_create_widget (GtkWidget * dlg)
 {
@@ -1014,6 +1075,13 @@ form_create_widget (GtkWidget * dlg)
               set_field_value (i, options.extra_data[i]);
               i++;
             }
+        }
+      else
+        {
+          GIOChannel *channel = g_io_channel_unix_new (0);
+          g_io_channel_set_encoding (channel, NULL, NULL);
+          g_io_channel_set_flags (channel, G_IO_FLAG_NONBLOCK, NULL);
+          g_io_add_watch (channel, G_IO_IN | G_IO_HUP, handle_stdin, NULL);
         }
     }
 
