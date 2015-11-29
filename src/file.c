@@ -30,12 +30,9 @@ file_activated_cb (GtkFileChooser * chooser, gpointer data)
     gtk_dialog_response (GTK_DIALOG (data), YAD_RESPONSE_OK);
 }
 
-void
-confirm_overwrite_cb (GtkDialog * dlg, gint id, gpointer data)
+gboolean
+file_confirm_overwrite (GtkDialog * dlg)
 {
-  if (id != YAD_RESPONSE_OK)
-    return;
-
   if (options.file_data.save && options.file_data.confirm_overwrite && !options.common_data.multi)
     {
       gchar *filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
@@ -53,9 +50,11 @@ confirm_overwrite_cb (GtkDialog * dlg, gint id, gpointer data)
           r = gtk_dialog_run (GTK_DIALOG (d));
           gtk_widget_destroy (d);
           if (r != GTK_RESPONSE_YES)
-            g_signal_stop_emission_by_name (dlg, "response");
+            return FALSE;
         }
     }
+
+  return TRUE;
 }
 
 GtkWidget *

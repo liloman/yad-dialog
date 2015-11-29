@@ -126,14 +126,22 @@ ignore_close_cb (GtkWidget *w, gpointer data)
   g_signal_stop_emission_by_name (G_OBJECT (w), "close");
 }
 
-#ifdef HAVE_HTML
 static void
-html_response_cb (GtkDialog *dlg, gint id, gint *data)
+dlg_response_cb (GtkDialog *dlg, gint id, gint *data)
 {
+  if (options.mode == YAD_MODE_FILE)
+    {
+      /* show custom confirmation dialog */
+      if (!file_confirm_overwrite (dlg))
+        {
+          g_signal_stop_emission_by_name (dlg, "response");
+          return;
+        }
+    }
+
   *data = id;
   gtk_main_quit ();
 }
-#endif
 
 GtkWidget *
 create_dialog (void)
@@ -829,21 +837,10 @@ main (gint argc, gchar ** argv)
         ret = yad_print_run ();
         break;
 
-#ifdef HAVE_HTML
-      case YAD_MODE_HTML:
-        /* Webkit doesn't handle focus for child dialogs when gtk_dialog_run() is used */
-        /* FIXME: maybe this solution must be expanded to all dialogs */
-        dialog = create_dialog ();
-        g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (html_response_cb), &ret);
-
-        gtk_widget_show_all (dialog);
-
-        gtk_main ();
-        break;
-#endif
-
       default:
         dialog = create_dialog ();
+        g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (dlg_response_cb), &ret);
+        gtk_widget_show_all (dialog);
 
 #ifndef G_OS_WIN32
         /* add YAD_XID variable */
@@ -851,17 +848,13 @@ main (gint argc, gchar ** argv)
         g_setenv ("YAD_XID", str, TRUE);
 #endif
 
-        if (options.mode == YAD_MODE_FILE)
-          {
-            /* show custom confirmation dialog */
-            g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (confirm_overwrite_cb), NULL);
-          }
-        else if (options.mode == YAD_MODE_NOTEBOOK)
+        if (options.mode == YAD_MODE_NOTEBOOK)
           notebook_swallow_childs ();
         else if (options.mode == YAD_MODE_PANED)
           paned_swallow_childs ();
 
-        ret = gtk_dialog_run (GTK_DIALOG (dialog));
+        gtk_main ();
+
         if (options.data.always_print)
           print_result ();
         else if (ret != YAD_RESPONSE_TIMEOUT && ret != YAD_RESPONSE_ESC)
