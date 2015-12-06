@@ -327,7 +327,7 @@ get_label (gchar * str, guint border)
   GtkStockItem it;
   gchar **vals;
 
-  if (!str)
+  if (!str || !*str)
     return gtk_label_new (NULL);
 
   l = i = NULL;

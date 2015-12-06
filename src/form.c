@@ -83,14 +83,13 @@ expand_action (gchar * cmd)
                   break;
                 case YAD_FIELD_COMBO:
                 case YAD_FIELD_COMBO_ENTRY:
-                  g_string_append (xcmd,
 #if GTK_CHECK_VERSION(2,24,0)
-                                   gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT
-                                                                       (g_slist_nth_data (fields, num)))
+                  buf = gtk_combo_box_text_get_active_text (GTK_COMBO_BOX_TEXT (g_slist_nth_data (fields, num)));
 #else
-                                   gtk_combo_box_get_active_text (GTK_COMBO_BOX (g_slist_nth_data (fields, num)))
+                  buf = gtk_combo_box_get_active_text (GTK_COMBO_BOX (g_slist_nth_data (fields, num)));
 #endif
-                    );
+                  g_string_append (xcmd, buf ? buf : "");
+                  g_free (buf);
                   break;
                 case YAD_FIELD_SCALE:
                   g_string_append_printf (xcmd, "%d", (gint) gtk_range_get_value
