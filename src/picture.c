@@ -135,7 +135,8 @@ change_size_cb (GtkWidget *w, gint type)
 static void
 rotate_cb (GtkWidget *w, gint type)
 {
-  GdkPixbuf *new_pb, *pb = gtk_image_get_pixbuf (GTK_IMAGE (picture));
+  GdkPixbuf *new_pb = NULL;
+  GdkPixbuf *pb = gtk_image_get_pixbuf (GTK_IMAGE (picture));
 
   if (!pb)
     {

@@ -371,6 +371,10 @@ button_clicked_cb (GtkButton * b, gchar * action)
           g_string_free (cmd, TRUE);
         }
     }
+
+  /* set focus to specified field */
+  if (options.form_data.focus_field > 0 && options.form_data.focus_field <= n_fields)
+    gtk_widget_grab_focus (GTK_WIDGET (g_slist_nth_data (fields, options.form_data.focus_field - 1)));
 }
 
 static void
@@ -578,6 +582,8 @@ select_date_cb (GtkEntry * entry, GtkEntryIconPosition pos, GdkEventButton * eve
         }
       gtk_widget_destroy (dlg);
     }
+
+  gtk_widget_grab_focus (GTK_WIDGET (entry));
 }
 
 static gboolean
