@@ -143,15 +143,180 @@ dlg_response_cb (GtkDialog *dlg, gint id, gint *data)
   gtk_main_quit ();
 }
 
-GtkWidget *
+static GtkWidget *
+create_layout (GtkWidget *dlg)
+{
+  GtkWidget *image, *text, *mw, *layout, *exp, *box;
+
+  layout = image = text = mw = exp = NULL;
+
+  /* create image */
+  if (options.data.dialog_image)
+    {
+      GdkPixbuf *pb = NULL;
+
+      pb = get_pixbuf (options.data.dialog_image, YAD_BIG_ICON);
+      image = gtk_image_new_from_pixbuf (pb);
+      if (pb)
+        g_object_unref (pb);
+
+      gtk_widget_set_name (image, "yad-dialog-image");
+      gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
+    }
+
+  /* create text label */
+  if (options.data.dialog_text)
+    {
+      /* for dnd's tooltip we don't need text label */
+      if (options.mode != YAD_MODE_DND || !options.dnd_data.tooltip)
+        {
+          gchar *buf = g_strcompress (options.data.dialog_text);
+
+          text = gtk_label_new (NULL);
+          if (!options.data.no_markup)
+            gtk_label_set_markup (GTK_LABEL (text), buf);
+          else
+            gtk_label_set_text (GTK_LABEL (text), buf);
+          g_free (buf);
+
+          gtk_widget_set_name (text, "yad-dialog-label");
+          gtk_label_set_line_wrap (GTK_LABEL (text), TRUE);
+          gtk_label_set_selectable (GTK_LABEL (text), options.data.selectable_labels);
+          gtk_label_set_justify (GTK_LABEL (text), options.data.text_align);
+          switch (options.data.text_align)
+            {
+            case GTK_JUSTIFY_LEFT:
+            case GTK_JUSTIFY_FILL:
+              gtk_misc_set_alignment (GTK_MISC (text), 0.0, 0.5);
+              break;
+            case GTK_JUSTIFY_CENTER:
+              gtk_misc_set_alignment (GTK_MISC (text), 0.5, 0.5);
+              break;
+            case GTK_JUSTIFY_RIGHT:
+              gtk_misc_set_alignment (GTK_MISC (text), 1.0, 0.5);
+              break;
+            }
+#if !GTK_CHECK_VERSION(3,0,0)
+          if (!options.data.fixed)
+            g_signal_connect (G_OBJECT (text), "size-allocate", G_CALLBACK (text_size_allocate_cb), NULL);
+#endif
+        }
+    }
+
+  /* create main widget */
+  switch (options.mode)
+    {
+    case YAD_MODE_CALENDAR:
+      mw = calendar_create_widget (dlg);
+      break;
+    case YAD_MODE_COLOR:
+      mw = color_create_widget (dlg);
+      break;
+    case YAD_MODE_DND:
+      dnd_init (dlg);
+      break;
+    case YAD_MODE_ENTRY:
+      mw = entry_create_widget (dlg);
+      break;
+    case YAD_MODE_FILE:
+      mw = file_create_widget (dlg);
+      break;
+    case YAD_MODE_FONT:
+      mw = font_create_widget (dlg);
+      break;
+    case YAD_MODE_FORM:
+      mw = form_create_widget (dlg);
+      break;
+#ifdef HAVE_HTML
+    case YAD_MODE_HTML:
+      mw = html_create_widget (dlg);
+      break;
+#endif
+    case YAD_MODE_ICONS:
+      mw = icons_create_widget (dlg);
+      break;
+    case YAD_MODE_LIST:
+      mw = list_create_widget (dlg);
+      break;
+    case YAD_MODE_MULTI_PROGRESS:
+      mw = multi_progress_create_widget (dlg);
+      break;
+    case YAD_MODE_NOTEBOOK:
+      if (options.plug == -1)
+        mw = notebook_create_widget (dlg);
+      else
+        mw = NULL;
+      break;
+    case YAD_MODE_PANED:
+      if (options.plug == -1)
+        mw = paned_create_widget (dlg);
+      else
+        mw = NULL;
+      break;
+    case YAD_MODE_PICTURE:
+      mw = picture_create_widget (dlg);
+      break;
+    case YAD_MODE_PROGRESS:
+      mw = progress_create_widget (dlg);
+      break;
+    case YAD_MODE_SCALE:
+      mw = scale_create_widget (dlg);
+      break;
+    case YAD_MODE_TEXTINFO:
+      mw = text_create_widget (dlg);
+      break;
+    default: ;
+    }
+
+  /* add expander */
+  if (mw && options.data.expander)
+    {
+      exp = gtk_expander_new_with_mnemonic (options.data.expander);
+      gtk_expander_set_expanded (GTK_EXPANDER (exp), FALSE);
+      gtk_container_add (GTK_CONTAINER (exp), mw);
+    }
+
+  /* create layout */
+  if (options.data.image_on_top)
+    {
+#if !GTK_CHECK_VERSION(3,0,0)
+      layout = gtk_vbox_new (FALSE, 0);
+      box = gtk_hbox_new (FALSE, 0);
+#else
+      layout = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+      box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+#endif
+      gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 2);
+      gtk_box_pack_start (GTK_BOX (box), text, TRUE, TRUE, 0);
+
+      gtk_box_pack_start (GTK_BOX (layout), box, FALSE, FALSE, 0);
+      if (mw)
+        gtk_box_pack_start (GTK_BOX (layout), mw, TRUE, TRUE, 0);
+    }
+  else
+    {
+#if !GTK_CHECK_VERSION(3,0,0)
+      layout = gtk_hbox_new (FALSE, 0);
+      box = gtk_vbox_new (FALSE, 0);
+#else
+      layout = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+      box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+#endif
+      gtk_box_pack_start (GTK_BOX (box), text, FALSE, FALSE, 0);
+      if (mw)
+        gtk_box_pack_start (GTK_BOX (box), mw, TRUE, TRUE, 0);
+
+      gtk_box_pack_start (GTK_BOX (layout), image, FALSE, FALSE, 2);
+      gtk_box_pack_start (GTK_BOX (layout), box, TRUE, TRUE, 0);
+    }
+
+  return layout;
+}
+
+static GtkWidget *
 create_dialog (void)
 {
-  GtkWidget *dlg;
-  GtkWidget *hbox, *vbox, *hbox2, *bbox;
-  GtkWidget *image;
-  GtkWidget *text;
-  GtkWidget *main_widget = NULL;
-  GtkWidget *topb = NULL;
+  GtkWidget *dlg, *vbox, *bbox, *layout;
 
   /* create dialog window */
   dlg = gtk_dialog_new ();
@@ -163,6 +328,7 @@ create_dialog (void)
   gtk_widget_set_name (dlg, "yad-dialog-window");
 
 #ifndef  G_OS_WIN32
+  /* FIXME: is that very useful !? */
   if (options.parent)
     {
       gdk_window_set_transient_for (gtk_widget_get_window (dlg),
@@ -173,9 +339,6 @@ create_dialog (void)
 
   if (options.data.no_escape)
     g_signal_connect (G_OBJECT (dlg), "close", G_CALLBACK (ignore_close_cb) , NULL);
-
-  /* get buttons container */
-  bbox = gtk_dialog_get_action_area (GTK_DIALOG (dlg));
 
   /* set window icon */
   if (options.data.window_icon)
@@ -210,224 +373,107 @@ create_dialog (void)
   gtk_window_set_skip_pager_hint (GTK_WINDOW (dlg), options.data.skip_taskbar);
   gtk_window_set_accept_focus (GTK_WINDOW (dlg), options.data.focus);
 
+  vbox = gtk_dialog_get_content_area (GTK_DIALOG (dlg));
+  layout = create_layout (dlg);
+
   /* create timeout indicator widget */
   if (options.data.timeout)
     {
+      GtkWidget *cbox = NULL, *topb = NULL;
+
       if (G_LIKELY (options.data.to_indicator) && g_ascii_strcasecmp (options.data.to_indicator, "none"))
         {
           topb = gtk_progress_bar_new ();
           gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (topb), 1.0);
           gtk_widget_set_name (topb, "yad-timeout-indicator");
         }
-    }
 
-  /* add top label widgets */
-#if !GTK_CHECK_VERSION(3,0,0)
-  hbox = hbox2 = gtk_hbox_new (FALSE, 0);
-#else
-  hbox = hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-#endif
-  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dlg))), hbox, TRUE, TRUE, 5);
-#if !GTK_CHECK_VERSION(3,0,0)
-  vbox = gtk_vbox_new (FALSE, 0);
-#else
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-#endif
-
-  /* add timeout indicator */
-  if (topb)
-    {
-      if (g_ascii_strcasecmp (options.data.to_indicator, "top") == 0)
+      /* add timeout indicator */
+      if (topb)
         {
-#if !GTK_CHECK_VERSION(3,0,0)
-          gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_LEFT_TO_RIGHT);
-#else
-          gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_HORIZONTAL);
-#endif
-          gtk_box_pack_start (GTK_BOX (vbox), topb, FALSE, FALSE, 2);
-        }
-      else if (g_ascii_strcasecmp (options.data.to_indicator, "bottom") == 0)
-        {
-#if !GTK_CHECK_VERSION(3,0,0)
-          gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_LEFT_TO_RIGHT);
-#else
-          gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_HORIZONTAL);
-#endif
-          gtk_box_pack_end (GTK_BOX (vbox), topb, FALSE, FALSE, 2);
-        }
-      else if (g_ascii_strcasecmp (options.data.to_indicator, "left") == 0)
-        {
-#if !GTK_CHECK_VERSION(3,0,0)
-          gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_BOTTOM_TO_TOP);
-#else
-          gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_VERTICAL);
-          gtk_progress_bar_set_inverted (GTK_PROGRESS_BAR (topb), TRUE);
-#endif
-          gtk_box_pack_start (GTK_BOX (hbox), topb, FALSE, FALSE, 2);
-        }
-      else if (g_ascii_strcasecmp (options.data.to_indicator, "right") == 0)
-        {
-#if !GTK_CHECK_VERSION(3,0,0)
-          gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_BOTTOM_TO_TOP);
-#else
-          gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_VERTICAL);
-          gtk_progress_bar_set_inverted (GTK_PROGRESS_BAR (topb), TRUE);
-#endif
-          gtk_box_pack_end (GTK_BOX (hbox), topb, FALSE, FALSE, 2);
-        }
-      if (settings.show_remain)
-        {
-          gchar *lbl = g_strdup_printf (_("%d sec"), options.data.timeout);
-#if GTK_CHECK_VERSION(3,0,0)
-          gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (topb), TRUE);
-#endif
-          gtk_progress_bar_set_text (GTK_PROGRESS_BAR (topb), lbl);
-          g_free (lbl);
-        }
-    }
-
-  /* must be after indicator! */
-  gtk_box_pack_end (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
-
-  if (options.data.image_on_top)
-    {
-#if !GTK_CHECK_VERSION(3,0,0)
-      hbox2 = gtk_hbox_new (FALSE, 0);
-#else
-      hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-#endif
-      gtk_box_pack_start (GTK_BOX (vbox), hbox2, FALSE, FALSE, 0);
-    }
-
-  if (options.data.dialog_image)
-    {
-      GdkPixbuf *pb = NULL;
-
-      pb = get_pixbuf (options.data.dialog_image, YAD_BIG_ICON);
-      image = gtk_image_new_from_pixbuf (pb);
-      if (pb)
-        g_object_unref (pb);
-
-      gtk_widget_set_name (image, "yad-dialog-image");
-      gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
-      gtk_box_pack_start (GTK_BOX (hbox2), image, FALSE, FALSE, 2);
-    }
-
-  if (options.data.dialog_text)
-    {
-      /* for dnd's tooltip we don't need text label */
-      if (options.mode != YAD_MODE_DND || !options.dnd_data.tooltip)
-        {
-          gchar *buf = g_strcompress (options.data.dialog_text);
-
-          text = gtk_label_new (NULL);
-          if (!options.data.no_markup)
-            gtk_label_set_markup (GTK_LABEL (text), buf);
-          else
-            gtk_label_set_text (GTK_LABEL (text), buf);
-          g_free (buf);
-
-          gtk_widget_set_name (text, "yad-dialog-label");
-          gtk_label_set_line_wrap (GTK_LABEL (text), TRUE);
-          gtk_label_set_selectable (GTK_LABEL (text), options.data.selectable_labels);
-          gtk_label_set_justify (GTK_LABEL (text), options.data.text_align);
-          switch (options.data.text_align)
+          if (strcasecmp (options.data.to_indicator, "top") == 0)
             {
-            case GTK_JUSTIFY_LEFT:
-            case GTK_JUSTIFY_FILL:
-              gtk_misc_set_alignment (GTK_MISC (text), 0.0, 0.5);
-              break;
-            case GTK_JUSTIFY_CENTER:
-              gtk_misc_set_alignment (GTK_MISC (text), 0.5, 0.5);
-              break;
-            case GTK_JUSTIFY_RIGHT:
-              gtk_misc_set_alignment (GTK_MISC (text), 1.0, 0.5);
-              break;
-            }
-          if (options.data.image_on_top)
-            gtk_box_pack_start (GTK_BOX (hbox2), text, TRUE, TRUE, 2);
-          else
-            gtk_box_pack_start (GTK_BOX (vbox), text, FALSE, FALSE, 2);
 #if !GTK_CHECK_VERSION(3,0,0)
-          if (!options.data.fixed)
-            g_signal_connect (G_OBJECT (text), "size-allocate", G_CALLBACK (text_size_allocate_cb), NULL);
+              gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_LEFT_TO_RIGHT);
+              cbox = gtk_vbox_new (FALSE, 0);
+#else
+              gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_HORIZONTAL);
+              cbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 #endif
-        }
-    }
-
-  /* add main widget */
-  switch (options.mode)
-    {
-    case YAD_MODE_CALENDAR:
-      main_widget = calendar_create_widget (dlg);
-      break;
-    case YAD_MODE_COLOR:
-      main_widget = color_create_widget (dlg);
-      break;
-    case YAD_MODE_DND:
-      dnd_init (dlg);
-      break;
-    case YAD_MODE_ENTRY:
-      main_widget = entry_create_widget (dlg);
-      break;
-    case YAD_MODE_FILE:
-      main_widget = file_create_widget (dlg);
-      break;
-    case YAD_MODE_FONT:
-      main_widget = font_create_widget (dlg);
-      break;
-    case YAD_MODE_FORM:
-      main_widget = form_create_widget (dlg);
-      break;
-#ifdef HAVE_HTML
-    case YAD_MODE_HTML:
-      main_widget = html_create_widget (dlg);
-      break;
+              gtk_box_pack_start (GTK_BOX (cbox), topb, FALSE, FALSE, 2);
+              gtk_box_pack_end (GTK_BOX (cbox), layout, TRUE, TRUE, 0);
+            }
+          else if (strcasecmp (options.data.to_indicator, "bottom") == 0)
+            {
+#if !GTK_CHECK_VERSION(3,0,0)
+              gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_LEFT_TO_RIGHT);
+              cbox = gtk_vbox_new (FALSE, 0);
+#else
+              gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_HORIZONTAL);
+              cbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 #endif
-    case YAD_MODE_ICONS:
-      main_widget = icons_create_widget (dlg);
-      break;
-    case YAD_MODE_LIST:
-      main_widget = list_create_widget (dlg);
-      break;
-    case YAD_MODE_MULTI_PROGRESS:
-      main_widget = multi_progress_create_widget (dlg);
-      break;
-    case YAD_MODE_NOTEBOOK:
-      main_widget = notebook_create_widget (dlg);
-      break;
-    case YAD_MODE_PANED:
-      main_widget = paned_create_widget (dlg);
-      break;
-    case YAD_MODE_PICTURE:
-      main_widget = picture_create_widget (dlg);
-      break;
-    case YAD_MODE_PROGRESS:
-      main_widget = progress_create_widget (dlg);
-      break;
-    case YAD_MODE_SCALE:
-      main_widget = scale_create_widget (dlg);
-      break;
-    case YAD_MODE_TEXTINFO:
-      main_widget = text_create_widget (dlg);
-      break;
-    default: ;
-    }
+              gtk_box_pack_start (GTK_BOX (cbox), layout, TRUE, TRUE, 0);
+              gtk_box_pack_end (GTK_BOX (cbox), topb, FALSE, FALSE, 2);
+            }
+          else if (strcasecmp (options.data.to_indicator, "left") == 0)
+            {
+#if !GTK_CHECK_VERSION(3,0,0)
+              gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_BOTTOM_TO_TOP);
+              cbox = gtk_hbox_new (FALSE, 0);
+#else
+              gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_VERTICAL);
+              gtk_progress_bar_set_inverted (GTK_PROGRESS_BAR (topb), TRUE);
+              cbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+#endif
+              gtk_box_pack_start (GTK_BOX (cbox), topb, FALSE, FALSE, 2);
+              gtk_box_pack_end (GTK_BOX (cbox), layout, TRUE, TRUE, 0);
+            }
+          else if (strcasecmp (options.data.to_indicator, "right") == 0)
+            {
+#if !GTK_CHECK_VERSION(3,0,0)
+              gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_BOTTOM_TO_TOP);
+              cbox = gtk_hbox_new (FALSE, 0);
+#else
+              gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_VERTICAL);
+              gtk_progress_bar_set_inverted (GTK_PROGRESS_BAR (topb), TRUE);
+              cbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+#endif
+              gtk_box_pack_start (GTK_BOX (cbox), layout, TRUE, TRUE, 0);
+              gtk_box_pack_end (GTK_BOX (cbox), topb, FALSE, FALSE, 2);
+            }
 
-  if (main_widget)
-    {
-      if (options.data.expander)
-        {
-          GtkWidget *exp;
-
-          exp = gtk_expander_new_with_mnemonic (options.data.expander);
-          gtk_expander_set_expanded (GTK_EXPANDER (exp), FALSE);
-          gtk_container_add (GTK_CONTAINER (exp), main_widget);
-          gtk_box_pack_start (GTK_BOX (vbox), exp, TRUE, TRUE, 2);
+          if (settings.show_remain)
+            {
+              gchar *lbl = g_strdup_printf (_("%d sec"), options.data.timeout);
+#if GTK_CHECK_VERSION(3,0,0)
+              gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (topb), TRUE);
+#endif
+              gtk_progress_bar_set_text (GTK_PROGRESS_BAR (topb), lbl);
+              g_free (lbl);
+            }
         }
       else
-        gtk_box_pack_start (GTK_BOX (vbox), main_widget, TRUE, TRUE, 2);
+        {
+#if !GTK_CHECK_VERSION(3,0,0)
+          cbox = gtk_vbox_new (FALSE, 0);
+#else
+          cbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+#endif
+          gtk_box_pack_start (GTK_BOX (cbox), layout, TRUE, TRUE, 0);
+        }
+
+      if (cbox)
+        gtk_box_pack_start (GTK_BOX (vbox), cbox, TRUE, TRUE, 0);
+
+      /* set timeout handlers */
+      g_timeout_add_seconds (options.data.timeout, timeout_cb, dlg);
+      g_timeout_add_seconds (1, timeout_indicator_cb, topb);
     }
+  else
+    gtk_box_pack_start (GTK_BOX (vbox), layout, TRUE, TRUE, 0);
+
+  /* get buttons container */
+  bbox = gtk_dialog_get_action_area (GTK_DIALOG (dlg));
 
 #ifdef HAVE_HTML
   /* enable no-buttons mode if --browser is specified and sets no custom buttons */
@@ -501,12 +547,6 @@ create_dialog (void)
       if (options.data.fixed)
         gtk_widget_set_size_request (dlg, options.data.width, options.data.height);
     }
-  /* set timeout */
-  if (options.data.timeout)
-    {
-      g_timeout_add_seconds (options.data.timeout, timeout_cb, dlg);
-      g_timeout_add_seconds (1, timeout_indicator_cb, topb);
-    }
 
 #ifndef G_OS_WIN32
   /* print xid */
@@ -520,11 +560,10 @@ create_dialog (void)
   return dlg;
 }
 
-void
+static void
 create_plug (void)
 {
-  GtkWidget *win, *vbox, *text;
-  GtkWidget *main_widget = NULL;
+  GtkWidget *win, *box;
 
   tabs = get_tabs (options.plug, FALSE);
   while (!tabs)
@@ -539,99 +578,9 @@ create_plug (void)
     options.data.borders = (gint) gtk_container_get_border_width (GTK_CONTAINER (win));
   gtk_container_set_border_width (GTK_CONTAINER (win), (guint) options.data.borders);
 
-#if !GTK_CHECK_VERSION(3,0,0)
-  vbox = gtk_vbox_new (FALSE, 0);
-#else
-  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-#endif
-  gtk_container_add (GTK_CONTAINER (win), vbox);
-
-  /* add dialog text */
-  if (options.data.dialog_text)
-    {
-      gchar *buf = g_strcompress (options.data.dialog_text);
-
-      text = gtk_label_new (NULL);
-      if (!options.data.no_markup)
-        gtk_label_set_markup (GTK_LABEL (text), buf);
-      else
-        gtk_label_set_text (GTK_LABEL (text), buf);
-      gtk_widget_set_name (text, "yad-dialog-label");
-      gtk_label_set_line_wrap (GTK_LABEL (text), TRUE);
-      gtk_label_set_selectable (GTK_LABEL (text), options.data.selectable_labels);
-      gtk_label_set_justify (GTK_LABEL (text), options.data.text_align);
-      switch (options.data.text_align)
-        {
-        case GTK_JUSTIFY_LEFT:
-        case GTK_JUSTIFY_FILL:
-          gtk_misc_set_alignment (GTK_MISC (text), 0.0, 0.5);
-          break;
-        case GTK_JUSTIFY_CENTER:
-          gtk_misc_set_alignment (GTK_MISC (text), 0.5, 0.5);
-          break;
-        case GTK_JUSTIFY_RIGHT:
-          gtk_misc_set_alignment (GTK_MISC (text), 1.0, 0.5);
-          break;
-        }
-      gtk_box_pack_start (GTK_BOX (vbox), text, FALSE, FALSE, 2);
-#if !GTK_CHECK_VERSION(3,0,0)
-      g_signal_connect (G_OBJECT (text), "size-allocate", G_CALLBACK (text_size_allocate_cb), NULL);
-#endif
-
-      g_free (buf);
-    }
-
-  /* add main widget */
-  switch (options.mode)
-    {
-    case YAD_MODE_CALENDAR:
-      main_widget = calendar_create_widget (win);
-      break;
-    case YAD_MODE_COLOR:
-      main_widget = color_create_widget (win);
-      break;
-    case YAD_MODE_ENTRY:
-      main_widget = entry_create_widget (win);
-      break;
-    case YAD_MODE_FILE:
-      main_widget = file_create_widget (win);
-      break;
-    case YAD_MODE_FONT:
-      main_widget = font_create_widget (win);
-      break;
-    case YAD_MODE_FORM:
-      main_widget = form_create_widget (win);
-      break;
-#ifdef HAVE_HTML
-    case YAD_MODE_HTML:
-      main_widget = html_create_widget (win);
-      break;
-#endif
-    case YAD_MODE_ICONS:
-      main_widget = icons_create_widget (win);
-      break;
-    case YAD_MODE_LIST:
-      main_widget = list_create_widget (win);
-      break;
-    case YAD_MODE_MULTI_PROGRESS:
-      main_widget = multi_progress_create_widget (win);
-      break;
-    case YAD_MODE_PICTURE:
-      main_widget = picture_create_widget (win);
-      break;
-    case YAD_MODE_PROGRESS:
-      main_widget = progress_create_widget (win);
-      break;
-    case YAD_MODE_SCALE:
-      main_widget = scale_create_widget (win);
-      break;
-    case YAD_MODE_TEXTINFO:
-      main_widget = text_create_widget (win);
-      break;
-    default:;
-    }
-  if (main_widget)
-    gtk_box_pack_start (GTK_BOX (vbox), main_widget, TRUE, TRUE, 2);
+  box = create_layout (win);
+  if (box)
+    gtk_container_add (GTK_CONTAINER (win), box);
 
   gtk_widget_show_all (win);
 
