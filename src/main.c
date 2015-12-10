@@ -286,8 +286,10 @@ create_layout (GtkWidget *dlg)
       layout = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
       box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 #endif
-      gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 2);
-      gtk_box_pack_start (GTK_BOX (box), text, TRUE, TRUE, 0);
+      if (image)
+        gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 2);
+      if (text)
+        gtk_box_pack_start (GTK_BOX (box), text, TRUE, TRUE, 0);
 
       gtk_box_pack_start (GTK_BOX (layout), box, FALSE, FALSE, 0);
       if (mw)
@@ -302,11 +304,13 @@ create_layout (GtkWidget *dlg)
       layout = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
       box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 #endif
-      gtk_box_pack_start (GTK_BOX (box), text, FALSE, FALSE, 0);
+      if (text)
+        gtk_box_pack_start (GTK_BOX (box), text, FALSE, FALSE, 0);
       if (mw)
         gtk_box_pack_start (GTK_BOX (box), mw, TRUE, TRUE, 0);
 
-      gtk_box_pack_start (GTK_BOX (layout), image, FALSE, FALSE, 2);
+      if (image)
+        gtk_box_pack_start (GTK_BOX (layout), image, FALSE, FALSE, 2);
       gtk_box_pack_start (GTK_BOX (layout), box, TRUE, TRUE, 0);
     }
 

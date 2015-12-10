@@ -456,6 +456,7 @@ check_complete (GtkEntryCompletion *c, const gchar *key, GtkTreeIter *iter, gpoi
                   found = TRUE;
                   break;
                 }
+              i++;
             }
           break;
         case YAD_COMPLETE_ALL:
@@ -469,6 +470,7 @@ check_complete (GtkEntryCompletion *c, const gchar *key, GtkTreeIter *iter, gpoi
                   found = FALSE;
                   break;
                 }
+              i++;
             }
           break;
         case YAD_COMPLETE_REGEX:
