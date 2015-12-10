@@ -186,7 +186,7 @@ static GOptionEntry common_options[] = {
   { "key", 0, 0, G_OPTION_ARG_INT, &options.common_data.key,
     N_("Identifier of embedded dialogs"), N_("KEY") },
   { "complete", 0, 0, G_OPTION_ARG_CALLBACK, set_complete_type,
-    N_("Set extended completion for entries"), N_("TYPE") },
+    N_("Set extended completion for entries (any, all, or regex)"), N_("TYPE") },
   { NULL }
 };
 

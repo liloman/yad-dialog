@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-10 18:06+0200\n"
+"POT-Creation-Date: 2015-12-10 18:12+0200\n"
 "PO-Revision-Date: 2009-04-30 16:47+0300\n"
 "Last-Translator: Victor Ananjevsky <ananasik@gmail.com>\n"
 "Language-Team: \n"
@@ -485,8 +485,8 @@ msgid "Identifier of embedded dialogs"
 msgstr "Ідентифікатор діалогів що вбудовуваються"
 
 #: ../src/option.c:189
-msgid "Set extended completion for entries"
-msgstr "Задати розширене доповнення для текстових полів"
+msgid "Set extended completion for entries (any, all, or regex)"
+msgstr "Задати розширене доповнення для текстових полів (any, all або regex)"
 
 #: ../src/option.c:195
 msgid "Display calendar dialog"

@@ -280,8 +280,9 @@ Hide the entry text.
 .B \-\-completion
 Use completion instead of combo-box.
 .TP
-.B \-\-complete-regex
-Use regular expressions for completion.
+.B \-\-complete=\fITYPE\fP
+Use specific type for extended completion. \fITYPE\fP can be \fIany\fP for match any of typed words, \fIall\fP for match all of typed words or
+\fIregex\fP when typed text treats as regular expression.
 .TP
 .B \-\-editable
 Allow make changes to text in combo-box.
@@ -442,8 +443,9 @@ Set separator character for combo-box or scale values. Default is `!'.
 .B \-\-date-format=\fIPATTERN\fP
 Set the format for the date fields (same as in calendar dialog).
 .TP
-.B \-\-complete-regex
-Use regular expressions for completion.
+.B \-\-complete=\fITYPE\fP
+Use specific type for extended completion. \fITYPE\fP can be \fIany\fP for match any of typed words, \fIall\fP for match all of typed words or
+\fIregex\fP when typed text treats as regular expression.
 .TP
 .B \-\-scroll
 Make form scrollable.
