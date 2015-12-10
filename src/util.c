@@ -432,14 +432,51 @@ check_complete (GtkEntryCompletion *c, const gchar *key, GtkTreeIter *iter, gpoi
 {
   gchar *value = NULL;
   GtkTreeModel *model = gtk_entry_completion_get_model (c);
+  gboolean found = FALSE;
 
-  if (!model)
+  if (!model || !key || !key[0])
     return FALSE;
 
   gtk_tree_model_get (model, iter, 0, &value, -1);
 
   if (value)
-    return g_regex_match_simple (key, value, G_REGEX_CASELESS | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTEMPTY);
-  else
-    return FALSE;
+    {
+      gchar **words;
+      guint i = 0;
+
+      switch (options.common_data.complete)
+        {
+        case YAD_COMPLETE_ANY:
+          words = g_strsplit_set (key, " \t", -1);
+          while (words[i])
+            {
+              if (g_strstr_len (value, -1, words[i]) != NULL)
+                {
+                  /* found one of the words */
+                  found = TRUE;
+                  break;
+                }
+            }
+          break;
+        case YAD_COMPLETE_ALL:
+          words = g_strsplit_set (key, " \t", -1);
+          found = TRUE;
+          while (words[i])
+            {
+              if (g_strstr_len (value, -1, words[i]) == NULL)
+                {
+                  /* not found one of the words */
+                  found = FALSE;
+                  break;
+                }
+            }
+          break;
+        case YAD_COMPLETE_REGEX:
+          found = g_regex_match_simple (key, value, G_REGEX_CASELESS | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTEMPTY);
+          break;
+        default: ;
+        }
+    }
+
+  return found;
 }

@@ -137,6 +137,13 @@ typedef enum {
   YAD_SMALL_ICON
 } YadIconSize;
 
+typedef enum {
+  YAD_COMPLETE_SIMPLE = 0,
+  YAD_COMPLETE_ANY,
+  YAD_COMPLETE_ALL,
+  YAD_COMPLETE_REGEX
+} YadCompletionType;
+
 typedef struct {
   gchar *name;
   gchar *cmd;
@@ -382,7 +389,7 @@ typedef struct {
   gboolean preview;
   gboolean quoted_output;
   gboolean num_output;
-  gboolean complete_regex;
+  YadCompletionType complete;
   GList *filters;
   key_t key;
 } YadCommonData;

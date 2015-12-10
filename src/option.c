@@ -47,6 +47,7 @@ static gboolean set_size (const gchar *, const gchar *, gpointer, GError **);
 static gboolean parse_signal (const gchar *, const gchar *, gpointer, GError **);
 #endif
 static gboolean add_image_path (const gchar *, const gchar *, gpointer, GError **);
+static gboolean set_complete_type (const gchar *, const gchar *, gpointer, GError **);
 
 static gboolean about_mode = FALSE;
 static gboolean version_mode = FALSE;
@@ -184,8 +185,8 @@ static GOptionEntry common_options[] = {
     N_("Set vertical orientation"), NULL },
   { "key", 0, 0, G_OPTION_ARG_INT, &options.common_data.key,
     N_("Identifier of embedded dialogs"), N_("KEY") },
-  { "complete-regex", 0, 0, G_OPTION_ARG_NONE, &options.common_data.complete_regex,
-    N_("Use regular expretions for entry completions"), NULL },
+  { "complete", 0, 0, G_OPTION_ARG_CALLBACK, set_complete_type,
+    N_("Set extended completion for entries"), N_("TYPE") },
   { NULL }
 };
 
@@ -1020,6 +1021,21 @@ add_image_path (const gchar * option_name, const gchar * value, gpointer data, G
   return TRUE;
 }
 
+static gboolean
+set_complete_type (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
+{
+  if (strcasecmp (value, "any") == 0)
+    options.common_data.complete = YAD_COMPLETE_ANY;
+  else if (strcasecmp (value, "all") == 0)
+    options.common_data.complete = YAD_COMPLETE_ALL;
+  else if (strcasecmp (value, "regex") == 0)
+    options.common_data.complete = YAD_COMPLETE_REGEX;
+  else
+    g_printerr (_("Unknown completion type: %s\n"), value);
+
+  return TRUE;
+}
+
 #ifndef G_OS_WIN32
 static gboolean
 parse_signal (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
@@ -1240,7 +1256,7 @@ yad_options_init (void)
   options.common_data.num_output = FALSE;
   options.common_data.filters = NULL;
   options.common_data.key = -1;
-  options.common_data.complete_regex = FALSE;
+  options.common_data.complete = YAD_COMPLETE_SIMPLE;
 
   /* Initialize calendar data */
   options.calendar_data.day = -1;
