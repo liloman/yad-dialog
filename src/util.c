@@ -17,6 +17,10 @@
  * Copyright (C) 2008-2015, Victor Ananjevsky <ananasik@gmail.com>
  */
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE 1
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
@@ -441,7 +445,7 @@ check_complete (GtkEntryCompletion *c, const gchar *key, GtkTreeIter *iter, gpoi
 
   if (value)
     {
-      gchar **words;
+      gchar **words = NULL;
       guint i = 0;
 
       switch (options.common_data.complete)
@@ -450,7 +454,7 @@ check_complete (GtkEntryCompletion *c, const gchar *key, GtkTreeIter *iter, gpoi
           words = g_strsplit_set (key, " \t", -1);
           while (words[i])
             {
-              if (g_strstr_len (value, -1, words[i]) != NULL)
+              if (strcasestr (value, words[i]) != NULL)
                 {
                   /* found one of the words */
                   found = TRUE;
@@ -464,7 +468,7 @@ check_complete (GtkEntryCompletion *c, const gchar *key, GtkTreeIter *iter, gpoi
           found = TRUE;
           while (words[i])
             {
-              if (g_strstr_len (value, -1, words[i]) == NULL)
+              if (strcasestr (value, words[i]) == NULL)
                 {
                   /* not found one of the words */
                   found = FALSE;
@@ -478,6 +482,9 @@ check_complete (GtkEntryCompletion *c, const gchar *key, GtkTreeIter *iter, gpoi
           break;
         default: ;
         }
+        
+      if (words)
+        g_strfreev (words);
     }
 
   return found;
