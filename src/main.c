@@ -61,16 +61,6 @@ sa_usr2 (gint sig)
 }
 #endif
 
-static gboolean
-timeout_cb (gpointer data)
-{
-  GtkWidget *w = (GtkWidget *) data;
-
-  gtk_dialog_response (GTK_DIALOG (w), YAD_RESPONSE_TIMEOUT);
-
-  return FALSE;
-}
-
 static void
 btn_cb (GtkWidget *b, gchar *cmd)
 {
@@ -78,16 +68,13 @@ btn_cb (GtkWidget *b, gchar *cmd)
     g_spawn_command_line_async (cmd, NULL);
   else
     {
-      gint resp;
-      GtkWidget *dlg = gtk_widget_get_toplevel (b);
-
-      resp = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (b), "resp"));
-      gtk_dialog_response (GTK_DIALOG (dlg), resp);
+      gint resp = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (b), "resp"));
+      gtk_dialog_response (GTK_DIALOG (dialog), resp);
     }
 }
 
 static gboolean
-timeout_indicator_cb (gpointer data)
+timeout_cb (gpointer data)
 {
   static guint count = 1;
   gdouble percent;
@@ -95,6 +82,12 @@ timeout_indicator_cb (gpointer data)
 
   if (!w)
     return FALSE;
+
+  if (options.data.timeout < count)
+    {
+      gtk_dialog_response (GTK_DIALOG (dialog), YAD_RESPONSE_TIMEOUT);
+      return FALSE;
+    }
 
   percent = ((gdouble) options.data.timeout - count) / (gdouble) options.data.timeout;
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (w), percent);
@@ -459,9 +452,8 @@ create_dialog (void)
       if (cbox)
         gtk_box_pack_start (GTK_BOX (vbox), cbox, TRUE, TRUE, 0);
 
-      /* set timeout handlers */
-      g_timeout_add_seconds (options.data.timeout, timeout_cb, dlg);
-      g_timeout_add_seconds (1, timeout_indicator_cb, topb);
+      /* set timeout handler */
+      g_timeout_add_seconds (1, timeout_cb, topb);
     }
   else
     gtk_box_pack_start (GTK_BOX (vbox), layout, TRUE, TRUE, 0);
