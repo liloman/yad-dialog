@@ -21,6 +21,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -112,7 +113,7 @@ notebook_close_childs (void)
   struct shmid_ds buf;
   gboolean is_running = TRUE;
 
-  gtk_widget_destroy (notebook);
+  /* gtk_widget_destroy (notebook); */
 
   n_tabs = g_slist_length (options.notebook_data.tabs);
   for (i = 1; i <= n_tabs; i++)
@@ -133,7 +134,7 @@ notebook_close_childs (void)
               break;
             }
         }
-      gtk_main_iteration ();
+      usleep (1000);
     }
 
   /* cleanup shared memory */

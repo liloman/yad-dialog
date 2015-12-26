@@ -21,6 +21,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -97,7 +98,7 @@ paned_close_childs (void)
   struct shmid_ds buf;
   gboolean is_running = TRUE;
 
-  gtk_widget_destroy (paned);
+  /* gtk_widget_destroy (paned); */
 
   if (tabs[1].pid != -1)
     kill (tabs[1].pid, SIGUSR2);
@@ -116,7 +117,7 @@ paned_close_childs (void)
               break;
             }
         }
-      gtk_main_iteration ();
+      usleep (1000);
     }
 
   /* cleanup shared memory */

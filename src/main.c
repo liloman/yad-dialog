@@ -48,7 +48,7 @@ sa_usr1 (gint sig)
   if (options.plug != -1)
     print_result ();
   else
-    gtk_dialog_response (GTK_DIALOG (dialog), YAD_RESPONSE_OK);
+  gtk_dialog_response (GTK_DIALOG (dialog), YAD_RESPONSE_OK);
 }
 
 static void
@@ -119,12 +119,6 @@ text_size_allocate_cb (GtkWidget * w, GtkAllocation * al, gpointer data)
     gtk_widget_set_size_request (w, al->width, -1);
 }
 #endif
-
-static void
-ignore_close_cb (GtkWidget *w, gpointer data)
-{
-  g_signal_stop_emission_by_name (G_OBJECT (w), "close");
-}
 
 static void
 dlg_response_cb (GtkDialog *dlg, gint id, gint *data)
@@ -244,14 +238,10 @@ create_layout (GtkWidget *dlg)
     case YAD_MODE_NOTEBOOK:
       if (options.plug == -1)
         mw = notebook_create_widget (dlg);
-      else
-        mw = NULL;
       break;
     case YAD_MODE_PANED:
       if (options.plug == -1)
         mw = paned_create_widget (dlg);
-      else
-        mw = NULL;
       break;
     case YAD_MODE_PICTURE:
       mw = picture_create_widget (dlg);
@@ -342,7 +332,7 @@ create_dialog (void)
 #endif
 
   if (options.data.no_escape)
-    g_signal_connect (G_OBJECT (dlg), "close", G_CALLBACK (ignore_close_cb) , NULL);
+    g_signal_connect (G_OBJECT (dlg), "close", G_CALLBACK (g_signal_stop_emission_by_name), "close");
 
   /* set window icon */
   if (options.data.window_icon)
@@ -645,7 +635,7 @@ main (gint argc, gchar ** argv)
   GError *err = NULL;
   gint w, h;
   gchar *str;
-  gint ret = 0;
+  gint ret = YAD_RESPONSE_ESC;
 
   setlocale (LC_ALL, "");
 
@@ -822,16 +812,19 @@ main (gint argc, gchar ** argv)
       gtk_main ();
 
       /* print results */
-      if (options.data.always_print)
-        print_result ();
-      else if (ret != YAD_RESPONSE_TIMEOUT && ret != YAD_RESPONSE_ESC)
+      if (ret != YAD_RESPONSE_TIMEOUT && ret != YAD_RESPONSE_ESC)
         {
-          /* standard OK button pressed */
-          if (ret == YAD_RESPONSE_OK && options.data.buttons == NULL)
+          if (options.data.always_print)
             print_result ();
-          /* custom even button pressed */
-          else if (options.data.buttons && !(ret & 1))
-            print_result ();
+          else
+            {
+              /* standard OK button pressed */
+              if (ret == YAD_RESPONSE_OK && options.data.buttons == NULL)
+                print_result ();
+              /* custom even button pressed */
+              else if (!(ret & 1))
+                print_result ();
+            }
         }
 #ifndef G_OS_WIN32
       if (options.mode == YAD_MODE_NOTEBOOK)
