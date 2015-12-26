@@ -113,8 +113,6 @@ notebook_close_childs (void)
   struct shmid_ds buf;
   gboolean is_running = TRUE;
 
-  /* gtk_widget_destroy (notebook); */
-
   n_tabs = g_slist_length (options.notebook_data.tabs);
   for (i = 1; i <= n_tabs; i++)
     {

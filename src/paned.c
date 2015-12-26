@@ -98,8 +98,6 @@ paned_close_childs (void)
   struct shmid_ds buf;
   gboolean is_running = TRUE;
 
-  /* gtk_widget_destroy (paned); */
-
   if (tabs[1].pid != -1)
     kill (tabs[1].pid, SIGUSR2);
   if (tabs[2].pid != -1)
