@@ -4,6 +4,7 @@ Version 0.33.0
     - add --complete option for extended completions in entry fields
     - add ability to fill form data through stdin
     - fix handling empty data in form dialog
+    - improvements in browser mode of html dialog
 
 Version 0.32.0
     - enable rules-hint for icons list in icon browser

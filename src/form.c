@@ -589,9 +589,10 @@ select_date_cb (GtkEntry * entry, GtkEntryIconPosition pos, GdkEventButton * eve
 static gboolean
 handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer data)
 {
+  static guint cnt = 0;
+  
   if ((cond == G_IO_IN) || (cond == G_IO_IN + G_IO_HUP))
     {
-      guint cnt = 0;
       GError *err = NULL;
       GString *string = g_string_new (NULL);
 
@@ -602,11 +603,7 @@ handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer data)
           gint status;
 
           if (cnt == n_fields)
-            {
-              /* stop handling when get all fields */
-              g_io_channel_shutdown (ch, TRUE, NULL);
-              return FALSE;
-            }
+            cnt = 0;
 
           do
             {
@@ -631,7 +628,8 @@ handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer data)
             }
 
           strip_new_line (string->str);
-          set_field_value (cnt, string->str);
+          if (string->str[0])
+            set_field_value (cnt, string->str);
           cnt++;
         }
       while (g_io_channel_get_buffer_condition (ch) == G_IO_IN);
