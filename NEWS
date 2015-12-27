@@ -1,3 +1,10 @@
+Version 0.33.0
+    - add --picture dialog, a simple image viewer
+    - add --focus-field option to form dialog for set initialy fosuced field
+    - add --complete option for extended completions in entry fields
+    - add ability to fill form data through stdin
+    - fix handling empty data in form dialog
+
 Version 0.32.0
     - enable rules-hint for icons list in icon browser
     - add --splash options (thanks to Konstantin Baierer)

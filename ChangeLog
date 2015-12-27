@@ -1,3 +1,135 @@
+2015-12-26 09:42  v1c0nt
+
+	* src/notebook.c, src/paned.c: some cleanups
+
+2015-12-26 09:41  v1c0nt
+
+	* configure.ac, data/yad.1, src/main.c: some cleanups
+
+2015-12-26 09:29  v1c0nt
+
+	* src/main.c, src/notebook.c, src/paned.c: fix paned and notebook
+	  close segfault
+
+2015-12-25 09:40  v1c0nt
+
+	* src/util.c: fix extended completions
+
+2015-12-10 16:14  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/option.c: update docs
+
+2015-12-10 16:10  v1c0nt
+
+	* po/ru.po, po/uk.po: update translations
+
+2015-12-10 16:07  v1c0nt
+
+	* src/main.c, src/util.c: some fixes
+
+2015-12-10 16:03  v1c0nt
+
+	* src/entry.c, src/form.c, src/option.c, src/util.c, src/yad.h:
+	  extended completion
+
+2015-12-09 17:49  v1c0nt
+
+	* src/main.c: rewrite layout management
+
+2015-12-07 16:55  v1c0nt
+
+	* src/form.c, src/picture.c: fix focus in form, fix uninitialized
+	  warning in picture
+
+2015-12-06 09:19  v1c0nt
+
+	* src/form.c, src/util.c: fix handling empty values in form dialog
+
+2015-12-06 08:58  v1c0nt
+
+	* data/yad.1: fix man page
+
+2015-12-06 08:51  v1c0nt
+
+	* data/yad.1, src/util.c: fix typos
+
+2015-11-29 18:58  v1c0nt
+
+	* src/form.c: enable read form data from stdin
+
+2015-11-29 18:35  v1c0nt
+
+	* src/picture.c: fix fit_to_window in picture dialog
+
+2015-11-29 14:44  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/form.c, src/option.c,
+	  src/yad.h: add --focus-field option to form dialog
+
+2015-11-29 14:32  v1c0nt
+
+	* po/ru.po: correct russian translation
+
+2015-11-29 14:23  v1c0nt
+
+	* configure.ac: bump beta version
+
+2015-11-29 14:22  v1c0nt
+
+	* data/yad.1, po/POTFILES.in, po/ru.po, po/uk.po, src/Makefile.am,
+	  src/form.c, src/main.c, src/option.c, src/picture.c, src/yad.h:
+	  add --picture dialog
+
+2015-11-29 08:23  v1c0nt
+
+	* src/file.c, src/main.c, src/yad.h: change initialization style
+
+2015-11-28 06:09  v1c0nt
+
+	* src/util.c: check for NULL value in regex completion
+
+2015-11-26 13:07  v1c0nt
+
+	* src/html.c, src/main.c: improve --browser mode of html dialog.
+	  does not show default buttons and add quit menu item
+
+2015-11-24 06:28  v1c0nt
+
+	* src/util.c: fix completion regex
+
+2015-11-22 10:50  v1c0nt
+
+	* configure.ac, data/Makefile.am, data/notify-send,
+	  src/Makefile.am, src/main.c, src/option.c, src/send-notify.c,
+	  src/yad.h: remove send notify. add misc script instead
+
+2015-11-20 13:06  v1c0nt
+
+	* configure.ac, src/Makefile.am, src/main.c, src/option.c,
+	  src/send-notify.c, src/util.c, src/yad.h: initial implementation
+	  of send-notify
+
+2015-11-20 06:09  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/entry.c, src/form.c,
+	  src/option.c, src/util.c, src/yad.h: add --complete-regex option
+
+2015-11-19 22:23  v1c0nt
+
+	* configure.ac: add check for gio in configure for future use
+
+2015-11-19 22:11  v1c0nt
+
+	* po/uk.po: update ukrainian translation
+
+2015-11-19 21:43  v1c0nt
+
+	* configure.ac, po/ru.po, po/uk.po, src/option.c: optimize options
+
+2015-11-19 06:35  v1c0nt
+
+	* ChangeLog: release 0.32.0
+
 2015-11-19 05:45  v1c0nt
 
 	* ChangeLog, NEWS, data/yad.1: prepare to release
