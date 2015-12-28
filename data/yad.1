@@ -438,7 +438,7 @@ Set output separator character. Default is `|'.
 Set focused field.
 .TP
 .B \-\-cycle-read
-Cycled reading of stdin data.
+Cycled reading of stdin data. Sending FormFeed character clears the form. This symbol may be sent as \fIecho \-e '\\f'\fP.
 .TP
 .B \-\-item-separator=\fISTRING\fP
 Set separator character for combo-box or scale values. Default is `!'.
@@ -462,7 +462,7 @@ Output field values row by row if several columns is specified.
 .B \-\-num-output
 Output index of active element instead of text for combo-box fields.
 .PP
-Additional data in command line interprets as a default values for form fields. A special value \fI@disabled\fP makes corresponding field inactive. If no extra arguments specified in a command line, data will be readed from stdin, one value per line. Cycled reading means that for \fIN\fP fields \fIN+1\fP value will replace the first field. Empty values are skipped when reading from stdin.
+Additional data in command line interprets as a default values for form fields. A special value \fI@disabled@\fP makes corresponding field inactive. If no extra arguments specified in a command line, data will be readed from stdin, one value per line. Cycled reading means that for \fIN\fP fields \fIN+1\fP value will replace the first field. Empty values are skipped when reading from stdin.
 
 .SS HTML options
 .TP

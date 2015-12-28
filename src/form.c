@@ -245,6 +245,8 @@ set_field_value (guint num, gchar * value)
           }
         if (def >= 0)
           gtk_entry_set_text (GTK_ENTRY (w), s[def] + 1);
+        else
+          gtk_entry_set_text (GTK_ENTRY (w), "");
         g_strfreev (s);
         break;
       }
@@ -637,7 +639,18 @@ handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer data)
 
           strip_new_line (string->str);
           if (string->str[0])
-            set_field_value (cnt, string->str);
+            {
+              if (string->str[0] == '\014')
+                {
+                  gint i;
+                  /* clear the form and reset fields counter */
+                  for (i = 0; i < n_fields; i++)
+                    set_field_value (i, "");
+                  cnt = 0;
+                }
+              else
+                set_field_value (cnt, string->str);
+            }
           cnt++;
         }
       while (g_io_channel_get_buffer_condition (ch) == G_IO_IN);
