@@ -297,6 +297,8 @@ static GOptionEntry form_options[] = {
     N_("Order output fields by rows"), NULL },
   { "focus-field", 0, 0, G_OPTION_ARG_INT, &options.form_data.focus_field,
     N_("Set focused field"), N_("NUMBER") },
+  { "cycle-read", 0, 0, G_OPTION_ARG_NONE, &options.form_data.cycle_read,
+    N_("Cycled reading of stdin data"), NULL },
   { NULL }
 };
 
@@ -305,7 +307,7 @@ static GOptionEntry html_options[] = {
   { "html", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &html_mode,
     N_("Display HTML dialog"), NULL },
   { "uri", 0, 0, G_OPTION_ARG_STRING, &options.html_data.uri,
-    N_("Open specified location"), N_("URI") },
+    N_("Open specified location"), "URI" },
   { "browser", 0, 0, G_OPTION_ARG_NONE, &options.html_data.browser,
     N_("Turn on browser mode"), NULL },
   { "print-uri", 0, 0, G_OPTION_ARG_NONE, &options.html_data.print_uri,
@@ -1306,6 +1308,7 @@ yad_options_init (void)
   options.form_data.scroll = FALSE;
   options.form_data.output_by_row = FALSE;
   options.form_data.focus_field = 1;
+  options.form_data.cycle_read = FALSE;
 
 #ifdef HAVE_HTML
   /* Initialize html data */

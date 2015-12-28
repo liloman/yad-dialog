@@ -260,6 +260,7 @@ typedef struct {
   gboolean scroll;
   gboolean output_by_row;
   guint focus_field;
+  gboolean cycle_read;
 } YadFormData;
 
 #ifdef HAVE_HTML

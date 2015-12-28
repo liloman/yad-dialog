@@ -590,7 +590,7 @@ static gboolean
 handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer data)
 {
   static guint cnt = 0;
-  
+
   if ((cond == G_IO_IN) || (cond == G_IO_IN + G_IO_HUP))
     {
       GError *err = NULL;
@@ -603,7 +603,15 @@ handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer data)
           gint status;
 
           if (cnt == n_fields)
-            cnt = 0;
+            {
+              if (options.form_data.cycle_read)
+                cnt = 0;
+              else
+                {
+                  g_io_channel_shutdown (ch, TRUE, NULL);
+                  return FALSE;
+                }
+            }
 
           do
             {
