@@ -291,6 +291,9 @@ Allow make changes to text in combo-box.
 Use spin button instead of text entry. Additional parameters in command line treats as minimum and maximum
 values, step value and precisions (in that order). All this values are optional. Default range is from 0 to 65535 with step 1.
 .TP
+.B \-\-float-precision=\fINUMBER\fP
+Set precision of floating point numbers. By default precision is three digits after point.
+.TP
 .B \-\-licon=\fIIMAGE\fP
 Set an icon on a left side of entry.
 .TP
@@ -446,6 +449,9 @@ Set separator character for combo-box or scale values. Default is `!'.
 .B \-\-date-format=\fIPATTERN\fP
 Set the format for the date fields (same as in calendar dialog).
 .TP
+.B \-\-float-precision=\fINUMBER\fP
+Set precision of floating point numbers. By default precision is three digits after point.
+.TP
 .B \-\-complete=\fITYPE\fP
 Use specific type for extended completion. \fITYPE\fP can be \fIany\fP for match any of typed words, \fIall\fP for match all of typed words or
 \fIregex\fP when typed text treats as regular expression.
@@ -564,6 +570,9 @@ Listen data from stdin even if command-line values was specified.
 .TP
 .B \-\-quoted-output
 Output values will be shell-style quoted.
+.TP
+.B \-\-float-precision=\fINUMBER\fP
+Set precision of floating point numbers. By default precision is three digits after point.
 
 Sending FormFeed character to list clears it. This symbol may be sent as \fIecho \-e '\\f'\fP.
 

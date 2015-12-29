@@ -5,6 +5,8 @@ Version 0.33.0
     - add ability to fill form data through stdin
     - fix handling empty data in form dialog
     - improvements in browser mode of html dialog
+    - add --float-precision option
+    - improve output of floating point numbers
 
 Version 0.32.0
     - enable rules-hint for icons list in icon browser
