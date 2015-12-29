@@ -74,7 +74,7 @@ expand_action (gchar * cmd)
                   g_string_append (xcmd, gtk_entry_get_text (GTK_ENTRY (g_slist_nth_data (fields, num))));
                   break;
                 case YAD_FIELD_NUM:
-                  g_string_append_printf (xcmd, "%f", gtk_spin_button_get_value
+                  g_string_append_printf (xcmd, "%g", gtk_spin_button_get_value
                                           (GTK_SPIN_BUTTON (g_slist_nth_data (fields, num))));
                   break;
                 case YAD_FIELD_CHECK:
@@ -1144,10 +1144,10 @@ form_print_field (guint fn)
       break;
     case YAD_FIELD_NUM:
       if (options.common_data.quoted_output)
-        g_printf ("'%f'%s", gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
+        g_printf ("'%g'%s", gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
                   options.common_data.separator);
       else
-        g_printf ("%f%s", gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
+        g_printf ("%g%s", gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
                   options.common_data.separator);
       break;
     case YAD_FIELD_CHECK:

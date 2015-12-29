@@ -225,6 +225,18 @@ create_model (gint n_columns)
 }
 
 static void
+float_col_format (GtkTreeViewColumn *col, GtkCellRenderer *cell, GtkTreeModel *model,
+                  GtkTreeIter *iter, gpointer data)
+{
+  gdouble val;
+  gchar buf[20];
+
+  gtk_tree_model_get(model, iter, GPOINTER_TO_INT (data), &val, -1);
+  g_snprintf(buf, sizeof (buf), "%g", val);
+  g_object_set(cell, "text", buf, NULL);
+}
+
+static void
 add_columns (gint n_columns)
 {
   gint i;
@@ -278,6 +290,8 @@ add_columns (gint n_columns)
             gtk_tree_view_column_add_attribute (column, renderer, "font", font_col);
           gtk_tree_view_column_set_sort_column_id (column, i);
           gtk_tree_view_column_set_resizable (column, TRUE);
+          if (col->type == YAD_COLUMN_FLOAT)
+            gtk_tree_view_column_set_cell_data_func (column, renderer, float_col_format, GINT_TO_POINTER (i), NULL);
           break;
         default:
           renderer = gtk_cell_renderer_text_new ();
@@ -798,11 +812,11 @@ static gboolean
 row_sep_func (GtkTreeModel * m, GtkTreeIter * it, gpointer data)
 {
   gchar *name;
-  
+
   if (!options.list_data.sep_value)
     return FALSE;
-  
-  gtk_tree_model_get (m, it, options.list_data.sep_column - 1, &name, -1); 
+
+  gtk_tree_model_get (m, it, options.list_data.sep_column - 1, &name, -1);
   return (strcmp (name, options.list_data.sep_value) == 0);
 }
 
@@ -913,9 +927,9 @@ print_col (GtkTreeModel * model, GtkTreeIter * iter, gint num)
         gdouble nval;
         gtk_tree_model_get (model, iter, num, &nval, -1);
         if (options.common_data.quoted_output)
-          g_printf ("'%lf'", nval);
+          g_printf ("'%lg'", nval);
         else
-          g_printf ("%lf", nval);
+          g_printf ("%lg", nval);
         break;
       }
     case YAD_COLUMN_IMAGE:
