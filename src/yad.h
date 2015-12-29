@@ -385,6 +385,7 @@ typedef struct {
   gboolean vertical;
   gchar *command;
   gchar *date_format;
+  guint float_precision;
   gdouble align;
   gboolean listen;
   gboolean preview;

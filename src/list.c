@@ -232,7 +232,7 @@ float_col_format (GtkTreeViewColumn *col, GtkCellRenderer *cell, GtkTreeModel *m
   gchar buf[20];
 
   gtk_tree_model_get(model, iter, GPOINTER_TO_INT (data), &val, -1);
-  g_snprintf(buf, sizeof (buf), "%g", val);
+  g_snprintf(buf, sizeof (buf), "%.*g", options.common_data.float_precision, val);
   g_object_set(cell, "text", buf, NULL);
 }
 
@@ -927,9 +927,9 @@ print_col (GtkTreeModel * model, GtkTreeIter * iter, gint num)
         gdouble nval;
         gtk_tree_model_get (model, iter, num, &nval, -1);
         if (options.common_data.quoted_output)
-          g_printf ("'%g'", nval);
+          g_printf ("'%.*g'", options.common_data.float_precision, nval);
         else
-          g_printf ("%g", nval);
+          g_printf ("%.*g", options.common_data.float_precision, nval);
         break;
       }
     case YAD_COLUMN_IMAGE:

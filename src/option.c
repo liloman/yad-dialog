@@ -159,6 +159,8 @@ static GOptionEntry general_options[] = {
 static GOptionEntry common_options[] = {
   { "date-format", 0, 0, G_OPTION_ARG_STRING, &options.common_data.date_format,
     N_("Set the format for the returned date"), N_("PATTERN") },
+  { "float-precision", 0, 0, G_OPTION_ARG_INT, &options.common_data.float_precision,
+    N_("Set presicion of floating numbers (default - 3)"), N_("NUMBER") },
   { "command", 0, 0, G_OPTION_ARG_STRING, &options.common_data.command,
     N_("Set command handler"), N_("CMD") },
   { "listen", 0, 0, G_OPTION_ARG_NONE, &options.common_data.listen,
@@ -1250,6 +1252,7 @@ yad_options_init (void)
   options.common_data.editable = FALSE;
   options.common_data.command = NULL;
   options.common_data.date_format = settings.date_format;
+  options.common_data.float_precision = 3;
   options.common_data.vertical = FALSE;
   options.common_data.align = 0.0;
   options.common_data.listen = FALSE;

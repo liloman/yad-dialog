@@ -74,8 +74,8 @@ expand_action (gchar * cmd)
                   g_string_append (xcmd, gtk_entry_get_text (GTK_ENTRY (g_slist_nth_data (fields, num))));
                   break;
                 case YAD_FIELD_NUM:
-                  g_string_append_printf (xcmd, "%g", gtk_spin_button_get_value
-                                          (GTK_SPIN_BUTTON (g_slist_nth_data (fields, num))));
+                  g_string_append_printf (xcmd, "%.*g", options.common_data.float_precision,
+                                          gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, num))));
                   break;
                 case YAD_FIELD_CHECK:
                   g_string_append (xcmd, gtk_toggle_button_get_active
@@ -1144,10 +1144,12 @@ form_print_field (guint fn)
       break;
     case YAD_FIELD_NUM:
       if (options.common_data.quoted_output)
-        g_printf ("'%g'%s", gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
+        g_printf ("'%.*g'%s", options.common_data.float_precision,
+                  gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
                   options.common_data.separator);
       else
-        g_printf ("%g%s", gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
+        g_printf ("%.*g%s", options.common_data.float_precision,
+                  gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
                   options.common_data.separator);
       break;
     case YAD_FIELD_CHECK:
