@@ -927,9 +927,9 @@ print_col (GtkTreeModel * model, GtkTreeIter * iter, gint num)
         gdouble nval;
         gtk_tree_model_get (model, iter, num, &nval, -1);
         if (options.common_data.quoted_output)
-          g_printf ("'%lg'", nval);
+          g_printf ("'%g'", nval);
         else
-          g_printf ("%lg", nval);
+          g_printf ("%g", nval);
         break;
       }
     case YAD_COLUMN_IMAGE:

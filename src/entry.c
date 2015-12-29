@@ -325,7 +325,7 @@ void
 entry_print_result (void)
 {
   if (options.entry_data.numeric)
-    g_print ("%lg\n", gtk_spin_button_get_value (GTK_SPIN_BUTTON (entry)));
+    g_print ("%g\n", gtk_spin_button_get_value (GTK_SPIN_BUTTON (entry)));
   else if (is_combo)
     {
       if (options.common_data.num_output)
