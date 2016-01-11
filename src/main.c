@@ -77,11 +77,7 @@ static gboolean
 timeout_cb (gpointer data)
 {
   static guint count = 1;
-  gdouble percent;
   GtkWidget *w = (GtkWidget *) data;
-
-  if (!w)
-    return FALSE;
 
   if (options.data.timeout < count)
     {
@@ -89,14 +85,18 @@ timeout_cb (gpointer data)
       return FALSE;
     }
 
-  percent = ((gdouble) options.data.timeout - count) / (gdouble) options.data.timeout;
-  gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (w), percent);
-  if (settings.show_remain)
+  if (w)
     {
-      gchar *lbl = g_strdup_printf (_("%d sec"), options.data.timeout - count);
-      gtk_progress_bar_set_text (GTK_PROGRESS_BAR (w), lbl);
-      g_free (lbl);
+      gdouble percent = ((gdouble) options.data.timeout - count) / (gdouble) options.data.timeout;
+      gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (w), percent);
+      if (settings.show_remain)
+        {
+          gchar *lbl = g_strdup_printf (_("%d sec"), options.data.timeout - count);
+          gtk_progress_bar_set_text (GTK_PROGRESS_BAR (w), lbl);
+          g_free (lbl);
+        }
     }
+
   count++;
 
   return TRUE;
