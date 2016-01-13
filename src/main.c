@@ -368,7 +368,7 @@ create_dialog (void)
     {
       GtkWidget *cbox = NULL, *topb = NULL;
 
-      if (G_LIKELY (options.data.to_indicator) && g_ascii_strcasecmp (options.data.to_indicator, "none"))
+      if (G_LIKELY (options.data.to_indicator) && strcasecmp (options.data.to_indicator, "none") != 0)
         {
           topb = gtk_progress_bar_new ();
           gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (topb), 1.0);
