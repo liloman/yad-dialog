@@ -121,7 +121,7 @@ select_file_cb (GtkEntry * entry, GtkEntryIconPosition pos, GdkEventButton * ev,
   if (ev->button != 1 || pos != GTK_ENTRY_ICON_SECONDARY)
     return;
 
-  dlg = gtk_file_chooser_dialog_new (_("IxHTML - Select File"),
+  dlg = gtk_file_chooser_dialog_new (_("YAD - Select File"),
                                      GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (entry))),
                                      GTK_FILE_CHOOSER_ACTION_OPEN,
                                      GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);

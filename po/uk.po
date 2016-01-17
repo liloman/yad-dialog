@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-29 16:46+0200\n"
+"POT-Creation-Date: 2016-01-17 21:28+0200\n"
 "PO-Revision-Date: 2009-04-30 16:47+0300\n"
 "Last-Translator: Victor Ananjevsky <ananasik@gmail.com>\n"
 "Language-Team: \n"
@@ -119,6 +119,18 @@ msgstr "Вибір файлу"
 msgid "Select folder"
 msgstr "Вибір каталогу"
 
+#: ../src/html.c:124
+msgid "YAD - Select File"
+msgstr "YAD - Вибір файлу"
+
+#: ../src/html.c:156
+msgid "Open URI"
+msgstr "Відкрити URI"
+
+#: ../src/html.c:164
+msgid "Enter URI or file name:"
+msgstr "Введіть URI або ім'я файлу:"
+
 #: ../src/icons.c:325
 #, c-format
 msgid "Unable to parse file %s: %s\n"
@@ -129,7 +141,7 @@ msgstr "Не можу розібрати файл %s: %s\n"
 msgid "Unable to open directory %s: %s\n"
 msgstr "Не можу відкрити каталог %s: %s\n"
 
-#: ../src/main.c:96 ../src/main.c:434
+#: ../src/main.c:94 ../src/main.c:434
 #, c-format
 msgid "%d sec"
 msgstr "%d сек"

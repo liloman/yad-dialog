@@ -4,6 +4,7 @@ src/entry.c
 src/file.c
 src/font.c
 src/form.c
+src/html.c
 src/icons.c
 src/main.c
 src/notification.c
