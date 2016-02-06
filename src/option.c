@@ -382,6 +382,8 @@ static GOptionEntry list_options[] = {
     N_("Set the limit of rows in list"), N_("NUMBER") },
   { "dclick-action", 0, 0, G_OPTION_ARG_STRING, &options.list_data.dclick_action,
     N_("Set double-click action"), N_("CMD") },
+  { "select-action", 0, 0, G_OPTION_ARG_STRING, &options.list_data.select_action,
+    N_("Set select action"), N_("CMD") },
   { "regex-search", 0, 0, G_OPTION_ARG_NONE, &options.list_data.regex_search,
     N_("Use regex in search"), NULL },
   { NULL }
@@ -1349,6 +1351,7 @@ yad_options_init (void)
   options.list_data.limit = 0;
   options.list_data.ellipsize = PANGO_ELLIPSIZE_NONE;
   options.list_data.dclick_action = NULL;
+  options.list_data.select_action = NULL;
   options.list_data.regex_search = FALSE;
   options.list_data.clickable = TRUE;
 

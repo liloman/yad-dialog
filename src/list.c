@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with YAD. If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2008-2015, Victor Ananjevsky <ananasik@gmail.com>
+ * Copyright (C) 2008-2016, Victor Ananjevsky <ananasik@gmail.com>
  */
 
 #include <string.h>
@@ -30,7 +30,7 @@ static GtkWidget *list_view;
 static gint fore_col, back_col, font_col;
 
 static gboolean
-list_activate_cb (GtkWidget * widget, GdkEventKey * event, gpointer data)
+list_activate_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
 #if GTK_CHECK_VERSION(2,24,0)
   if (event->keyval == GDK_KEY_Return || event->keyval == GDK_KEY_KP_Enter)
@@ -62,7 +62,7 @@ list_activate_cb (GtkWidget * widget, GdkEventKey * event, gpointer data)
 }
 
 static void
-toggled_cb (GtkCellRendererToggle * cell, gchar * path_str, gpointer data)
+toggled_cb (GtkCellRendererToggle *cell, gchar *path_str, gpointer data)
 {
   gint column;
   gboolean fixed;
@@ -82,7 +82,7 @@ toggled_cb (GtkCellRendererToggle * cell, gchar * path_str, gpointer data)
 }
 
 static gboolean
-runtoggle (GtkTreeModel * model, GtkTreePath * path, GtkTreeIter * iter, gpointer data)
+runtoggle (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
 {
   gint col = GPOINTER_TO_INT (data);
   gtk_list_store_set (GTK_LIST_STORE (model), iter, col, FALSE, -1);
@@ -90,7 +90,7 @@ runtoggle (GtkTreeModel * model, GtkTreePath * path, GtkTreeIter * iter, gpointe
 }
 
 static void
-rtoggled_cb (GtkCellRendererToggle * cell, gchar * path_str, gpointer data)
+rtoggled_cb (GtkCellRendererToggle *cell, gchar *path_str, gpointer data)
 {
   gint column;
   GtkTreeIter iter;
@@ -108,7 +108,7 @@ rtoggled_cb (GtkCellRendererToggle * cell, gchar * path_str, gpointer data)
 }
 
 static void
-cell_edited_cb (GtkCellRendererText * cell, const gchar * path_string, const gchar * new_text, gpointer data)
+cell_edited_cb (GtkCellRendererText *cell, const gchar *path_string, const gchar *new_text, gpointer data)
 {
   gint column;
   GtkTreeIter iter;
@@ -131,7 +131,7 @@ cell_edited_cb (GtkCellRendererText * cell, const gchar * path_string, const gch
 }
 
 static gboolean
-regex_search (GtkTreeModel * model, gint col, const gchar * key, GtkTreeIter * iter, gpointer data)
+regex_search (GtkTreeModel *model, gint col, const gchar *key, GtkTreeIter *iter, gpointer data)
 {
   static GRegex *pattern = NULL;
   static guint pos = 0;
@@ -694,6 +694,85 @@ double_click_cb (GtkTreeView * view, GtkTreePath * path, GtkTreeViewColumn * col
 }
 
 static void
+select_cb (GtkTreeSelection *sel, gpointer data)
+{
+  GtkTreeModel *model;
+  GtkTreeIter iter;
+  gchar *cmd;
+  GString *args;
+  guint i, n_cols;
+
+  if (!gtk_tree_selection_get_selected (sel, &model, &iter))
+    return;
+
+  args = g_string_new ("");
+  n_cols = gtk_tree_model_get_n_columns (model);
+
+  for (i = 0; i < n_cols; i++)
+    {
+      YadColumn *col = (YadColumn *) g_slist_nth_data (options.list_data.columns, i);
+      switch (col->type)
+        {
+        case YAD_COLUMN_CHECK:
+        case YAD_COLUMN_RADIO:
+          {
+            gboolean bval;
+            gtk_tree_model_get (model, &iter, i, &bval, -1);
+            g_string_append_printf (args, " %s", bval ? "TRUE" : "FALSE");
+            break;
+          }
+        case YAD_COLUMN_NUM:
+          {
+            gint64 nval;
+            gtk_tree_model_get (model, &iter, i, &nval, -1);
+            g_string_append_printf (args, " %ld", (long) nval);
+            break;
+          }
+        case YAD_COLUMN_FLOAT:
+          {
+            gdouble nval;
+            gtk_tree_model_get (model, &iter, i, &nval, -1);
+            g_string_append_printf (args, " %lf", nval);
+            break;
+          }
+        case YAD_COLUMN_IMAGE:
+          {
+            g_string_append_printf (args, " ''");
+            break;
+          }
+        default:
+          {
+            gchar *cval;
+            gtk_tree_model_get (model, &iter, i, &cval, -1);
+            if (cval)
+              {
+                gchar *sval = g_shell_quote (cval);
+                g_string_append_printf (args, " %s", sval);
+                g_free (sval);
+              }
+            break;
+          }
+        }
+    }
+
+  if (g_strstr_len (options.list_data.select_action, -1, "%s"))
+    {
+      static GRegex *regex = NULL;
+
+      if (!regex)
+        regex = g_regex_new ("\%s", G_REGEX_OPTIMIZE, 0, NULL);
+      cmd = g_regex_replace_literal (regex, options.list_data.select_action, -1, 0, args->str, 0, NULL);
+    }
+  else
+    cmd = g_strdup_printf ("%s %s", options.list_data.select_action, args->str);
+  g_string_free (args, TRUE);
+
+  g_spawn_command_line_async (cmd, NULL);
+
+  g_free (cmd);
+}
+
+static void
 add_row_cb (GtkMenuItem * item, gpointer data)
 {
   GtkTreeModel *model;
@@ -858,6 +937,12 @@ list_create_widget (GtkWidget * dlg)
     {
       GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list_view));
       gtk_tree_selection_set_mode (sel, GTK_SELECTION_MULTIPLE);
+    }
+
+  if (!options.common_data.multi && options.list_data.select_action)
+    {
+      GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list_view));
+      g_signal_connect (G_OBJECT (sel), "changed", G_CALLBACK (select_cb), NULL);
     }
 
   g_signal_connect (G_OBJECT (list_view), "row-activated", G_CALLBACK (double_click_cb), dlg);

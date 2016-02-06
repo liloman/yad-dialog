@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with YAD. If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2008-2015, Victor Ananjevsky <ananasik@gmail.com>
+ * Copyright (C) 2008-2016, Victor Ananjevsky <ananasik@gmail.com>
  */
 
 #ifndef _YAD_H_
@@ -301,6 +301,7 @@ typedef struct {
   guint limit;
   PangoEllipsizeMode ellipsize;
   gchar *dclick_action;
+  gchar *select_action;
   gboolean regex_search;
   gboolean clickable;
 } YadListData;

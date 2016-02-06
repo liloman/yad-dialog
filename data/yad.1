@@ -562,6 +562,11 @@ When double-click specified \fIEnter\fP acts as a double-click and \fICtrl+Enter
 If \fICMD\fP starts with \fI@\fP, its output will replace values of current row.
 This option doesn't work with \fI--editable\fP.
 .TP
+.B \-\-select-action=\fICMD\fP
+Set the \fICMD\fP as a action when selection is changed. \fICMD\fP will be launched with values of all columns as an arguments.
+\fICMD\fP may contain a special character `%s' for setting a position for arguments. By default arguments will be concatenated to the end of \fICMD\fP.
+This option doesn't work with \fI--multiple\fP.
+.TP
 .B \-\-regex-search
 Use regular expressions in search for text fields.
 .TP
