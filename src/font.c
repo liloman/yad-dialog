@@ -52,5 +52,16 @@ font_create_widget (GtkWidget * dlg)
 void
 font_print_result (void)
 {
-  g_printf ("%s\n", gtk_font_selection_get_font_name (GTK_FONT_SELECTION (font)));
+  gchar *fn = gtk_font_selection_get_font_name (GTK_FONT_SELECTION (font));
+
+  if (options.common_data.quoted_output)
+    {
+      gchar *buf = g_shell_quote (fn);
+      g_printf ("%s\n", buf);
+      g_free (buf);
+    }
+  else
+    g_printf ("%s\n", fn);
+    
+  g_free (fn);
 }
