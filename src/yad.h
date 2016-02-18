@@ -252,6 +252,7 @@ typedef struct {
 
 typedef struct {
   gchar *preview;
+  gboolean separate_output;
 } YadFontData;
 
 typedef struct {

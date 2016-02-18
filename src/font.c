@@ -52,16 +52,45 @@ font_create_widget (GtkWidget * dlg)
 void
 font_print_result (void)
 {
-  gchar *fn = gtk_font_selection_get_font_name (GTK_FONT_SELECTION (font));
-
-  if (options.common_data.quoted_output)
+  if (options.font_data.separate_output)
     {
-      gchar *buf = g_shell_quote (fn);
-      g_printf ("%s\n", buf);
-      g_free (buf);
+      PangoFontFace *face;
+      PangoFontFamily *family;
+      gint size;
+
+      face = gtk_font_selection_get_face (GTK_FONT_SELECTION (font));
+      family = gtk_font_selection_get_family (GTK_FONT_SELECTION (font));
+      size = gtk_font_selection_get_size (GTK_FONT_SELECTION (font));
+
+      if (options.common_data.quoted_output)
+        {
+          gchar *q1 = g_shell_quote (pango_font_family_get_name (family));
+          gchar *q2 = g_shell_quote (pango_font_face_get_face_name (face));
+
+          g_printf ("%s%s%s%s%d\n", q1,  options.common_data.separator, q2, options.common_data.separator, size / 1000);
+
+          g_free (q1);
+          g_free (q2);
+        }
+      else
+        {
+          g_printf ("%s%s%s%s%d\n", pango_font_family_get_name (family), options.common_data.separator,
+                    pango_font_face_get_face_name (face), options.common_data.separator, size / 1000);
+        }
     }
   else
-    g_printf ("%s\n", fn);
-    
-  g_free (fn);
+    {
+      gchar *fn = gtk_font_selection_get_font_name (GTK_FONT_SELECTION (font));
+
+      if (options.common_data.quoted_output)
+        {
+          gchar *buf = g_shell_quote (fn);
+          g_printf ("%s\n", buf);
+          g_free (buf);
+        }
+      else
+        g_printf ("%s\n", fn);
+
+      g_free (fn);
+    }
 }

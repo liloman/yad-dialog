@@ -281,6 +281,8 @@ static GOptionEntry font_options[] = {
     N_("Alias for --font"), NULL },
   { "preview", 0, 0, G_OPTION_ARG_STRING, &options.font_data.preview,
     N_("Set text string for preview"), N_("TEXT") },
+  { "separate-output", 0, 0, G_OPTION_ARG_NONE, &options.font_data.separate_output,
+    N_("Separate output of font description"), NULL },
   { NULL }
 };
 
@@ -1306,6 +1308,7 @@ yad_options_init (void)
 
   /* Initialize font data */
   options.font_data.preview = NULL;
+  options.font_data.separate_output = FALSE;
 
   /* Initialize form data */
   options.form_data.fields = NULL;
