@@ -426,6 +426,9 @@ select_files_cb (GtkEntry * entry, GtkEntryIconPosition pos, GdkEventButton * ev
       gtk_file_chooser_set_select_multiple (GTK_FILE_CHOOSER (dlg), TRUE);
       gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dlg), path);
 
+      if (options.common_data.show_hidden)
+        gtk_file_chooser_set_show_hidden (GTK_FILE_CHOOSER (dlg), TRUE);
+
       /* add preview */
       if (options.common_data.preview)
         {
@@ -509,6 +512,9 @@ create_files_cb (GtkEntry * entry, GtkEntryIconPosition pos, GdkEventButton * ev
                                              GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, NULL);
         }
       gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dlg), path);
+
+      if (options.common_data.show_hidden)
+        gtk_file_chooser_set_show_hidden (GTK_FILE_CHOOSER (dlg), TRUE);
 
       /* add preview */
       if (options.common_data.preview)

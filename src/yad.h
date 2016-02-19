@@ -391,6 +391,7 @@ typedef struct {
   gdouble align;
   gboolean listen;
   gboolean preview;
+  gboolean show_hidden;
   gboolean quoted_output;
   gboolean num_output;
   YadCompletionType complete;

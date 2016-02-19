@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with YAD. If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2008-2015, Victor Ananjevsky <ananasik@gmail.com>
+ * Copyright (C) 2008-2016, Victor Ananjevsky <ananasik@gmail.com>
  */
 
 #include <glib/gprintf.h>
@@ -101,6 +101,9 @@ file_create_widget (GtkWidget * dlg)
     }
   else
     gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (w), g_get_current_dir ());
+
+  if (options.common_data.show_hidden)
+    gtk_file_chooser_set_show_hidden (GTK_FILE_CHOOSER (w), TRUE);
 
   if (options.common_data.multi)
     gtk_file_chooser_set_select_multiple (GTK_FILE_CHOOSER (w), TRUE);
