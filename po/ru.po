@@ -570,7 +570,7 @@ msgstr "Раскрывать пользовательскую палитру"
 
 #: ../src/option.c:225
 msgid "Set output mode to MODE. Values are hex (default) or rgb"
-msgstr "Установить ревим вывода в РЕЖИМ. Значения - hex (по-умолчанию) или rgb"
+msgstr "Установить режим вывода в РЕЖИМ. Значения - hex (по-умолчанию) или rgb"
 
 #: ../src/option.c:225
 msgid "MODE"
