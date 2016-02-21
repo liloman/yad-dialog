@@ -398,6 +398,8 @@ static GOptionEntry multi_progress_options[] = {
     N_("Display multi progress bars dialog"), NULL },
   { "bar", 0, 0, G_OPTION_ARG_CALLBACK, add_bar,
     N_("Add the progress bar (norm, rtl or pulse)"), N_("LABEL[:TYPE]") },
+  { "watch-bar", 0, 0, G_OPTION_ARG_INT, &options.multi_progress_data.watch_bar,
+    N_("Watch for specific bar for auto close"), N_("NUMBER") },
   { "align", 0, G_OPTION_FLAG_NOALIAS, G_OPTION_ARG_CALLBACK, set_align,
     N_("Set alignment of bar labels (left, center or right)"), N_("TYPE") },
   { "auto-close", 0, G_OPTION_FLAG_NOALIAS, G_OPTION_ARG_NONE, &options.progress_data.autoclose,
@@ -1363,6 +1365,7 @@ yad_options_init (void)
 
   /* Initialize multiprogress data */
   options.multi_progress_data.bars = NULL;
+  options.multi_progress_data.watch_bar = 0;
 
   /* Initialize notebook data */
   options.notebook_data.tabs = NULL;

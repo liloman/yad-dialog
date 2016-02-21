@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with YAD. If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2008-2015, Victor Ananjevsky <ananasik@gmail.com>
+ * Copyright (C) 2008-2016, Victor Ananjevsky <ananasik@gmail.com>
  */
 
 #include <stdio.h>
@@ -109,22 +109,42 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
                   else
                     gtk_progress_bar_set_fraction (pb, percentage / 100.0);
 
-                  /* Check if all of progres bars reach 100% */
+                  /* Check if all of progress bars reaches 100% */
                   if (options.progress_data.autoclose && options.plug == -1)
                     {
-                      GSList *p;
+                      guint i;
                       gboolean close = TRUE;
+                      gboolean need_close = FALSE;
 
-                      for (p = progress_bars; p; p = p->next)
+                      if (options.multi_progress_data.watch_bar > 0 && options.multi_progress_data.watch_bar <= nbars)
                         {
-                          if (gtk_progress_bar_get_fraction (GTK_PROGRESS_BAR (p->data)) != 1.0)
+                          GtkProgressBar *cpb = GTK_PROGRESS_BAR (g_slist_nth_data (progress_bars,
+                                                                                    options.multi_progress_data.watch_bar - 1));
+
+                          need_close = TRUE;
+                          if (gtk_progress_bar_get_fraction (cpb) != 1.0)
+                            close = FALSE;
+                        }
+                      else
+                        {
+                          for (i = 0; i < nbars; i++)
                             {
-                              close = FALSE;
-                              break;
+                              GtkProgressBar *cpb = GTK_PROGRESS_BAR (g_slist_nth_data (progress_bars, i));
+                              YadProgressBar *cb = (YadProgressBar *) g_slist_nth_data (options.multi_progress_data.bars, i);
+
+                              if (cb->type != YAD_PROGRESS_PULSE)
+                                {
+                                  need_close = TRUE;
+                                  if (gtk_progress_bar_get_fraction (cpb) != 1.0)
+                                    {
+                                      close = FALSE;
+                                      break;
+                                    }
+                                }
                             }
                         }
 
-                      if (close)
+                      if (need_close && close)
                         gtk_dialog_response (GTK_DIALOG (data), YAD_RESPONSE_OK);
                     }
                 }

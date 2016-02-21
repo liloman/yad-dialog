@@ -309,6 +309,7 @@ typedef struct {
 
 typedef struct {
   GSList *bars;
+  gint watch_bar;
 } YadMultiProgressData;
 
 typedef struct {
