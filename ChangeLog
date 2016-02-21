@@ -1,3 +1,8 @@
+2016-02-21 11:22  v1c0nt
+
+	* ChangeLog, NEWS, configure.ac: bump version to 0.34.0. prepare to
+	  release
+
 2016-02-21 11:00  v1c0nt
 
 	* ChangeLog, data/yad.1, src/color.c, src/form.c, src/util.c,
