@@ -191,6 +191,45 @@ get_pixbuf (gchar * name, YadIconSize size)
   return pb;
 }
 
+gchar *
+get_color (GdkColor *c, guint64 alpha)
+{
+  gchar *cs;
+  gchar *res = NULL;
+
+  switch (options.color_data.mode)
+    {
+    case YAD_COLOR_HEX:
+      cs = gdk_color_to_string (c);
+      if (options.color_data.alpha)
+        {
+          if (options.color_data.extra)
+            res = g_strdup_printf ("#%s%hx", cs + 1, alpha);
+          else
+            res = g_strdup_printf ("#%c%c%c%c%c%c%hx", cs[1], cs[2], cs[5], cs[6], cs[9], cs[10], alpha / 256);
+        }
+      else
+        {
+          if (options.color_data.extra)
+            res = g_strdup_printf ("%s", cs);
+          else
+            res = g_strdup_printf ("#%c%c%c%c%c%c", cs[1], cs[2], cs[5], cs[6], cs[9], cs[10]);
+        }
+      g_free (cs);
+      break;
+    case YAD_COLOR_RGB:
+      if (options.color_data.alpha)
+        res = g_strdup_printf ("rgba(%.1f, %.1f, %.1f, %.1f)", (double) c->red / 255.0, (double) c->green / 255.0,
+                               (double) c->blue / 255.0, (double) alpha / 255 / 255);
+      else
+        res = g_strdup_printf ("rgb(%.1f, %.1f, %.1f)", (double) c->red / 255.0, (double) c->green / 255.0,
+                               (double) c->blue / 255.0);
+      break;
+    }
+
+  return res;
+}
+
 void
 update_preview (GtkFileChooser * chooser, GtkWidget *p)
 {
@@ -482,7 +521,7 @@ check_complete (GtkEntryCompletion *c, const gchar *key, GtkTreeIter *iter, gpoi
           break;
         default: ;
         }
-        
+
       if (words)
         g_strfreev (words);
     }

@@ -425,7 +425,7 @@ Add field to form. Type may be \fIH\fP, \fIRO\fP, \fINUM\fP, \fICHK\fP, \fICB\fP
 .br
 \fBSCL\fP - scale field. Value of this field in a range 0..100.
 .br
-\fBCLR\fP - color selection button.
+\fBCLR\fP - color selection button. Output values for this field generates in the same manner as for color dialog.
 .br
 \fBBTN\fP - button field. Label may be in form text in a form \fILABEL[!ICON[!TOOLTIP]]\fP where `!' is an item separator. \fILABEL\fP is a text of button label or gtk stock id. \fIICON\fP is a buttons icon (stock id or file name). \fITOOLTIP\fP is an optional text for popup help string. Initial value is a command which is running when button is clicked. A special sympols \fI%N\fP in command are replaced by value of field \fIN\fP. If command starts with \fI@\fP, the output of command will be parsed and lines started with numbers will be treats as a new field values.
 .br

@@ -484,26 +484,26 @@ void yad_options_init (void);
 GOptionContext *yad_create_context (void);
 void yad_set_mode (void);
 
-GtkWidget *calendar_create_widget (GtkWidget * dlg);
-GtkWidget *color_create_widget (GtkWidget * dlg);
-GtkWidget *entry_create_widget (GtkWidget * dlg);
-GtkWidget *file_create_widget (GtkWidget * dlg);
-GtkWidget *font_create_widget (GtkWidget * dlg);
-GtkWidget *form_create_widget (GtkWidget * dlg);
+GtkWidget *calendar_create_widget (GtkWidget *dlg);
+GtkWidget *color_create_widget (GtkWidget *dlg);
+GtkWidget *entry_create_widget (GtkWidget *dlg);
+GtkWidget *file_create_widget (GtkWidget *dlg);
+GtkWidget *font_create_widget (GtkWidget *dlg);
+GtkWidget *form_create_widget (GtkWidget *dlg);
 #ifdef HAVE_HTML
-GtkWidget *html_create_widget (GtkWidget * dlg);
+GtkWidget *html_create_widget (GtkWidget *dlg);
 #endif
-GtkWidget *icons_create_widget (GtkWidget * dlg);
-GtkWidget *list_create_widget (GtkWidget * dlg);
-GtkWidget *multi_progress_create_widget (GtkWidget * dlg);
-GtkWidget *notebook_create_widget (GtkWidget * dlg);
-GtkWidget *paned_create_widget (GtkWidget * dlg);
-GtkWidget *picture_create_widget (GtkWidget * dlg);
-GtkWidget *progress_create_widget (GtkWidget * dlg);
-GtkWidget *scale_create_widget (GtkWidget * dlg);
-GtkWidget *text_create_widget (GtkWidget * dlg);
+GtkWidget *icons_create_widget (GtkWidget *dlg);
+GtkWidget *list_create_widget (GtkWidget *dlg);
+GtkWidget *multi_progress_create_widget (GtkWidget *dlg);
+GtkWidget *notebook_create_widget (GtkWidget *dlg);
+GtkWidget *paned_create_widget (GtkWidget *dlg);
+GtkWidget *picture_create_widget (GtkWidget *dlg);
+GtkWidget *progress_create_widget (GtkWidget *dlg);
+GtkWidget *scale_create_widget (GtkWidget *dlg);
+GtkWidget *text_create_widget (GtkWidget *dlg);
 
-gboolean file_confirm_overwrite (GtkDialog * dlg);
+gboolean file_confirm_overwrite (GtkDialog *dlg);
 void notebook_swallow_childs (void);
 void paned_swallow_childs (void);
 void picture_fit_to_window (void);
@@ -520,7 +520,7 @@ void paned_print_result (void);
 void scale_print_result (void);
 void text_print_result (void);
 
-void dnd_init (GtkWidget * w);
+void dnd_init (GtkWidget *w);
 
 gint yad_notification_run (void);
 gint yad_print_run (void);
@@ -534,15 +534,16 @@ void paned_close_childs (void);
 void read_settings (void);
 void write_settings (void);
 
-void update_preview (GtkFileChooser * chooser, GtkWidget *p);
+void update_preview (GtkFileChooser *chooser, GtkWidget *p);
 
-GdkPixbuf *get_pixbuf (gchar * name, YadIconSize size);
+GdkPixbuf *get_pixbuf (gchar *name, YadIconSize size);
+gchar *get_color (GdkColor *c, guint64 alpha);
 
-gchar **split_arg (const gchar * str);
+gchar **split_arg (const gchar *str);
 
 YadNTabs *get_tabs (key_t key, gboolean create);
 
-GtkWidget *get_label (gchar * str, guint border);
+GtkWidget *get_label (gchar *str, guint border);
 
 gchar *escape_str (gchar *str);
 

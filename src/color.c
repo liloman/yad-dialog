@@ -206,38 +206,14 @@ void
 color_print_result (void)
 {
   GdkColor c;
-  guint16 alpha;
-  gchar *cs = NULL;
+  guint64 alpha;
+  gchar *cs;
 
   gtk_color_selection_get_current_color (GTK_COLOR_SELECTION (color), &c);
   alpha = gtk_color_selection_get_current_alpha (GTK_COLOR_SELECTION (color));
 
-  switch (options.color_data.mode)
-    {
-    case YAD_COLOR_HEX:
-      cs = gdk_color_to_string (&c);
-      if (options.color_data.alpha)
-        {
-          if (options.color_data.extra)
-            g_print ("#%s%hx\n", cs + 1, alpha);
-          else
-            g_printf ("#%c%c%c%c%c%c%hx\n", cs[1], cs[2], cs[5], cs[6], cs[9], cs[10], alpha / 256);
-        }
-      else
-        {
-          if (options.color_data.extra)
-            g_print ("%s\n", cs);
-          else
-            g_printf ("#%c%c%c%c%c%c\n", cs[1], cs[2], cs[5], cs[6], cs[9], cs[10]);
-        }
-      g_free (cs);
-      break;
-    case YAD_COLOR_RGB:
-      if (options.color_data.alpha)
-        g_print ("rgba(%.1f, %.1f, %.1f, %.1f)\n", (double) c.red / 255.0, (double) c.green / 255.0,
-                 (double) c.blue / 255.0, (double) alpha / 255 / 255);
-      else
-        g_print ("rgb(%.1f, %.1f, %.1f)\n", (double) c.red / 255.0, (double) c.green / 255.0, (double) c.blue / 255.0);
-      break;
-    }
+  cs = get_color (&c, alpha);
+
+  if (cs)
+    g_printf ("%s\n", cs);
 }

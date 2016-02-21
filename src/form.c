@@ -107,9 +107,11 @@ expand_action (gchar * cmd)
                 case YAD_FIELD_COLOR:
                   {
                     GdkColor c;
+                    GtkColorButton *cb = GTK_COLOR_BUTTON (g_slist_nth_data (fields, num));
 
-                    gtk_color_button_get_color (GTK_COLOR_BUTTON (g_slist_nth_data (fields, num)), &c);
-                    buf = gdk_color_to_string (&c);
+                    gtk_color_button_get_color (cb, &c);
+                    buf = get_color (&c, gtk_color_button_get_alpha (cb));
+                    g_string_append (xcmd, buf ? buf : "");
                     g_free (buf);
                     break;
                   }
@@ -127,7 +129,7 @@ expand_action (gchar * cmd)
                     g_free (txt);
                     g_free (buf);
                   }
-                default:;
+                default: ;
                 }
               i = j;
             }
@@ -1219,13 +1221,17 @@ form_print_field (guint fn)
       break;
     case YAD_FIELD_COLOR:
       {
+        gchar *cs;
         GdkColor c;
+        GtkColorButton *cb = GTK_COLOR_BUTTON (g_slist_nth_data (fields, fn));
 
-        gtk_color_button_get_color (GTK_COLOR_BUTTON (g_slist_nth_data (fields, fn)), &c);
+        gtk_color_button_get_color (cb, &c);
+        cs = get_color (&c, gtk_color_button_get_alpha (cb));
         if (options.common_data.quoted_output)
-          g_printf ("'%s'%s", gdk_color_to_string (&c), options.common_data.separator);
+          g_printf ("'%s'%s", cs, options.common_data.separator);
         else
-          g_printf ("%s%s", gdk_color_to_string (&c), options.common_data.separator);
+          g_printf ("%s%s", cs, options.common_data.separator);
+        g_free (cs);
         break;
       }
     case YAD_FIELD_SCALE:

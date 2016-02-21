@@ -1,3 +1,98 @@
+2016-02-21 09:36  v1c0nt
+
+	* data/yad.1: update man page
+
+2016-02-21 09:27  v1c0nt
+
+	* po/ru.po: fix typo in russian translation
+
+2016-02-21 09:22  v1c0nt
+
+	* po/ru.po, po/uk.po: update translations
+
+2016-02-21 09:18  v1c0nt
+
+	* src/about.c, src/browser.c, src/calendar.c, src/color.c,
+	  src/dnd.c, src/entry.c, src/font.c, src/form.c, src/html.c,
+	  src/icons.c, src/main.c, src/notebook.c, src/notification.c,
+	  src/option.c, src/paned.c, src/picture.c, src/print.c,
+	  src/progress.c, src/scale.c, src/text.c, src/util.c: update
+	  copyright year
+
+2016-02-21 09:14  v1c0nt
+
+	* src/multi-progress.c, src/option.c, src/yad.h: add --watch-bar
+	  options for multi-progress dialog. change behavior of auto-close
+	  function
+
+2016-02-21 08:44  v1c0nt
+
+	* data/yad.1: update man page
+
+2016-02-19 06:52  v1c0nt
+
+	* configure.ac, po/ru.po, po/uk.po, src/file.c, src/form.c,
+	  src/option.c, src/yad.h: add initial support of show-hidden
+	  files. need more testing
+
+2016-02-18 19:24  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/font.c, src/option.c,
+	  src/yad.h: add --separate-output option to font dialog
+
+2016-02-17 17:31  v1c0nt
+
+	* src/font.c: add quoted output to font dialog
+
+2016-02-12 15:18  v1c0nt
+
+	* configure.ac: fix webkit package name for gtk3 build
+
+2016-02-06 07:34  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/list.c, src/option.c,
+	  src/yad.h: add --select-action to list dialog
+
+2016-01-17 19:30  v1c0nt
+
+	* po/POTFILES.in, po/ru.po, po/uk.po, src/html.c: fix translation
+
+2016-01-16 07:20  v1c0nt
+
+	* configure.ac: some configure improvements for build yad with gtk3
+	  and webkit. needs additional testing
+
+2016-01-13 04:41  v1c0nt
+
+	* ChangeLog, src/main.c:
+
+2016-01-11 12:35  v1c0nt
+
+	* NEWS, configure.ac: version 0.33.1
+
+2016-01-11 12:32  v1c0nt
+
+	* src/main.c: fix timeout handling
+
+2015-12-29 14:55  v1c0nt
+
+	* NEWS, data/yad.1, po/ru.po, po/uk.po: update translations and man
+	  page
+
+2015-12-29 14:47  v1c0nt
+
+	* src/entry.c, src/form.c, src/list.c, src/option.c, src/yad.h: add
+	  --float-precision option
+
+2015-12-29 14:28  v1c0nt
+
+	* src/entry.c, src/list.c:
+
+2015-12-29 14:27  v1c0nt
+
+	* src/entry.c, src/form.c, src/list.c: fix output of floating
+	  numbers (remove trailing zeroes)
+
 2015-12-28 09:35  v1c0nt
 
 	* data/yad.1, src/form.c: add FormFeed for clear the form
