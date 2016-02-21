@@ -1,3 +1,8 @@
+2016-02-21 11:00  v1c0nt
+
+	* ChangeLog, data/yad.1, src/color.c, src/form.c, src/util.c,
+	  src/yad.h: extend output of color button field in form dialog
+
 2016-02-21 09:36  v1c0nt
 
 	* data/yad.1: update man page

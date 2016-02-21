@@ -1,3 +1,13 @@
+Version 0.34.0
+    - add --select-action to list dialog
+    - add -separate-output to font dialog
+    - honor --quoted-output option in font dialog
+    - add --show-hidden option to file selection dialogs
+    - add --watch-bar to multi-progress dialog
+    - improve handling of autoclosing event in multi-progress dialog
+    - improve output of color values in form dialog
+    - fix build with gtk+-3.0 and webkit-3.0
+
 Version 0.33.1
     - fix timeout handling
 
