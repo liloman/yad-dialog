@@ -185,7 +185,7 @@ Run dialog in fullscreen mode. This option may not work on all window managers.
 .TP
 .B \-\-splash
 Open window with "splashscreen" window hints. For details see description of \fI_NET_WM_WINDOW_TYPE_SPLASH\fP
-in EWMH specification. The behavior of dialog with this option is HIGHLY DEPENDS on settings of window manager you use.
+in EWMH specification. The behavior of dialog with this option is HIGHLY DEPENDS on settings of your window manager.
 .TP
 .B \-\-no-focus
 Dialog window never take focus.
@@ -593,16 +593,26 @@ Sending FormFeed character to list clears it. This symbol may be sent as \fIecho
 .SS Multi progress bars dialog options
 .TP
 .B \-\-bar=\fILABEL[:TYPE]\fP
-Add progress bar. \fILABEL\fP is a text label for progress bar. \fITYPE\fP is a progress bar type. Types are: \fINORM\fP for normal progress bar, \fIRTL\fP for inverted progress bar and \fIPULSE\fP for pulsate progress bar.
+Add progress bar. \fILABEL\fP is a text label for progress bar. \fITYPE\fP is a progress bar type.
+Types are: \fINORM\fP for normal progress bar, \fIRTL\fP for inverted progress bar and \fIPULSE\fP for pulsate progress bar.
 .TP
 .B \-\-vertical
 Set vertical orientation of progress bars.
 .TP
 .B \-\-align=\fITYPE\fP
 Set alignment of bar labels. Possible types are \fIleft\fP, \fIcenter\fP or \fIright\fP. Default is left.
+.TP
+.B \-\-auto\-close
+Close dialog when 100% has been reached for all of non-pulsating progress bars.
+.TP
+.B \-\-watch-bar\fINUMBER\fP
+Watch for 100% of bar \fINUMBER\fP for close dialog.
+.TP
+.B \-\-auto\-kill
+Kill parent process if cancel button is pressed.
 .PP
-Initial values for bars set as extra arguments. Each lines with progress data passed to stdin must be started from \fIN:\fP where \fIN\fP is a number of progress bar. Rest is
-the same as in \fIprogress\fP dialog.
+Initial values for bars set as an extra arguments. Each lines with progress data passed to stdin must be started
+from \fIN:\fP where \fIN\fP is a number of progress bar.
 
 .SS Notebook options
 .TP
