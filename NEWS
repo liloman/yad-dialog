@@ -1,6 +1,6 @@
 Version 0.34.0
-    - add --select-action to list dialog
-    - add -separate-output to font dialog
+    - add --select-action option to list dialog
+    - add --separate-output option to font dialog
     - honor --quoted-output option in font dialog
     - add --show-hidden option to file selection dialogs
     - add --watch-bar to multi-progress dialog
