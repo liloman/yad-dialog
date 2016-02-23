@@ -354,7 +354,8 @@ button_clicked_cb (GtkButton * b, gchar * action)
                   gint fn;
                   gchar **ln;
 
-                  if (!lines[i][0])
+                  /* last two conditions is checking if first is digit */
+                  if (!lines[i][0] || lines[i][0] < 49 || lines[i][0] > 57)
                     continue;
 
                   ln = g_strsplit (lines[i], ":", 2);
