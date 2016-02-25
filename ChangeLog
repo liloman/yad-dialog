@@ -1,3 +1,23 @@
+2016-02-25 06:00  v1c0nt
+
+	* configure.ac, src/main.c: fix expander. bump version to 0.34.1
+
+2016-02-23 05:31  v1c0nt
+
+	* src/form.c: improve parsing of output form buttons callbacks
+
+2016-02-23 05:24  v1c0nt
+
+	* data/yad.1: update man page
+
+2016-02-22 09:31  v1c0nt
+
+	* NEWS:
+
+2016-02-21 16:00  v1c0nt
+
+	* ChangeLog: release 0.34.0
+
 2016-02-21 11:22  v1c0nt
 
 	* ChangeLog, NEWS, configure.ac: bump version to 0.34.0. prepare to
