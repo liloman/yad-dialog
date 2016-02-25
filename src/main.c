@@ -133,7 +133,7 @@ dlg_response_cb (GtkDialog *dlg, gint id, gint *data)
 static GtkWidget *
 create_layout (GtkWidget *dlg)
 {
-  GtkWidget *image, *text, *mw, *layout, *exp, *box;
+  GtkWidget *image, *text, *mw, *imw, *layout, *exp, *box;
 
   layout = image = text = mw = exp = NULL;
 
@@ -252,12 +252,19 @@ create_layout (GtkWidget *dlg)
     }
 
   /* add expander */
+  imw = NULL;
   if (mw && options.data.expander)
     {
       exp = gtk_expander_new_with_mnemonic (options.data.expander);
       gtk_expander_set_expanded (GTK_EXPANDER (exp), FALSE);
-      gtk_container_add (GTK_CONTAINER (exp), mw);
+      if (mw)
+        {
+          gtk_container_add (GTK_CONTAINER (exp), mw);
+          imw = exp;
+        }
     }
+  else
+    imw = mw;
 
   /* create layout */
   if (options.data.image_on_top)
@@ -275,8 +282,8 @@ create_layout (GtkWidget *dlg)
         gtk_box_pack_start (GTK_BOX (box), text, TRUE, TRUE, 0);
 
       gtk_box_pack_start (GTK_BOX (layout), box, FALSE, FALSE, 0);
-      if (mw)
-        gtk_box_pack_start (GTK_BOX (layout), mw, TRUE, TRUE, 0);
+      if (imw)
+        gtk_box_pack_start (GTK_BOX (layout), imw, TRUE, TRUE, 0);
     }
   else
     {
@@ -289,8 +296,8 @@ create_layout (GtkWidget *dlg)
 #endif
       if (text)
         gtk_box_pack_start (GTK_BOX (box), text, FALSE, FALSE, 0);
-      if (mw)
-        gtk_box_pack_start (GTK_BOX (box), mw, TRUE, TRUE, 0);
+      if (imw)
+        gtk_box_pack_start (GTK_BOX (box), imw, TRUE, TRUE, 0);
 
       if (image)
         gtk_box_pack_start (GTK_BOX (layout), image, FALSE, FALSE, 2);
