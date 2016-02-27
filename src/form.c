@@ -655,7 +655,7 @@ handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer data)
                   /* clear the form and reset fields counter */
                   for (i = 0; i < n_fields; i++)
                     set_field_value (i, "");
-                  cnt = 0;
+                  cnt = -1; /* must be -1 due to next increment */
                 }
               else
                 set_field_value (cnt, string->str);

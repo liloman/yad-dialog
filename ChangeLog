@@ -1,3 +1,7 @@
+2016-02-25 06:03  v1c0nt
+
+	* ChangeLog, NEWS: release 0.34.1
+
 2016-02-25 06:00  v1c0nt
 
 	* configure.ac, src/main.c: fix expander. bump version to 0.34.1
