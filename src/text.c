@@ -538,7 +538,6 @@ text_create_widget (GtkWidget * dlg)
       /* place cursor at start of file */
       GtkTextIter iter;
 
-      printf ("got it\n");
       gtk_text_buffer_get_iter_at_line (text_buffer, &iter, 0);
       gtk_text_buffer_place_cursor (text_buffer, &iter);
     }
