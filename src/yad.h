@@ -375,6 +375,7 @@ typedef struct {
   gint margins;
   gboolean tail;
   gboolean uri;
+  gboolean hide_cursor;
   gchar *uri_color;
 } YadTextData;
 

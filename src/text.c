@@ -426,14 +426,6 @@ fill_buffer_from_file ()
   gtk_text_buffer_get_end_iter (text_buffer, &end);
   gtk_text_buffer_delete (text_buffer, &iter, &end);
   gtk_text_buffer_set_modified (text_buffer, FALSE);
-
-  if (options.text_data.tail)
-    {
-      while (gtk_events_pending ())
-        gtk_main_iteration ();
-      gtk_text_buffer_get_end_iter (text_buffer, &end);
-      gtk_text_view_scroll_to_iter (GTK_TEXT_VIEW (text_view), &end, 0, FALSE, 0, 0);
-    }
 }
 
 static void
@@ -464,7 +456,7 @@ text_create_widget (GtkWidget * dlg)
   gtk_text_view_set_left_margin (GTK_TEXT_VIEW (text_view), options.text_data.margins);
   gtk_text_view_set_right_margin (GTK_TEXT_VIEW (text_view), options.text_data.margins);
   gtk_text_view_set_editable (GTK_TEXT_VIEW (text_view), options.common_data.editable);
-  if (!options.common_data.editable)
+  if (!options.common_data.editable && options.text_data.hide_cursor)
     gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (text_view), FALSE);
 
   if (options.text_data.wrap)
@@ -541,6 +533,15 @@ text_create_widget (GtkWidget * dlg)
 
   if (options.common_data.listen || options.common_data.uri == NULL)
     fill_buffer_from_stdin ();
+  else
+    {
+      /* place cursor at start of file */
+      GtkTextIter iter;
+
+      printf ("got it\n");
+      gtk_text_buffer_get_iter_at_line (text_buffer, &iter, 0);
+      gtk_text_buffer_place_cursor (text_buffer, &iter);
+    }
 
   return w;
 }
