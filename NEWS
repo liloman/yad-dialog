@@ -1,3 +1,6 @@
+Version 0.34.2
+    - fix clearing fields in form when --cycle-read is using
+
 Version 0.34.1
     - fix expander
     - update man page

@@ -1,3 +1,8 @@
+2016-02-27 17:44  v1c0nt
+
+	* ChangeLog, src/form.c: fix clearing fields in form when
+	  --cycle-read is using
+
 2016-02-25 06:03  v1c0nt
 
 	* ChangeLog, NEWS: release 0.34.1
