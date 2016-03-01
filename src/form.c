@@ -17,6 +17,7 @@
  * Copyright (C) 2008-2016, Victor Ananjevsky <ananasik@gmail.com>
  */
 
+#include <ctype.h>
 #include <stdlib.h>
 #include <glib/gprintf.h>
 
@@ -352,17 +353,18 @@ button_clicked_cb (GtkButton * b, gchar * action)
               while (lines[i] && lines[i][0])
                 {
                   gint fn;
-                  gchar **ln;
+                  gchar *ptr = lines[i];
 
-                  /* last two conditions is checking if first is digit */
-                  if (!lines[i][0] || lines[i][0] < 49 || lines[i][0] > 57)
-                    continue;
+                  while (isblank (*ptr)) ptr++;
 
-                  ln = g_strsplit (lines[i], ":", 2);
-                  fn = g_ascii_strtoll (ln[0], NULL, 10);
-                  if (fn && ln[1])
-                    set_field_value (fn - 1, ln[1]);
-                  g_strfreev (ln);
+                  if (isdigit (*ptr))
+                    {
+                      gchar **ln = g_strsplit (ptr, ":", 2);
+                      fn = g_ascii_strtoll (ln[0], NULL, 10);
+                      if (fn && ln[1])
+                        set_field_value (fn - 1, ln[1]);
+                      g_strfreev (ln);
+                    }
                   i++;
                 }
             }
