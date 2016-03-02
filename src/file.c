@@ -102,9 +102,6 @@ file_create_widget (GtkWidget * dlg)
   else
     gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (w), g_get_current_dir ());
 
-  if (options.common_data.show_hidden)
-    gtk_file_chooser_set_show_hidden (GTK_FILE_CHOOSER (w), TRUE);
-
   if (options.common_data.multi)
     gtk_file_chooser_set_select_multiple (GTK_FILE_CHOOSER (w), TRUE);
 
@@ -120,6 +117,7 @@ file_create_widget (GtkWidget * dlg)
   for (filt = options.common_data.filters; filt; filt = filt->next)
     gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (w), GTK_FILE_FILTER (filt->data));
 
+  g_signal_connect (w, "map", G_CALLBACK (filechooser_mapped), NULL);
   g_signal_connect (w, "file-activated", G_CALLBACK (file_activated_cb), dlg);
 
   return w;
