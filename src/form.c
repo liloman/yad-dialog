@@ -75,7 +75,7 @@ expand_action (gchar * cmd)
                   g_string_append (xcmd, gtk_entry_get_text (GTK_ENTRY (g_slist_nth_data (fields, num))));
                   break;
                 case YAD_FIELD_NUM:
-                  g_string_append_printf (xcmd, "%.*g", options.common_data.float_precision,
+                  g_string_append_printf (xcmd, "%.*f", options.common_data.float_precision,
                                           gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, num))));
                   break;
                 case YAD_FIELD_CHECK:
@@ -189,12 +189,15 @@ set_field_value (guint num, gchar * value)
           w = g_slist_nth_data (fields, num);
           if (s[1])
             {
-              gdouble min, max;
               gchar **s1 = g_strsplit (s[1], "..", 2);
-              min = g_ascii_strtod (s1[0], NULL);
-              max = g_ascii_strtod (s1[1], NULL);
+              if (s[0] && s[1])
+                {
+                  gdouble min, max;
+                  min = g_ascii_strtod (s1[0], NULL);
+                  max = g_ascii_strtod (s1[1], NULL);
+                  gtk_spin_button_set_range (GTK_SPIN_BUTTON (w), min, max);
+                }
               g_strfreev (s1);
-              gtk_spin_button_set_range (GTK_SPIN_BUTTON (w), min, max);
               if (s[2])
                 {
                   gdouble step = g_ascii_strtod (s[2], NULL);
@@ -518,7 +521,7 @@ create_files_cb (GtkEntry * entry, GtkEntryIconPosition pos, GdkEventButton * ev
       gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dlg), path);
 
       g_signal_connect (dlg, "map", G_CALLBACK (filechooser_mapped), NULL);
-  
+
       /* add preview */
       if (options.common_data.preview)
         {
@@ -1153,11 +1156,11 @@ form_print_field (guint fn)
       break;
     case YAD_FIELD_NUM:
       if (options.common_data.quoted_output)
-        g_printf ("'%.*g'%s", options.common_data.float_precision,
+        g_printf ("'%.*f'%s", options.common_data.float_precision,
                   gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
                   options.common_data.separator);
       else
-        g_printf ("%.*g%s", options.common_data.float_precision,
+        g_printf ("%.*f%s", options.common_data.float_precision,
                   gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
                   options.common_data.separator);
       break;
