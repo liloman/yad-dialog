@@ -479,7 +479,7 @@ text_create_widget (GtkWidget * dlg)
     {
 #if GTK_CHECK_VERSION(3,0,0)
       GdkRGBA clr;
-      if (gdk_rgba_parse (&clr, options.text_data.fore))
+      if (gdk_rgba_parse (&clr, options.text_data.back))
         gtk_widget_override_background_color (text_view, GTK_STATE_FLAG_NORMAL, &clr);
 #else
       GdkColor clr;
