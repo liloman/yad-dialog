@@ -641,6 +641,8 @@ add_column (const gchar * option_name, const gchar * value, gpointer data, GErro
             col->type = YAD_COLUMN_IMAGE;
           else if (strcasecmp (cstr[1], "HD") == 0)
             col->type = YAD_COLUMN_HIDDEN;
+          else if (strcasecmp (cstr[1], "BAR") == 0)
+            col->type = YAD_COLUMN_BAR;
           else
             col->type = YAD_COLUMN_TEXT;
         }

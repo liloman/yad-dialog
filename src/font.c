@@ -67,7 +67,8 @@ font_print_result (void)
           gchar *q1 = g_shell_quote (pango_font_family_get_name (family));
           gchar *q2 = g_shell_quote (pango_font_face_get_face_name (face));
 
-          g_printf ("%s%s%s%s%d\n", q1,  options.common_data.separator, q2, options.common_data.separator, size / 1000);
+          g_printf ("%s%s%s%s%d\n", q1, options.common_data.separator, q2,
+                    options.common_data.separator, size / 1000);
 
           g_free (q1);
           g_free (q2);
