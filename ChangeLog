@@ -1,3 +1,13 @@
+2016-03-20 10:52  v1c0nt
+
+	* data/yad.1, src/list.c, src/option.c, src/yad.h: fuck, forget to
+	  add sz column type
+
+2016-03-20 10:28  v1c0nt
+
+	* ChangeLog, NEWS, configure.ac: bump version to 0.35.0. prepare to
+	  release
+
 2016-03-20 10:12  v1c0nt
 
 	* data/yad.1, po/ru.po, po/uk.po, src/font.c, src/list.c,

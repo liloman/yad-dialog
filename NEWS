@@ -1,5 +1,6 @@
 Version 0.35.0
     - add BAR column type to list dialog
+    - add SZ column type to list dialog (displays human readable sizes)
     - add --show-cursor option to text dialog
     - fix handling leading spaces in button callback of form dialog
     - fix --show-hidden behavior
