@@ -1,3 +1,46 @@
+2016-03-20 10:12  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/font.c, src/list.c,
+	  src/option.c, src/yad.h: add BAR column to list dialog
+
+2016-03-10 08:58  v1c0nt
+
+	* src/text.c: fix setting custom bg color in text-info dialog for
+	  gtk3
+
+2016-03-07 18:51  v1c0nt
+
+	* src/entry.c, src/form.c, src/list.c: switch float output from %g
+	  to %f
+
+2016-03-02 14:17  v1c0nt
+
+	* src/file.c, src/form.c, src/util.c, src/yad.h: fix --show-hidden
+	  behavior
+
+2016-03-01 17:00  v1c0nt
+
+	* src/form.c: fix handling leading spaces in button callback of
+	  form dialog
+
+2016-02-28 07:36  v1c0nt
+
+	* README: update README
+
+2016-02-28 07:17  v1c0nt
+
+	* src/text.c: cleanup
+
+2016-02-28 07:11  v1c0nt
+
+	* configure.ac, data/yad.1, po/ru.po, po/uk.po, src/option.c,
+	  src/text.c, src/yad.h: add --show-cursor option to text dialog.
+	  place cursor at the start of file
+
+2016-02-28 06:30  v1c0nt
+
+	* ChangeLog, NEWS, configure.ac: release 0.34.2
+
 2016-02-27 17:44  v1c0nt
 
 	* ChangeLog, src/form.c: fix clearing fields in form when
