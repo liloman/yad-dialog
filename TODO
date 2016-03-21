@@ -2,3 +2,4 @@
 - use optional gtksourceview in text-info dialog
 - add option for disable selection in list dialog
 - add slideshow to picture dialog (reading uris from stdin)
+- add single model for completion and combo-boxes
