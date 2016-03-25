@@ -390,6 +390,8 @@ static GOptionEntry list_options[] = {
     N_("Set select action"), N_("CMD") },
   { "regex-search", 0, 0, G_OPTION_ARG_NONE, &options.list_data.regex_search,
     N_("Use regex in search"), NULL },
+  { "no-selection", 0, 0, G_OPTION_ARG_NONE, &options.list_data.no_selection,
+    N_("Disable selection"), NULL },
   { NULL }
 };
 
@@ -1368,6 +1370,7 @@ yad_options_init (void)
   options.list_data.select_action = NULL;
   options.list_data.regex_search = FALSE;
   options.list_data.clickable = TRUE;
+  options.list_data.no_selection = FALSE;
 
   /* Initialize multiprogress data */
   options.multi_progress_data.bars = NULL;

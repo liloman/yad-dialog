@@ -999,20 +999,25 @@ list_create_widget (GtkWidget * dlg)
 
   add_columns (n_columns);
 
-  if (options.common_data.multi && !options.list_data.checkbox && !options.list_data.radiobox)
+  if (options.list_data.no_selection)
     {
       GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list_view));
-      gtk_tree_selection_set_mode (sel, GTK_SELECTION_MULTIPLE);
+      gtk_tree_selection_set_mode (sel, GTK_SELECTION_NONE);
+      gtk_widget_set_can_focus (list_view, FALSE);
     }
-
-  if (!options.common_data.multi && options.list_data.select_action)
+  else
     {
       GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list_view));
-      g_signal_connect (G_OBJECT (sel), "changed", G_CALLBACK (select_cb), NULL);
-    }
 
-  g_signal_connect (G_OBJECT (list_view), "row-activated", G_CALLBACK (double_click_cb), dlg);
-  g_signal_connect (G_OBJECT (list_view), "key-press-event", G_CALLBACK (list_activate_cb), dlg);
+      if (options.common_data.multi && !options.list_data.checkbox && !options.list_data.radiobox)
+        gtk_tree_selection_set_mode (sel, GTK_SELECTION_MULTIPLE);
+
+      if (!options.common_data.multi && options.list_data.select_action)
+        g_signal_connect (G_OBJECT (sel), "changed", G_CALLBACK (select_cb), NULL);
+
+      g_signal_connect (G_OBJECT (list_view), "row-activated", G_CALLBACK (double_click_cb), dlg);
+      g_signal_connect (G_OBJECT (list_view), "key-press-event", G_CALLBACK (list_activate_cb), dlg);
+    }
 
   /* add popup menu */
   if (options.common_data.editable)
