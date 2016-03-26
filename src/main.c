@@ -353,7 +353,7 @@ create_dialog (void)
     {
       gtk_window_set_default_size (GTK_WINDOW (dlg), options.data.width, options.data.height);
       if (options.data.center)
-        gtk_window_set_position (GTK_WINDOW (dlg), GTK_WIN_POS_CENTER);
+        gtk_window_set_position (GTK_WINDOW (dlg), GTK_WIN_POS_CENTER_ALWAYS);
       else if (options.data.mouse)
         gtk_window_set_position (GTK_WINDOW (dlg), GTK_WIN_POS_MOUSE);
     }
