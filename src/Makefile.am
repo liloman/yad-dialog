@@ -34,8 +34,8 @@ if HTML
 yad_SOURCES += html.c
 endif
 
-yad_CFLAGS = $(GTK_CFLAGS) $(HTML_CFLAGS)
-yad_LDADD = $(GTK_LIBS) $(HTML_LIBS)
+yad_CFLAGS = $(GTK_CFLAGS) $(HTML_CFLAGS) $(SPELL_CFLAGS)
+yad_LDADD = $(GTK_LIBS) $(HTML_LIBS) $(SPELL_LIBS)
 
 if BUILD_IB
 bin_PROGRAMS += yad-icon-browser

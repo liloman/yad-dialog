@@ -34,6 +34,10 @@
 #include <gtk/gtkx.h>
 #endif
 
+#ifdef HAVE_SPELL
+#include <gtkspell/gtkspell.h>
+#endif
+
 G_BEGIN_DECLS
 
 #define YAD_SETTINGS_FILE "yad.conf"

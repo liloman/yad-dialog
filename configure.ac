@@ -136,5 +136,6 @@ echo "Build configuratioh:"
 echo "  GTK+ version         - $with_gtk"
 echo "  Path to rgb.txt      - $with_rgb"
 echo "  HTML widget          - $have_html"
+echo "  Spell checking       - $have_spell"
 echo "  Icon browser         - $build_ib"
 echo

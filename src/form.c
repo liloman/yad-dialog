@@ -1078,6 +1078,15 @@ form_create_widget (GtkWidget * dlg)
                 gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (e), GTK_WRAP_WORD_CHAR);
                 gtk_container_add (GTK_CONTAINER (sw), e);
 
+#ifdef HAVE_SPELL
+                if (options.common_data.enable_spell)
+                  {
+                    GtkSpellChecker *spell = gtk_spell_checker_new ();
+                    gtk_spell_checker_set_language (spell, options.common_data.spell_lang, NULL);
+                    gtk_spell_checker_attach (spell, GTK_TEXT_VIEW (e));
+                  }
+#endif
+
 #if !GTK_CHECK_VERSION(3,0,0)
                 gtk_table_attach (GTK_TABLE (tbl), b, col * 2, 2 + col * 2, row, row + 1,
                                   GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 5, 5);
