@@ -499,6 +499,15 @@ text_create_widget (GtkWidget * dlg)
       pango_font_description_free (fd);
     }
 
+#ifdef HAVE_SPELL
+  if (options.common_data.enable_spell)
+    {
+      GtkSpellChecker *spell = gtk_spell_checker_new ();
+      gtk_spell_checker_set_language (spell, options.common_data.spell_lang, NULL);
+      gtk_spell_checker_attach (spell, GTK_TEXT_VIEW (text_view));
+    }
+#endif
+
   /* Add submit on ctrl+enter */
   g_signal_connect (text_view, "key-press-event", G_CALLBACK (key_press_cb), dlg);
 

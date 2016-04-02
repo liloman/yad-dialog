@@ -191,6 +191,12 @@ static GOptionEntry common_options[] = {
     N_("Identifier of embedded dialogs"), N_("KEY") },
   { "complete", 0, 0, G_OPTION_ARG_CALLBACK, set_complete_type,
     N_("Set extended completion for entries (any, all, or regex)"), N_("TYPE") },
+#ifdef HAVE_SPELL
+  { "enable-spell", 0, 0, G_OPTION_ARG_NONE, &options.common_data.enable_spell,
+    N_("Enable spell check for text"), NULL },
+  { "spell-lang", 0, 0, G_OPTION_ARG_STRING, &options.common_data.spell_lang,
+    N_("Set spell checking language"), N_("LANGUAGE") },
+#endif
   { NULL }
 };
 
@@ -1279,6 +1285,10 @@ yad_options_init (void)
   options.common_data.filters = NULL;
   options.common_data.key = -1;
   options.common_data.complete = YAD_COMPLETE_SIMPLE;
+#ifdef HAVE_SPELL
+  options.common_data.enable_spell = FALSE;
+  options.common_data.spell_lang = NULL;
+#endif
 
   /* Initialize calendar data */
   options.calendar_data.day = -1;

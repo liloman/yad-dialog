@@ -402,6 +402,10 @@ typedef struct {
   YadCompletionType complete;
   GList *filters;
   key_t key;
+#ifdef HAVE_SPELL
+  gboolean enable_spell;
+  gchar *spell_lang;
+#endif
 } YadCommonData;
 
 typedef struct {
