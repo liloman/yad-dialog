@@ -143,6 +143,7 @@ entry_create_widget (GtkWidget * dlg)
       max = 65535.0;
       step = 1.0;
       prec = 0;
+      val = 0.0;
 
       if (options.extra_data && options.extra_data[0])
         {
@@ -185,9 +186,9 @@ entry_create_widget (GtkWidget * dlg)
               g_printerr (_("Initial value greater than maximum.\n"));
               val = max;
             }
-
-          gtk_spin_button_set_value (GTK_SPIN_BUTTON (c), val);
         }
+
+      gtk_spin_button_set_value (GTK_SPIN_BUTTON (c), val);
     }
   else if (!options.entry_data.completion && options.extra_data && *options.extra_data)
     {
