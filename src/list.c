@@ -557,16 +557,6 @@ fill_data (gint n_columns)
         }
 
       gtk_widget_thaw_child_notify (list_view);
-
-      if (settings.always_selected)
-        {
-          GtkTreeIter it;
-          GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list_view));
-          GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (list_view));
-
-          gtk_tree_model_get_iter_first (model, &it);
-          gtk_tree_selection_select_iter (sel, &it);
-        }
     }
 
   if (options.common_data.listen || !(options.extra_data && *options.extra_data))
@@ -1042,6 +1032,23 @@ list_create_widget (GtkWidget * dlg)
   /* add row separator function */
   if (options.list_data.sep_column > 0)
     gtk_tree_view_set_row_separator_func (GTK_TREE_VIEW (list_view), row_sep_func, NULL, NULL);
+
+  /* manage initial selection */
+  gtk_widget_show_all (w);
+  if (settings.always_selected)
+    {
+      GtkTreeIter it;
+      GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list_view));
+      GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (list_view));
+
+      gtk_tree_model_get_iter_first (model, &it);
+      gtk_tree_selection_select_iter (sel, &it);
+    }
+  else
+    {
+      GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list_view));
+      gtk_tree_selection_unselect_all (sel);
+    }
 
   return w;
 }
