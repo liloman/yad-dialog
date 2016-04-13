@@ -28,8 +28,8 @@
 #define HEADER_GAP (3*72/25.4)
 #define HEADER_FONT "Sans 11"
 
-#define FONTNAME "Sans"
-#define FONTSIZE 12.0
+#define FONTNAME "Monospace"
+#define FONTSIZE 11.0
 
 static gchar **text;
 static gint nlines, npages;
