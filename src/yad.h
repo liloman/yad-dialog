@@ -289,6 +289,9 @@ typedef struct {
   gboolean single_click;
   guint width;
   gchar *term;
+#ifdef HAVE_GIO
+  gboolean monitor;
+#endif
 } YadIconsData;
 
 typedef struct {

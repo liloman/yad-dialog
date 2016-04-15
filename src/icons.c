@@ -378,6 +378,15 @@ read_dir ()
   g_dir_close (dir);
 }
 
+#ifdef HAVE_GIO
+static void
+dir_changed_cb (GFileMonitor *mon, GFile *file, GFile *ofile, GFileMonitorEvent ev, gpointer data)
+{
+  if (ev == G_FILE_MONITOR_EVENT_DELETED || ev == G_FILE_MONITOR_EVENT_CREATED)
+    read_dir ();
+}
+#endif
+
 GtkWidget *
 icons_create_widget (GtkWidget * dlg)
 {
@@ -456,6 +465,20 @@ icons_create_widget (GtkWidget * dlg)
     g_signal_connect (G_OBJECT (icon_view), "item-activated", G_CALLBACK (activate_cb), NULL);
   else
     g_signal_connect (G_OBJECT (icon_view), "row-activated", G_CALLBACK (activate_cb), NULL);
+
+#ifdef HAVE_GIO
+  /* start file monitor */
+  if (options.icons_data.monitor && options.icons_data.directory)
+    {
+      GFile *file = g_file_new_for_path (options.icons_data.directory);
+      if (file)
+        {
+          GFileMonitor *mon = g_file_monitor_directory (file, 0, NULL, NULL);
+          g_signal_connect (G_OBJECT (mon), "changed", G_CALLBACK (dir_changed_cb), NULL);
+          g_object_unref (file);
+        }
+    }
+#endif
 
   gtk_container_add (GTK_CONTAINER (w), icon_view);
 

@@ -352,6 +352,10 @@ static GOptionEntry icons_options[] = {
     N_("Sort items in descending order"), NULL },
   { "single-click", 0, 0, G_OPTION_ARG_NONE, &options.icons_data.single_click,
     N_("Activate items by single click"), NULL },
+#ifdef HAVE_GIO
+  { "monitor", 0, 0, G_OPTION_ARG_NONE, &options.icons_data.monitor,
+    N_("Watch fot changes in directory"), NULL },
+#endif
   { NULL }
 };
 
@@ -1359,6 +1363,9 @@ yad_options_init (void)
   options.icons_data.sort_by_name = FALSE;
   options.icons_data.descend = FALSE;
   options.icons_data.single_click = FALSE;
+#ifdef HAVE_GIO
+  options.icons_data.monitor = FALSE;
+#endif
 
   /* Initialize list data */
   options.list_data.columns = NULL;
