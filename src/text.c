@@ -463,6 +463,7 @@ GtkWidget *
 text_create_widget (GtkWidget * dlg)
 {
   GtkWidget *w;
+  PangoFontDescription *fd;
 
   w = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (w), GTK_SHADOW_ETCHED_IN);
@@ -513,16 +514,18 @@ text_create_widget (GtkWidget * dlg)
 #endif
     }
 
+  /* set font */
   if (options.common_data.font)
-    {
-      PangoFontDescription *fd = pango_font_description_from_string (options.common_data.font);
+    fd = pango_font_description_from_string (options.common_data.font);
+  else
+    fd = pango_font_description_from_string ("Monospace");
+
 #if GTK_CHECK_VERSION(3,0,0)
-      gtk_widget_override_font (text_view, fd);
+  gtk_widget_override_font (text_view, fd);
 #else
-      gtk_widget_modify_font (text_view, fd);
+  gtk_widget_modify_font (text_view, fd);
 #endif
-      pango_font_description_free (fd);
-    }
+  pango_font_description_free (fd);
 
 #ifdef HAVE_SPELL
   if (options.common_data.enable_spell)
