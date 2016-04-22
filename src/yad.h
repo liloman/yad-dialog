@@ -38,6 +38,13 @@
 #include <gtkspell/gtkspell.h>
 #endif
 
+#ifdef HAVE_SOURCEVIEW
+#include <gtksourceview/gtksourceview.h>
+#include <gtksourceview/gtksourcebuffer.h>
+#include <gtksourceview/gtksourcelanguage.h>
+#include <gtksourceview/gtksourcelanguagemanager.h>
+#endif
+
 G_BEGIN_DECLS
 
 #define YAD_SETTINGS_FILE "yad.conf"

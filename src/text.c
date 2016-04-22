@@ -25,7 +25,7 @@
 #include "yad.h"
 
 static GtkWidget *text_view;
-static GtkTextBuffer *text_buffer;
+static GObject *text_buffer;
 static GtkTextTag *tag;
 static GdkCursor *hand, *normal;
 static gchar *pattern = NULL;
@@ -46,12 +46,12 @@ do_search (GtkWidget * e, GtkWidget * w)
   gtk_widget_destroy (w);
   gtk_widget_queue_draw (text_view);
 
-  if (new_search || gtk_text_buffer_get_modified (text_buffer))
+  if (new_search || gtk_text_buffer_get_modified (GTK_TEXT_BUFFER (text_buffer)))
     {
       /* get the text */
       g_free (text);
-      gtk_text_buffer_get_bounds (text_buffer, &begin, &end);
-      text = gtk_text_buffer_get_text (text_buffer, &begin, &end, FALSE);
+      gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (text_buffer), &begin, &end);
+      text = gtk_text_buffer_get_text (GTK_TEXT_BUFFER (text_buffer), &begin, &end, FALSE);
       offset = 0;
       /* compile new regex */
       if (regex)
@@ -71,10 +71,10 @@ do_search (GtkWidget * e, GtkWidget * w)
       spos = g_utf8_pointer_to_offset (text, text + sp + offset);
       epos = g_utf8_pointer_to_offset (text, text + ep + offset);
 
-      gtk_text_buffer_get_iter_at_offset (text_buffer, &begin, spos);
-      gtk_text_buffer_get_iter_at_offset (text_buffer, &end, epos);
+      gtk_text_buffer_get_iter_at_offset (GTK_TEXT_BUFFER (text_buffer), &begin, spos);
+      gtk_text_buffer_get_iter_at_offset (GTK_TEXT_BUFFER (text_buffer), &end, epos);
 
-      gtk_text_buffer_select_range (text_buffer, &begin, &end);
+      gtk_text_buffer_select_range (GTK_TEXT_BUFFER (text_buffer), &begin, &end);
       gtk_text_view_scroll_to_iter (GTK_TEXT_VIEW (text_view), &begin, 0, FALSE, 0, 0);
 
       offset += epos;
@@ -336,31 +336,31 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
           GtkTextIter start, end;
 
           /* clear text if ^L received */
-          gtk_text_buffer_get_start_iter (text_buffer, &start);
-          gtk_text_buffer_get_end_iter (text_buffer, &end);
-          gtk_text_buffer_delete (text_buffer, &start, &end);
+          gtk_text_buffer_get_start_iter (GTK_TEXT_BUFFER (text_buffer), &start);
+          gtk_text_buffer_get_end_iter (GTK_TEXT_BUFFER (text_buffer), &end);
+          gtk_text_buffer_delete (GTK_TEXT_BUFFER (text_buffer), &start, &end);
         }
       else if (string->len > 0)
         {
           GtkTextIter end;
 
-          gtk_text_buffer_get_end_iter (text_buffer, &end);
+          gtk_text_buffer_get_end_iter (GTK_TEXT_BUFFER (text_buffer), &end);
 
           if (!g_utf8_validate (string->str, string->len, NULL))
             {
               gchar *utftext =
                 g_convert_with_fallback (string->str, string->len, "UTF-8", "ISO-8859-1", NULL, NULL, NULL, NULL);
-              gtk_text_buffer_insert (text_buffer, &end, utftext, -1);
+              gtk_text_buffer_insert (GTK_TEXT_BUFFER (text_buffer), &end, utftext, -1);
               g_free (utftext);
             }
           else
-            gtk_text_buffer_insert (text_buffer, &end, string->str, string->len);
+            gtk_text_buffer_insert (GTK_TEXT_BUFFER (text_buffer), &end, string->str, string->len);
 
           if (options.text_data.tail)
             {
               while (gtk_events_pending ())
                 gtk_main_iteration ();
-              gtk_text_buffer_get_end_iter (text_buffer, &end);
+              gtk_text_buffer_get_end_iter (GTK_TEXT_BUFFER (text_buffer), &end);
               gtk_text_view_scroll_to_iter (GTK_TEXT_VIEW (text_view), &end, 0, FALSE, 0, 0);
             }
         }
@@ -375,6 +375,9 @@ static void
 fill_buffer_from_file ()
 {
   GtkTextIter iter, end;
+#ifdef HAVE_SOURCEVIEW
+  GtkSourceLanguage *lang;
+#endif
   FILE *f;
   gchar buf[2048];
   gint remaining = 0;
@@ -390,7 +393,7 @@ fill_buffer_from_file ()
       return;
     }
 
-  gtk_text_buffer_get_iter_at_offset (text_buffer, &iter, 0);
+  gtk_text_buffer_get_iter_at_offset (GTK_TEXT_BUFFER (text_buffer), &iter, 0);
 
   while (!feof (f))
     {
@@ -404,7 +407,7 @@ fill_buffer_from_file ()
       g_utf8_validate (buf, count + remaining, &leftover);
 
       g_assert (g_utf8_validate (buf, leftover - buf, NULL));
-      gtk_text_buffer_insert (text_buffer, &iter, buf, leftover - buf);
+      gtk_text_buffer_insert (GTK_TEXT_BUFFER (text_buffer), &iter, buf, leftover - buf);
 
       remaining = (buf + remaining + count) - leftover;
       memmove (buf, leftover, remaining);
@@ -423,9 +426,14 @@ fill_buffer_from_file ()
    * a newline, so we delete to the end of the buffer to clean up.
    */
 
-  gtk_text_buffer_get_end_iter (text_buffer, &end);
-  gtk_text_buffer_delete (text_buffer, &iter, &end);
-  gtk_text_buffer_set_modified (text_buffer, FALSE);
+  gtk_text_buffer_get_end_iter (GTK_TEXT_BUFFER (text_buffer), &end);
+  gtk_text_buffer_delete (GTK_TEXT_BUFFER (text_buffer), &iter, &end);
+  gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (text_buffer), FALSE);
+
+#ifdef HAVE_SOURCEVIEW
+  lang = gtk_source_language_manager_guess_language (gtk_source_language_manager_get_default (), options.common_data.uri, NULL);
+  gtk_source_buffer_set_language (GTK_SOURCE_BUFFER (text_buffer), lang);
+#endif
 }
 
 static void
@@ -448,10 +456,15 @@ text_create_widget (GtkWidget * dlg)
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (w), GTK_SHADOW_ETCHED_IN);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (w), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-  text_view = gtk_text_view_new ();
+#ifdef HAVE_SOURCEVIEW
+  printf ("got it\n");
+  text_buffer = (GObject *) gtk_source_buffer_new (NULL);
+  text_view = gtk_source_view_new_with_buffer (GTK_SOURCE_BUFFER (text_buffer));
+#else
+  text_buffer = (GObject *) gtk_text_buffer_new (NULL);
+  text_view = gtk_text_view_new_with_buffer (GTK_TEXT_BUFFER (text_buffer));
+#endif
   gtk_widget_set_name (text_view, "yad-text-widget");
-  text_buffer = gtk_text_buffer_new (NULL);
-  gtk_text_view_set_buffer (GTK_TEXT_VIEW (text_view), text_buffer);
   gtk_text_view_set_justification (GTK_TEXT_VIEW (text_view), options.text_data.justify);
   gtk_text_view_set_left_margin (GTK_TEXT_VIEW (text_view), options.text_data.margins);
   gtk_text_view_set_right_margin (GTK_TEXT_VIEW (text_view), options.text_data.margins);
@@ -520,7 +533,7 @@ text_create_widget (GtkWidget * dlg)
                            G_REGEX_CASELESS | G_REGEX_OPTIMIZE | G_REGEX_EXTENDED, G_REGEX_MATCH_NOTEMPTY, NULL);
 
       /* Create text tag for URI */
-      tag = gtk_text_buffer_create_tag (text_buffer, NULL,
+      tag = gtk_text_buffer_create_tag (GTK_TEXT_BUFFER (text_buffer), NULL,
                                         "foreground", options.text_data.uri_color,
                                         "underline", PANGO_UNDERLINE_SINGLE,
                                         NULL);
@@ -547,8 +560,8 @@ text_create_widget (GtkWidget * dlg)
       /* place cursor at start of file */
       GtkTextIter iter;
 
-      gtk_text_buffer_get_iter_at_line (text_buffer, &iter, 0);
-      gtk_text_buffer_place_cursor (text_buffer, &iter);
+      gtk_text_buffer_get_iter_at_line (GTK_TEXT_BUFFER (text_buffer), &iter, 0);
+      gtk_text_buffer_place_cursor (GTK_TEXT_BUFFER (text_buffer), &iter);
     }
 
   return w;
@@ -563,8 +576,8 @@ text_print_result (void)
   if (!options.common_data.editable)
     return;
 
-  gtk_text_buffer_get_bounds (text_buffer, &start, &end);
-  text = gtk_text_buffer_get_text (text_buffer, &start, &end, 0);
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (text_buffer), &start, &end);
+  text = gtk_text_buffer_get_text (GTK_TEXT_BUFFER (text_buffer), &start, &end, 0);
   g_print ("%s", text);
   g_free (text);
 }

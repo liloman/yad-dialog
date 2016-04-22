@@ -30,6 +30,7 @@ case "$with_gtk" in
         GTK_PRINT="gtk+-unix-print-3.0"
         WEBKIT="webkitgtk-3.0"
         SPELL="gtkspell3-3.0"
+        SOURCEVIEW="gtksourceview-3.0"
         ;;
     gtk2)
         GTK_MODULE="gtk+-2.0"
@@ -37,6 +38,7 @@ case "$with_gtk" in
         GTK_PRINT="gtk+-unix-print-2.0"
         WEBKIT="webkit-1.0"
         SPELL="gtkspell3-2.0"
+        SOURCEVIEW="gtksourceview-2.0"
         ;;
 esac
 PKG_CHECK_MODULES([GTK], [$GTK_MODULE >= $GTK_REQUIRED $GTK_PRINT])
@@ -88,11 +90,10 @@ if test x$have_gio = xyes; then
     AC_DEFINE([HAVE_GIO], [1], [Define this if you have glib gio framework])
 fi
 
-
 dnl spell check
 AC_ARG_ENABLE([spell],
 	[AS_HELP_STRING([--enable-spell],
-			[Build YAD with Spell check support])],
+			[Build YAD with Spell check support (default - no)])],
 	[with_spell=$enableval], [with_spell=no])
 if test x$with_spell = xyes; then
     PKG_CHECK_MODULES([SPELL], [$SPELL], [have_spell=yes], [have_spell=no])
@@ -104,6 +105,23 @@ AC_SUBST([SPELL_LIBS])
 
 if test x$have_spell = xyes; then
     AC_DEFINE([HAVE_SPELL], [1], [Define this if you need spell check support])
+fi
+
+dnl sourceview
+AC_ARG_ENABLE([sourceview],
+	[AS_HELP_STRING([--enable-sourceview],
+			[Build YAD with GtkSourceView support (default - no)])],
+	[with_sourceview=$enableval], [with_sourceview=no])
+if test x$with_spell = xyes; then
+    PKG_CHECK_MODULES([SOURCEVIEW], [$SOURCEVIEW], [have_sourceview=yes], [have_sourceview=no])
+else
+    have_sourceview=no
+fi
+AC_SUBST([SOURCEVIEW_CFLAGS])
+AC_SUBST([SOURCEVIEW_LIBS])
+
+if test x$have_sourceview = xyes; then
+    AC_DEFINE([HAVE_SOURCEVIEW], [1], [Define this if you need GtkSourceView support])
 fi
 
 dnl icon browser
@@ -155,6 +173,7 @@ echo "  GTK+ version         - $with_gtk"
 echo "  Path to rgb.txt      - $with_rgb"
 echo "  HTML widget          - $have_html"
 echo "  Spell checking       - $have_spell"
+echo "  GtkSourceView        - $have_sourceview"
 echo "  GIO support          - $have_gio"
 echo "  Icon browser         - $build_ib"
 echo
