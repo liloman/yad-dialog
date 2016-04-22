@@ -368,6 +368,15 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
       g_string_free (string, TRUE);
     }
 
+#ifdef HAVE_SOURCEVIEW
+  if (options.source_data.lang)
+    {
+      GtkSourceLanguage *lang = gtk_source_language_manager_get_language (gtk_source_language_manager_get_default (),
+                                                                          options.source_data.lang);
+      gtk_source_buffer_set_language (GTK_SOURCE_BUFFER (text_buffer), lang);
+    }
+#endif
+
   return TRUE;
 }
 
@@ -431,7 +440,10 @@ fill_buffer_from_file ()
   gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (text_buffer), FALSE);
 
 #ifdef HAVE_SOURCEVIEW
-  lang = gtk_source_language_manager_guess_language (gtk_source_language_manager_get_default (), options.common_data.uri, NULL);
+  if (options.source_data.lang)
+    lang = gtk_source_language_manager_get_language (gtk_source_language_manager_get_default (), options.source_data.lang);
+  else
+    lang = gtk_source_language_manager_guess_language (gtk_source_language_manager_get_default (), options.common_data.uri, NULL);
   gtk_source_buffer_set_language (GTK_SOURCE_BUFFER (text_buffer), lang);
 #endif
 }

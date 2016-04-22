@@ -396,6 +396,12 @@ typedef struct {
   gchar *uri_color;
 } YadTextData;
 
+#ifdef HAVE_SOURCEVIEW
+typedef struct {
+  gchar *lang;
+} YadSourceData;
+#endif
+
 typedef struct {
   gchar *uri;
   gchar *font;
@@ -449,6 +455,9 @@ typedef struct {
   YadProgressData progress_data;
   YadScaleData scale_data;
   YadTextData text_data;
+#ifdef HAVE_SOURCEVIEW
+  YadSourceData source_data;
+#endif
 
   gchar *gtkrc_file;
 

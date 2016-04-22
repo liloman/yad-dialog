@@ -555,6 +555,14 @@ static GOptionEntry text_options[] = {
   { NULL }
 };
 
+#ifdef HAVE_SOURCEVIEW
+static GOptionEntry source_options[] = {
+  { "lang", 0, 0, G_OPTION_ARG_STRING, &options.source_data.lang,
+    N_("Use specified langauge for syntax highlighting"), N_("LANG") },
+  { NULL }
+};
+#endif
+
 static GOptionEntry filter_options[] = {
   { "file-filter", 0, 0, G_OPTION_ARG_CALLBACK, add_file_filter,
     N_("Sets a filename filter"), N_("NAME | PATTERN1 PATTERN2 ...") },
@@ -1451,6 +1459,11 @@ yad_options_init (void)
   options.text_data.uri = FALSE;
   options.text_data.hide_cursor = TRUE;
   options.text_data.uri_color = "blue";
+
+#ifdef HAVE_SOURCEVIEW
+  /* Initialize text data */
+  options.source_data.lang = NULL;
+#endif
 }
 
 GOptionContext *
@@ -1591,6 +1604,14 @@ yad_create_context (void)
   g_option_group_add_entries (a_group, text_options);
   g_option_group_set_translation_domain (a_group, GETTEXT_PACKAGE);
   g_option_context_add_group (tmp_ctx, a_group);
+
+#ifdef HAVE_SOURCEVIEW
+  /* Adds sourceview option entries */
+  a_group = g_option_group_new ("source", _("SourceView options"), _("Show SourceView options"), NULL, NULL);
+  g_option_group_add_entries (a_group, source_options);
+  g_option_group_set_translation_domain (a_group, GETTEXT_PACKAGE);
+  g_option_context_add_group (tmp_ctx, a_group);
+#endif
 
   /* Adds file filters option entries */
   a_group = g_option_group_new ("filter", _("File filter options"), _("Show file filter options"), NULL, NULL);
