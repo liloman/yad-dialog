@@ -482,7 +482,6 @@ typedef struct {
   guint timeout;
   gchar *to_indicator;
   gboolean show_remain;
-  gboolean always_selected;
   gboolean combo_always_editable;
   gboolean ignore_unknown;
   GtkIconTheme *icon_theme;

@@ -1,3 +1,102 @@
+2016-04-26 10:29  v1c0nt
+
+	* src/form.c: quote argument in form button callbacks
+
+2016-04-26 10:22  v1c0nt
+
+	* src/form.c: quote argument in form button callbacks
+
+2016-04-22 14:35  v1c0nt
+
+	* configure.ac: bump version
+
+2016-04-22 14:35  v1c0nt
+
+	* src/text.c: use Monospace as default font for text-info dialog
+
+2016-04-22 14:32  v1c0nt
+
+	* src/option.c, src/text.c, src/yad.h: add --lang option to
+	  source-info
+
+2016-04-22 14:07  v1c0nt
+
+	* configure.ac, src/Makefile.am, src/text.c, src/yad.h: add initial
+	  support of gtksourceview
+
+2016-04-15 03:58  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/icons.c, src/option.c,
+	  src/yad.h: add --monitor option to icons dialog
+
+2016-04-14 16:59  v1c0nt
+
+	* configure.ac: prepare for dir monitoring
+
+2016-04-14 15:19  v1c0nt
+
+	* src/icons.c: some cleanups in icon dialog
+
+2016-04-13 18:16  v1c0nt
+
+	* src/list.c, src/util.c:
+
+2016-04-13 15:04  v1c0nt
+
+	* src/print.c: do not close print dialog when preview is clicked
+
+2016-04-13 09:19  v1c0nt
+
+	* src/print.c: change default font for text in print dialog
+
+2016-04-04 09:18  v1c0nt
+
+	* README.md, src/entry.c: fix setting initial value for numeric
+	  text entry
+
+2016-04-03 02:44  v1c0nt
+
+	* Makefile.am, data/Makefile.am:
+
+2016-04-03 02:40  v1c0nt
+
+	* README, README.md, data/get-lang.c:
+
+2016-04-02 11:23  v1c0nt
+
+	* configure.ac, src/Makefile.am, src/form.c, src/yad.h: fix spell
+	  buildings
+
+2016-04-02 11:20  v1c0nt
+
+	* configure.ac, data/yad.1, po/ru.po, po/uk.po, src/option.c,
+	  src/text.c, src/yad.h: add optional spell checking
+
+2016-03-26 06:51  v1c0nt
+
+	* src/main.c: use CENTER_ALWAYS when --center is specified
+
+2016-03-25 06:07  v1c0nt
+
+	* TODO, data/yad.1, po/ru.po, po/uk.po, src/list.c, src/option.c,
+	  src/yad.h: add --no-selection option to list dialog
+
+2016-03-21 06:23  v1c0nt
+
+	* TODO: update TODO
+
+2016-03-20 20:36  v1c0nt
+
+	* TODO: update TODO
+
+2016-03-20 20:32  v1c0nt
+
+	* TODO: update TODO
+
+2016-03-20 10:54  v1c0nt
+
+	* ChangeLog, NEWS: release 0.35.0
+
 2016-03-20 10:52  v1c0nt
 
 	* data/yad.1, src/list.c, src/option.c, src/yad.h: fuck, forget to

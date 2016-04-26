@@ -989,6 +989,28 @@ list_create_widget (GtkWidget * dlg)
 
   add_columns (n_columns);
 
+  /* add popup menu */
+  if (options.common_data.editable)
+    g_signal_connect_swapped (G_OBJECT (list_view), "button_press_event", G_CALLBACK (popup_menu_cb), NULL);
+
+  /* add tooltip column */
+  if (options.list_data.tooltip_column > 0)
+    gtk_tree_view_set_tooltip_column (GTK_TREE_VIEW (list_view), options.list_data.tooltip_column - 1);
+
+  /* set search function for regex search */
+  if (options.list_data.search_column != -1 && options.list_data.regex_search)
+    {
+      YadColumn *col = (YadColumn *) g_slist_nth_data (options.list_data.columns,
+                                                       options.list_data.search_column);
+
+      if (col->type == YAD_COLUMN_TEXT)
+        gtk_tree_view_set_search_equal_func (GTK_TREE_VIEW (list_view), regex_search, NULL, NULL);
+    }
+
+  /* add row separator function */
+  if (options.list_data.sep_column > 0)
+    gtk_tree_view_set_row_separator_func (GTK_TREE_VIEW (list_view), row_sep_func, NULL, NULL);
+
   if (options.list_data.no_selection)
     {
       GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list_view));
@@ -1009,46 +1031,8 @@ list_create_widget (GtkWidget * dlg)
       g_signal_connect (G_OBJECT (list_view), "key-press-event", G_CALLBACK (list_activate_cb), dlg);
     }
 
-  /* add popup menu */
-  if (options.common_data.editable)
-    g_signal_connect_swapped (G_OBJECT (list_view), "button_press_event", G_CALLBACK (popup_menu_cb), NULL);
-
+  /* load data */
   fill_data (n_columns);
-
-  /* add tooltip column */
-  if (options.list_data.tooltip_column > 0)
-    gtk_tree_view_set_tooltip_column (GTK_TREE_VIEW (list_view), options.list_data.tooltip_column - 1);
-
-  /* set search function for regex search */
-  if (options.list_data.search_column != -1 && options.list_data.regex_search)
-    {
-      YadColumn *col = (YadColumn *) g_slist_nth_data (options.list_data.columns,
-                                                       options.list_data.search_column);
-
-      if (col->type == YAD_COLUMN_TEXT)
-        gtk_tree_view_set_search_equal_func (GTK_TREE_VIEW (list_view), regex_search, NULL, NULL);
-    }
-
-  /* add row separator function */
-  if (options.list_data.sep_column > 0)
-    gtk_tree_view_set_row_separator_func (GTK_TREE_VIEW (list_view), row_sep_func, NULL, NULL);
-
-  /* manage initial selection */
-  gtk_widget_show_all (w);
-  if (settings.always_selected)
-    {
-      GtkTreeIter it;
-      GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list_view));
-      GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (list_view));
-
-      gtk_tree_model_get_iter_first (model, &it);
-      gtk_tree_selection_select_iter (sel, &it);
-    }
-  else
-    {
-      GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list_view));
-      gtk_tree_selection_unselect_all (sel);
-    }
 
   return w;
 }
