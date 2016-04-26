@@ -42,11 +42,17 @@ yad_about (void)
 
   gchar *comments = g_strdup_printf (_("Yet Another Dialog\n"
                                        "(show dialog boxes from shell scripts)\n"
-                                       "\nBased on Zenity code\n"
+                                       "\nBased on Zenity code\n\n"
 #ifdef HAVE_HTML
-                                       "\nBuilt with Webkit\n"
+                                       "Built with Webkit\n"
 #endif
-                                       "\nUsing GTK+ %d.%d.%d\n"),
+#ifdef HAVE_SOURCEVIEW
+                                       "Built with GtkSourceView\n"
+#endif
+#ifdef HAVE_SPELL
+                                       "Built with GtkSpell\n"
+#endif
+                                       "Using GTK+ %d.%d.%d\n"),
                                      gtk_major_version, gtk_minor_version, gtk_micro_version);
 
   dialog = gtk_about_dialog_new ();
