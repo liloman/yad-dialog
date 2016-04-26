@@ -1,3 +1,14 @@
+Version 0.36.0
+    - add --no-selection option to list dialog
+    - improve --center option
+    - add spell checking support for text field in form and text-info dialog
+    - add gtksourceview support to text-info dialog
+    - fix setting initial value for numeric text entry in entry dialog
+    - do not close print dialog when preview button is clicked
+    - add --monitor option to icon dialog
+    - change default font for text-info and print text files to Monospace
+    - quote field values for button callback in form dialog
+
 Version 0.35.0
     - add BAR column type to list dialog
     - add SZ column type to list dialog (displays human readable sizes)

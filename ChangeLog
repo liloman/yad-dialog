@@ -1,3 +1,19 @@
+2016-04-26 13:12  v1c0nt
+
+	* configure.ac: bump version to 0.36.0. prepare to release
+
+2016-04-26 13:05  v1c0nt
+
+	* po/ru.po, po/uk.po: update translations
+
+2016-04-26 12:58  v1c0nt
+
+	* data/yad.1, src/about.c: improve about dialog
+
+2016-04-26 10:49  v1c0nt
+
+	* ChangeLog, src/list.c, src/util.c, src/yad.h: cleanup
+
 2016-04-26 10:29  v1c0nt
 
 	* src/form.c: quote argument in form button callbacks
