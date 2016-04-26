@@ -109,8 +109,8 @@ expand_action (gchar * cmd)
                     GtkColorButton *cb = GTK_COLOR_BUTTON (g_slist_nth_data (fields, num));
 
                     gtk_color_button_get_color (cb, &c);
-                    buf = gdk_color_to_string (&c);
-                    arg = g_strdup_printf ("'\%s'", buf);
+                    buf = get_color (&c, gtk_color_button_get_alpha (cb));
+                    arg = g_shell_quote (buf ? buf : "");
                     g_free (buf);
                     break;
                   }
@@ -1241,7 +1241,11 @@ form_print_field (guint fn)
         gtk_color_button_get_color (cb, &c);
         cs = get_color (&c, gtk_color_button_get_alpha (cb));
         if (options.common_data.quoted_output)
-          g_printf ("'%s'%s", cs, options.common_data.separator);
+          {
+            buf = g_shell_quote (cs ? cs : "");
+            g_printf ("%s%s", buf, options.common_data.separator);
+            g_free (buf);
+          }
         else
           g_printf ("%s%s", cs, options.common_data.separator);
         g_free (cs);
