@@ -46,7 +46,7 @@ expand_action (gchar * cmd)
           if (g_ascii_isdigit (cmd[i]))
             {
               YadField *fld;
-              gchar *buf;
+              gchar *buf, *arg;
               guint num, j = i;
 
               /* get field num */
@@ -59,7 +59,9 @@ expand_action (gchar * cmd)
                 num--;
               else
                 continue;
+
               /* get field value */
+              arg = NULL;
               fld = g_slist_nth_data (options.form_data.fields, num);
               switch (fld->type)
                 {
@@ -72,15 +74,14 @@ expand_action (gchar * cmd)
                 case YAD_FIELD_MFILE:
                 case YAD_FIELD_MDIR:
                 case YAD_FIELD_DATE:
-                  g_string_append (xcmd, gtk_entry_get_text (GTK_ENTRY (g_slist_nth_data (fields, num))));
+                  arg = g_shell_quote (gtk_entry_get_text (GTK_ENTRY (g_slist_nth_data (fields, num))));
                   break;
                 case YAD_FIELD_NUM:
-                  g_string_append_printf (xcmd, "%.*f", options.common_data.float_precision,
-                                          gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, num))));
+                  arg = g_strdup_printf ("%.*f", options.common_data.float_precision,
+                                         gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, num))));
                   break;
                 case YAD_FIELD_CHECK:
-                  g_string_append (xcmd, gtk_toggle_button_get_active
-                                   (GTK_TOGGLE_BUTTON (g_slist_nth_data (fields, num))) ? "TRUE" : "FALSE");
+                  arg = g_strdup (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (g_slist_nth_data (fields, num))) ? "TRUE" : "FALSE");
                   break;
                 case YAD_FIELD_COMBO:
                 case YAD_FIELD_COMBO_ENTRY:
@@ -89,21 +90,18 @@ expand_action (gchar * cmd)
 #else
                   buf = gtk_combo_box_get_active_text (GTK_COMBO_BOX (g_slist_nth_data (fields, num)));
 #endif
-                  g_string_append (xcmd, buf ? buf : "");
+                  arg = g_shell_quote (buf ? buf : "");
                   g_free (buf);
                   break;
                 case YAD_FIELD_SCALE:
-                  g_string_append_printf (xcmd, "%d", (gint) gtk_range_get_value
-                                          (GTK_RANGE (g_slist_nth_data (fields, num))));
+                  arg = g_strdup_printf ("%d", (gint) gtk_range_get_value (GTK_RANGE (g_slist_nth_data (fields, num))));
                   break;
                 case YAD_FIELD_FILE:
                 case YAD_FIELD_DIR:
-                  g_string_append (xcmd,
-                                   gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (g_slist_nth_data (fields, num))));
+                  arg = g_shell_quote (gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (g_slist_nth_data (fields, num))));
                   break;
                 case YAD_FIELD_FONT:
-                  g_string_append (xcmd,
-                                   gtk_font_button_get_font_name (GTK_FONT_BUTTON (g_slist_nth_data (fields, num))));
+                  arg = g_shell_quote (gtk_font_button_get_font_name (GTK_FONT_BUTTON (g_slist_nth_data (fields, num))));
                   break;
                 case YAD_FIELD_COLOR:
                   {
@@ -111,26 +109,28 @@ expand_action (gchar * cmd)
                     GtkColorButton *cb = GTK_COLOR_BUTTON (g_slist_nth_data (fields, num));
 
                     gtk_color_button_get_color (cb, &c);
-                    buf = get_color (&c, gtk_color_button_get_alpha (cb));
-                    g_string_append (xcmd, buf ? buf : "");
+                    buf = gdk_color_to_string (&c);
+                    arg = g_strdup_printf ("'\%s'", buf);
                     g_free (buf);
                     break;
                   }
                 case YAD_FIELD_TEXT:
                   {
-                    gchar *txt;
                     GtkTextBuffer *tb;
                     GtkTextIter b, e;
 
                     tb = gtk_text_view_get_buffer (GTK_TEXT_VIEW (g_slist_nth_data (fields, num)));
                     gtk_text_buffer_get_bounds (tb, &b, &e);
                     buf = gtk_text_buffer_get_text (tb, &b, &e, FALSE);
-                    txt = escape_str (buf);
-                    g_string_append (xcmd, txt);
-                    g_free (txt);
+                    arg = escape_str (buf);
                     g_free (buf);
                   }
                 default: ;
+                }
+              if (arg)
+                {
+                  g_string_append (xcmd, arg);
+                  g_free (arg);
                 }
               i = j;
             }
