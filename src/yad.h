@@ -577,6 +577,7 @@ YadNTabs *get_tabs (key_t key, gboolean create);
 GtkWidget *get_label (gchar *str, guint border);
 
 gchar *escape_str (gchar *str);
+gchar * escape_quote (gchar *str);
 
 gboolean check_complete (GtkEntryCompletion *c, const gchar *key, GtkTreeIter *iter, gpointer data);
 

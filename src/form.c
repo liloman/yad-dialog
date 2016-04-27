@@ -74,7 +74,9 @@ expand_action (gchar * cmd)
                 case YAD_FIELD_MFILE:
                 case YAD_FIELD_MDIR:
                 case YAD_FIELD_DATE:
-                  arg = g_shell_quote (gtk_entry_get_text (GTK_ENTRY (g_slist_nth_data (fields, num))));
+                  buf = escape_quote ((gchar *) gtk_entry_get_text (GTK_ENTRY (g_slist_nth_data (fields, num))));
+                  arg = g_shell_quote (buf ? buf : "");
+                  g_free (buf);
                   break;
                 case YAD_FIELD_NUM:
                   arg = g_strdup_printf ("%.*f", options.common_data.float_precision,
@@ -118,12 +120,22 @@ expand_action (gchar * cmd)
                   {
                     GtkTextBuffer *tb;
                     GtkTextIter b, e;
+                    gchar *txt;
 
                     tb = gtk_text_view_get_buffer (GTK_TEXT_VIEW (g_slist_nth_data (fields, num)));
                     gtk_text_buffer_get_bounds (tb, &b, &e);
-                    buf = gtk_text_buffer_get_text (tb, &b, &e, FALSE);
-                    arg = escape_str (buf);
+                    txt = gtk_text_buffer_get_text (tb, &b, &e, FALSE);
+
+                    /* escape special chars */
+                    buf = escape_str (txt);
+                    g_free (txt);
+
+                    /* escape quotes */
+                    txt = escape_quote (buf);
                     g_free (buf);
+
+                    arg = g_shell_quote (txt ? txt : "");
+                    g_free (txt);
                   }
                 default: ;
                 }
@@ -337,9 +349,6 @@ static void
 button_clicked_cb (GtkButton * b, gchar * action)
 {
   static gchar *newline = NULL;
-
-  if (!newline)
-    newline = g_strcompress ("\n");
 
   if (action && action[0])
     {

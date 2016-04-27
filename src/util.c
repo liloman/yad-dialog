@@ -441,7 +441,7 @@ escape_str (gchar *str)
     return NULL;
 
   len = strlen (str);
-  res = (gchar *) calloc (len + 1, sizeof (gchar));
+  res = (gchar *) calloc (len * 2 + 1, sizeof (gchar));
 
   while (*buf)
     {
@@ -449,14 +449,45 @@ escape_str (gchar *str)
         {
         case '\n':
           len += 1;
-          res = (gchar *) realloc (res, len + 1);
           strcpy (res + i, "\\n");
           i += 2;
           break;
         case '\t':
           len += 1;
-          res = (gchar *) realloc (res, len + 1);
           strcpy (res + i, "\\t");
+          i += 2;
+          break;
+        default:
+          *(res + i) = *buf;
+          i++;
+          break;
+        }
+      buf++;
+    }
+  res[i] = '\0';
+
+  return res;
+}
+
+gchar *
+escape_quote (gchar *str)
+{
+  gchar *res, *buf = str;
+  guint i = 0, len;
+
+  if (!str)
+    return NULL;
+
+  len = strlen (str);
+  res = (gchar *) calloc (len * 2 + 1, sizeof (gchar));
+
+  while (*buf)
+    {
+      switch (*buf)
+        {
+        case '"':
+          len += 1;
+          strcpy (res + i, "\\\"");
           i += 2;
           break;
         default:
