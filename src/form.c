@@ -329,7 +329,8 @@ set_field_value (guint num, gchar * value)
 
     case YAD_FIELD_BUTTON:
     case YAD_FIELD_FULL_BUTTON:
-      g_signal_connect (G_OBJECT (w), "clicked", G_CALLBACK (button_clicked_cb), value);
+      /* need to create duplicate of value (make be leak) */
+      g_signal_connect (G_OBJECT (w), "clicked", G_CALLBACK (button_clicked_cb), g_strdup (value));
       break;
 
     case YAD_FIELD_TEXT:
@@ -348,8 +349,6 @@ set_field_value (guint num, gchar * value)
 static void
 button_clicked_cb (GtkButton * b, gchar * action)
 {
-  static gchar *newline = NULL;
-
   if (action && action[0])
     {
       if (action[0] == '@')
