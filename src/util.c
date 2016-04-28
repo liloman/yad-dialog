@@ -448,12 +448,10 @@ escape_str (gchar *str)
       switch (*buf)
         {
         case '\n':
-          len += 1;
           strcpy (res + i, "\\n");
           i += 2;
           break;
         case '\t':
-          len += 1;
           strcpy (res + i, "\\t");
           i += 2;
           break;
@@ -470,7 +468,7 @@ escape_str (gchar *str)
 }
 
 gchar *
-escape_quote (gchar *str)
+escape_char (gchar *str, gchar ch)
 {
   gchar *res, *buf = str;
   guint i = 0, len;
@@ -483,17 +481,15 @@ escape_quote (gchar *str)
 
   while (*buf)
     {
-      switch (*buf)
+      if (*buf == ch)
         {
-        case '"':
-          len += 1;
           strcpy (res + i, "\\\"");
           i += 2;
-          break;
-        default:
+        }
+      else
+        {
           *(res + i) = *buf;
           i++;
-          break;
         }
       buf++;
     }

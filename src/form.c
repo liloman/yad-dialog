@@ -72,7 +72,7 @@ expand_action (gchar * cmd)
                 case YAD_FIELD_MFILE:
                 case YAD_FIELD_MDIR:
                 case YAD_FIELD_DATE:
-                  buf = escape_quote ((gchar *) gtk_entry_get_text (GTK_ENTRY (g_slist_nth_data (fields, num))));
+                  buf = escape_char ((gchar *) gtk_entry_get_text (GTK_ENTRY (g_slist_nth_data (fields, num))), '"');
                   arg = g_shell_quote (buf ? buf : "");
                   g_free (buf);
                   break;
@@ -129,7 +129,7 @@ expand_action (gchar * cmd)
                     g_free (txt);
 
                     /* escape quotes */
-                    txt = escape_quote (buf);
+                    txt = escape_char (buf, '"');
                     g_free (buf);
 
                     arg = g_shell_quote (txt ? txt : "");
