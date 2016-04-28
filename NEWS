@@ -1,3 +1,6 @@
+Version 0.36.1
+    - fix quoting buttons commands in form dialog
+
 Version 0.36.0
     - add --no-selection option to list dialog
     - improve --center option

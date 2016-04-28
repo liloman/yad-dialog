@@ -1,3 +1,26 @@
+2016-04-28 16:58  v1c0nt
+
+	* configure.ac, data/yad.1, src/form.c, src/util.c, src/yad.h: fix
+	  man page
+
+2016-04-28 10:42  v1c0nt
+
+	* src/form.c: fix set button command in form
+
+2016-04-28 08:15  v1c0nt
+
+	* src/form.c: fix set button command in form when data reads from
+	  stdin
+
+2016-04-27 16:59  v1c0nt
+
+	* src/form.c, src/util.c, src/yad.h: fix hadling double quotes in
+	  form callback
+
+2016-04-26 13:19  v1c0nt
+
+	* ChangeLog, NEWS: release 0.36.0
+
 2016-04-26 13:12  v1c0nt
 
 	* configure.ac: bump version to 0.36.0. prepare to release
