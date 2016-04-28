@@ -28,8 +28,6 @@
 static GSList *fields = NULL;
 static guint n_fields;
 
-static void button_clicked_cb (GtkButton * b, gchar * action);
-
 /* expand %N in command to fields values */
 static GString *
 expand_action (gchar * cmd)
@@ -329,8 +327,7 @@ set_field_value (guint num, gchar * value)
 
     case YAD_FIELD_BUTTON:
     case YAD_FIELD_FULL_BUTTON:
-      /* need to create duplicate of value (make be leak) */
-      g_signal_connect (G_OBJECT (w), "clicked", G_CALLBACK (button_clicked_cb), g_strdup (value));
+      g_object_set_data_full (G_OBJECT (w), "cmd", g_strdup (value), g_free);
       break;
 
     case YAD_FIELD_TEXT:
@@ -347,8 +344,10 @@ set_field_value (guint num, gchar * value)
 }
 
 static void
-button_clicked_cb (GtkButton * b, gchar * action)
+button_clicked_cb (GtkButton * b, gpointer data)
 {
+  gchar *action = (gchar *) g_object_get_data (G_OBJECT (b), "cmd");
+
   if (action && action[0])
     {
       if (action[0] == '@')
@@ -1007,6 +1006,7 @@ form_create_widget (GtkWidget * dlg)
             case YAD_FIELD_BUTTON:
             case YAD_FIELD_FULL_BUTTON:
               e = gtk_button_new ();
+              g_signal_connect (G_OBJECT (e), "clicked", G_CALLBACK (button_clicked_cb), NULL);
               gtk_container_add (GTK_CONTAINER (e), get_label (fld->name, 2));
               gtk_widget_set_name (e, "yad-form-button");
               gtk_button_set_alignment (GTK_BUTTON (e), 0.5, 0.5);
