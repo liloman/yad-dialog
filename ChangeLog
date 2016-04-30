@@ -1,3 +1,17 @@
+2016-04-30 13:43  v1c0nt
+
+	* src/html.c: fix settings title and icon for browser mode in html
+	  dialog
+
+2016-04-30 11:16  v1c0nt
+
+	* src/entry.c, src/form.c: honor precision for floats in numeric
+	  fields of form and entry dialogs
+
+2016-04-28 16:59  v1c0nt
+
+	* ChangeLog, NEWS: release 0.36.1
+
 2016-04-28 16:58  v1c0nt
 
 	* configure.ac, data/yad.1, src/form.c, src/util.c, src/yad.h: fix
