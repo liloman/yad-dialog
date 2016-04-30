@@ -77,9 +77,11 @@ expand_action (gchar * cmd)
                   g_free (buf);
                   break;
                 case YAD_FIELD_NUM:
-                  arg = g_strdup_printf ("%.*f", options.common_data.float_precision,
-                                         gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, num))));
-                  break;
+                  {
+                    guint prec = gtk_spin_button_get_digits (GTK_SPIN_BUTTON (g_slist_nth_data (fields, num)));
+                    arg = g_strdup_printf ("%.*f", prec, gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, num))));
+                    break;
+                  }
                 case YAD_FIELD_CHECK:
                   arg = g_strdup (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (g_slist_nth_data (fields, num))) ? "TRUE" : "FALSE");
                   break;
@@ -1172,15 +1174,16 @@ form_print_field (guint fn)
                   options.common_data.separator);
       break;
     case YAD_FIELD_NUM:
-      if (options.common_data.quoted_output)
-        g_printf ("'%.*f'%s", options.common_data.float_precision,
-                  gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
-                  options.common_data.separator);
-      else
-        g_printf ("%.*f%s", options.common_data.float_precision,
-                  gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
-                  options.common_data.separator);
-      break;
+      {
+        guint prec = gtk_spin_button_get_digits (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn)));
+        if (options.common_data.quoted_output)
+          g_printf ("'%.*f'%s", prec, gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
+                    options.common_data.separator);
+        else
+          g_printf ("%.*f%s", prec, gtk_spin_button_get_value (GTK_SPIN_BUTTON (g_slist_nth_data (fields, fn))),
+                    options.common_data.separator);
+        break;
+      }
     case YAD_FIELD_CHECK:
       if (options.common_data.quoted_output)
         g_printf ("'%s'%s", gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (g_slist_nth_data (fields, fn))) ? "TRUE" :
