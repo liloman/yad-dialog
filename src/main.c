@@ -517,7 +517,7 @@ create_dialog (void)
     }
 
   /* show widgets */
-  gtk_widget_show_all (gtk_dialog_get_content_area (GTK_DIALOG (dlg)));
+  gtk_widget_show_all (vbox);
   /* parse geometry, if given. must be after showing widget */
   if (options.data.geometry && !options.data.maximized && !options.data.fullscreen)
     {
