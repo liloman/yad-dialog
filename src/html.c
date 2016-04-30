@@ -211,6 +211,25 @@ menu_cb (WebKitWebView * view, GtkWidget * menu, WebKitHitTestResult * hit, gboo
   return FALSE;
 }
 
+static void
+title_cb (GObject *obj, GParamSpec *spec, GtkWindow *dlg)
+{
+  const gchar *title = webkit_web_view_get_title (view);
+  if (title)
+    gtk_window_set_title (dlg, title);
+}
+
+static void
+icon_cb (GObject *obj, GParamSpec *spec, GtkWindow *dlg)
+{
+  GdkPixbuf *pb = webkit_web_view_try_get_favicon_pixbuf (view, 16, 16);
+  if (pb)
+    {
+      gtk_window_set_icon (dlg, pb);
+      g_object_unref (pb);
+    }
+}
+
 static gboolean
 handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer d)
 {
@@ -261,7 +280,13 @@ html_create_widget (GtkWidget * dlg)
   g_signal_connect (view, "navigation-policy-decision-requested", G_CALLBACK (link_cb), NULL);
 
   if (options.html_data.browser)
-    g_signal_connect (view, "context-menu", G_CALLBACK (menu_cb), NULL);
+    {
+      g_signal_connect (view, "context-menu", G_CALLBACK (menu_cb), NULL);
+      if (!options.data.dialog_title)
+        g_signal_connect (view, "notify::title", G_CALLBACK (title_cb), dlg);
+      if (strcmp (options.data.window_icon, "yad") == 0)
+        g_signal_connect (view, "icon-loaded", G_CALLBACK (icon_cb), dlg);
+    }
   else
     g_signal_connect (view, "document-load-finished", G_CALLBACK (loaded_cb), NULL);
 
