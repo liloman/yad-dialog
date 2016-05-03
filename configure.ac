@@ -48,12 +48,11 @@ AC_SUBST([GTK_LIBS])
 GTK_DISABLE_DEPRECATED
 
 dnl rgb.txt
-with_rgb="/etc/X11/rgb.txt"
 AC_ARG_WITH([rgb],
 	[AS_HELP_STRING([--with-rgb=PATH],
 			[set path to rgb.txt file (default - /etc/X11/rgb.txt)])],
-	[AC_DEFINE_UNQUOTED([RGB_FILE], ["$withval"], [Path to rgb.txt file])],
-	[AC_DEFINE([RGB_FILE], ["/etc/X11/rgb.txt"], [Path to rgb.txt file])])
+	[with_rgb=$withval], [with_rgb=/etc/X11/rgb.txt])
+AC_DEFINE_UNQUOTED([RGB_FILE], ["$with_rgb"], [Path to rgb.txt file])
 
 dnl html widget
 AC_ARG_ENABLE([html],
