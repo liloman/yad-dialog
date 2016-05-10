@@ -278,9 +278,14 @@ parse_desktop_file (gchar * filename)
 
           /* get tooltip */
           val = g_key_file_get_locale_string (kf, "Desktop Entry", "Comment", NULL, NULL);
-          ent->comment = g_markup_escape_text (val, -1);
-          g_free (val);
-
+          if (val)
+            {
+              ent->comment = g_markup_escape_text (val, -1);
+              g_free (val);
+            }
+          else
+            ent->comment = g_strdup (ent->name);
+              
           /* parse command or url */
           if (type == TYPE_APP)
             {
