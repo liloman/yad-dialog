@@ -1,3 +1,8 @@
+Version 0.36.3
+    - fix segfault when parse desktop files with missed or empty Comment field 
+      in icons dialog
+    - code and output cleanup
+
 Version 0.36.2
     - honor precision for floats in numeric fields of form and entry dialogs
     - fix settings title and icon for browser mode in html dialog

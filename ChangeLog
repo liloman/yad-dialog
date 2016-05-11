@@ -1,3 +1,24 @@
+2016-05-11 09:30  v1c0nt
+
+	* configure.ac, src/text.c: cleanup
+
+2016-05-10 08:36  v1c0nt
+
+	* src/icons.c: fix parsing .desktop file (handle empty or
+	  nonexistence comment field)
+
+2016-05-03 12:15  v1c0nt
+
+	* configure.ac: fix --wirh-rgb option in ./configure
+
+2016-04-30 18:34  v1c0nt
+
+	* src/main.c:
+
+2016-04-30 13:45  v1c0nt
+
+	* ChangeLog, NEWS, configure.ac: release 0.36.2
+
 2016-04-30 13:43  v1c0nt
 
 	* src/html.c: fix settings title and icon for browser mode in html
