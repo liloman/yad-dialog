@@ -470,7 +470,6 @@ text_create_widget (GtkWidget * dlg)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (w), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
 #ifdef HAVE_SOURCEVIEW
-  printf ("got it\n");
   text_buffer = (GObject *) gtk_source_buffer_new (NULL);
   text_view = gtk_source_view_new_with_buffer (GTK_SOURCE_BUFFER (text_buffer));
 #else
