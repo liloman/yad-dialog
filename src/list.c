@@ -29,6 +29,8 @@ static GtkWidget *list_view;
 
 static gint fore_col, back_col, font_col;
 
+static gulong select_hndl = 0;
+
 static gboolean
 list_activate_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
@@ -408,11 +410,17 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
             }
 
           strip_new_line (string->str);
+
+          /* clear list if ^L received */
           if (string->str[0] == '\014')
             {
-              /* clear list if ^L received */
+              GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list_view));
+              if (select_hndl)
+                g_signal_handler_block (G_OBJECT (sel), select_hndl);
               gtk_list_store_clear (GTK_LIST_STORE (model));
               row_count = column_count = 0;
+              if (select_hndl)
+                g_signal_handler_block (G_OBJECT (sel), select_hndl);
               continue;
             }
 
@@ -1025,7 +1033,7 @@ list_create_widget (GtkWidget * dlg)
         gtk_tree_selection_set_mode (sel, GTK_SELECTION_MULTIPLE);
 
       if (!options.common_data.multi && options.list_data.select_action)
-        g_signal_connect (G_OBJECT (sel), "changed", G_CALLBACK (select_cb), NULL);
+        select_hndl = g_signal_connect (G_OBJECT (sel), "changed", G_CALLBACK (select_cb), NULL);
 
       g_signal_connect (G_OBJECT (list_view), "row-activated", G_CALLBACK (double_click_cb), dlg);
       g_signal_connect (G_OBJECT (list_view), "key-press-event", G_CALLBACK (list_activate_cb), dlg);
