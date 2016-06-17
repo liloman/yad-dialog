@@ -420,7 +420,7 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
               gtk_list_store_clear (GTK_LIST_STORE (model));
               row_count = column_count = 0;
               if (select_hndl)
-                g_signal_handler_block (G_OBJECT (sel), select_hndl);
+                g_signal_handler_unblock (G_OBJECT (sel), select_hndl);
               continue;
             }
 
