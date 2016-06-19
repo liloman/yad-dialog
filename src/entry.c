@@ -17,8 +17,6 @@
  * Copyright (C) 2008-2016, Victor Ananjevsky <ananasik@gmail.com>
  */
 
-#include <gdk/gdkkeysyms.h>
-
 #include "yad.h"
 
 static GtkWidget *entry;
@@ -28,7 +26,7 @@ static void
 entry_activate_cb (GtkEntry * entry, gpointer data)
 {
   if (options.plug == -1)
-    gtk_dialog_response (GTK_DIALOG (data), YAD_RESPONSE_OK);
+    yad_exit (YAD_RESPONSE_OK);
 }
 
 static gboolean
@@ -41,7 +39,7 @@ combo_activate_cb (GtkWidget * w, GdkEventKey * ev, gpointer data)
 #endif
     {
       if (options.plug == -1)
-        gtk_dialog_response (GTK_DIALOG (data), YAD_RESPONSE_OK);
+        yad_exit (YAD_RESPONSE_OK);
       return TRUE;
     }
   return FALSE;

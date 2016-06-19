@@ -29,6 +29,7 @@
 
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <gdk/gdkkeysyms.h>
 
 #if GTK_CHECK_VERSION(3,0,0)
 #include <gtk/gtkx.h>
@@ -513,6 +514,8 @@ extern gint t_sem;
 void yad_options_init (void);
 GOptionContext *yad_create_context (void);
 void yad_set_mode (void);
+void yad_print_result (void);
+void yad_exit (gint id);
 
 GtkWidget *calendar_create_widget (GtkWidget *dlg);
 GtkWidget *color_create_widget (GtkWidget *dlg);
@@ -533,7 +536,7 @@ GtkWidget *progress_create_widget (GtkWidget *dlg);
 GtkWidget *scale_create_widget (GtkWidget *dlg);
 GtkWidget *text_create_widget (GtkWidget *dlg);
 
-gboolean file_confirm_overwrite (GtkDialog *dlg);
+gboolean file_confirm_overwrite (GtkWidget *dlg);
 void notebook_swallow_childs (void);
 void paned_swallow_childs (void);
 void picture_fit_to_window (void);

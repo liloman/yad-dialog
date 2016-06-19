@@ -19,7 +19,6 @@
 
 #include <errno.h>
 
-#include <gdk/gdkkeysyms.h>
 #include <pango/pango.h>
 
 #include "yad.h"
@@ -170,7 +169,7 @@ key_press_cb (GtkWidget * w, GdkEventKey * key, gpointer data)
 #endif
     {
       if (options.plug == -1)
-        gtk_dialog_response (GTK_DIALOG (data), YAD_RESPONSE_OK);
+        yad_exit (YAD_RESPONSE_OK);
       return TRUE;
     }
 

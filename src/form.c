@@ -400,7 +400,7 @@ static void
 form_activate_cb (GtkEntry * entry, gpointer data)
 {
   if (options.plug == -1)
-    gtk_dialog_response (GTK_DIALOG (data), YAD_RESPONSE_OK);
+    yad_exit (YAD_RESPONSE_OK);
 }
 
 static void

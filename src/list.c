@@ -21,7 +21,6 @@
 #include <stdlib.h>
 
 #include <glib/gprintf.h>
-#include <gdk/gdkkeysyms.h>
 
 #include "yad.h"
 
@@ -46,7 +45,7 @@ list_activate_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
           if (event->state & GDK_CONTROL_MASK)
             {
               if (options.plug == -1)
-                gtk_dialog_response (GTK_DIALOG (data), YAD_RESPONSE_OK);
+                yad_exit (YAD_RESPONSE_OK);
             }
           else
             return FALSE;
@@ -54,7 +53,7 @@ list_activate_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
       else
         {
           if (options.plug == -1)
-            gtk_dialog_response (GTK_DIALOG (data), YAD_RESPONSE_OK);
+            yad_exit (YAD_RESPONSE_OK);
         }
 
       return TRUE;
@@ -749,7 +748,7 @@ double_click_cb (GtkTreeView * view, GtkTreePath * path, GtkTreeViewColumn * col
             }
         }
       else if (options.plug == -1)
-        gtk_dialog_response (GTK_DIALOG (data), YAD_RESPONSE_OK);
+        yad_exit (YAD_RESPONSE_OK);
     }
 }
 

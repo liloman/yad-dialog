@@ -36,19 +36,19 @@
 YadOptions options;
 GtkWidget *dialog = NULL;
 
+static gint ret = YAD_RESPONSE_ESC;
+
 YadNTabs *tabs;
 gint t_sem;
-
-void print_result (void);
 
 #ifndef G_OS_WIN32
 static void
 sa_usr1 (gint sig)
 {
   if (options.plug != -1)
-    print_result ();
+    yad_print_result ();
   else
-  gtk_dialog_response (GTK_DIALOG (dialog), YAD_RESPONSE_OK);
+    yad_exit (YAD_RESPONSE_OK);
 }
 
 static void
@@ -57,9 +57,25 @@ sa_usr2 (gint sig)
   if (options.plug != -1)
     gtk_main_quit ();
   else
-    gtk_dialog_response (GTK_DIALOG (dialog), YAD_RESPONSE_CANCEL);
+    yad_exit (YAD_RESPONSE_CANCEL);
 }
 #endif
+
+static gboolean
+keys_cb (GtkWidget *w, GdkEventKey *ev, gpointer d)
+{
+#if GTK_CHECK_VERSION(2,24,0)
+  if (ev->keyval == GDK_KEY_Escape)
+#else
+  if (ev->keyval == GDK_Escape)
+#endif
+    {
+      if (options.plug == -1 || !options.data.no_escape)
+        yad_exit (YAD_RESPONSE_ESC);
+      return TRUE;
+    }
+  return FALSE;
+}
 
 static void
 btn_cb (GtkWidget *b, gchar *cmd)
@@ -69,7 +85,7 @@ btn_cb (GtkWidget *b, gchar *cmd)
   else
     {
       gint resp = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (b), "resp"));
-      gtk_dialog_response (GTK_DIALOG (dialog), resp);
+      yad_exit (resp);
     }
 }
 
@@ -81,7 +97,7 @@ timeout_cb (gpointer data)
 
   if (options.data.timeout < count)
     {
-      gtk_dialog_response (GTK_DIALOG (dialog), YAD_RESPONSE_TIMEOUT);
+      yad_exit (YAD_RESPONSE_TIMEOUT);
       return FALSE;
     }
 
@@ -113,20 +129,17 @@ text_size_allocate_cb (GtkWidget * w, GtkAllocation * al, gpointer data)
 }
 #endif
 
-static void
-dlg_response_cb (GtkDialog *dlg, gint id, gint *data)
+void
+yad_exit (gint id)
 {
   if (options.mode == YAD_MODE_FILE)
     {
       /* show custom confirmation dialog */
-      if (!file_confirm_overwrite (dlg))
-        {
-          g_signal_stop_emission_by_name (dlg, "response");
-          return;
-        }
+      if (!file_confirm_overwrite (dialog))
+        return;
     }
 
-  *data = id;
+  ret = id;
   gtk_main_quit ();
 }
 
@@ -279,7 +292,7 @@ create_layout (GtkWidget *dlg)
       if (image)
         gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 2);
       if (text)
-        gtk_box_pack_start (GTK_BOX (box), text, TRUE, TRUE, 0);
+        gtk_box_pack_start (GTK_BOX (box), text, TRUE, TRUE, 2);
 
       gtk_box_pack_start (GTK_BOX (layout), box, FALSE, FALSE, 0);
       if (imw)
@@ -301,7 +314,7 @@ create_layout (GtkWidget *dlg)
 
       if (image)
         gtk_box_pack_start (GTK_BOX (layout), image, FALSE, FALSE, 2);
-      gtk_box_pack_start (GTK_BOX (layout), box, TRUE, TRUE, 0);
+      gtk_box_pack_start (GTK_BOX (layout), box, TRUE, TRUE, 2);
     }
 
   return layout;
@@ -310,16 +323,16 @@ create_layout (GtkWidget *dlg)
 static GtkWidget *
 create_dialog (void)
 {
-  GtkWidget *dlg, *vbox, *bbox, *layout;
+  GtkWidget *dlg, *vbox, *layout;
 
   /* create dialog window */
-  dlg = gtk_dialog_new ();
+  dlg = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   if (options.data.splash)
     gtk_window_set_type_hint (GTK_WINDOW (dlg), GDK_WINDOW_TYPE_HINT_SPLASHSCREEN);
-  else
-    gtk_window_set_type_hint (GTK_WINDOW (dlg), GDK_WINDOW_TYPE_HINT_NORMAL);
   gtk_window_set_title (GTK_WINDOW (dlg), options.data.dialog_title);
   gtk_widget_set_name (dlg, "yad-dialog-window");
+
+  g_signal_connect (G_OBJECT (dlg), "key-press-event", G_CALLBACK (keys_cb), NULL);
 
 #ifndef  G_OS_WIN32
   /* FIXME: is that very useful !? */
@@ -330,9 +343,6 @@ create_dialog (void)
                                                                             options.parent));
     }
 #endif
-
-  if (options.data.no_escape)
-    g_signal_connect (G_OBJECT (dlg), "close", G_CALLBACK (g_signal_stop_emission_by_name), "close");
 
   /* set window icon */
   if (options.data.window_icon)
@@ -367,7 +377,15 @@ create_dialog (void)
   gtk_window_set_skip_pager_hint (GTK_WINDOW (dlg), options.data.skip_taskbar);
   gtk_window_set_accept_focus (GTK_WINDOW (dlg), options.data.focus);
 
-  vbox = gtk_dialog_get_content_area (GTK_DIALOG (dlg));
+  /* create box */
+#if !GTK_CHECK_VERSION(3,0,0)
+  vbox = gtk_vbox_new (FALSE, 2);
+#else
+  vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+#endif
+  gtk_container_set_border_width (GTK_CONTAINER (vbox), 2);
+  gtk_container_add (GTK_CONTAINER (dlg), vbox);
+
   layout = create_layout (dlg);
 
   /* create timeout indicator widget */
@@ -465,24 +483,31 @@ create_dialog (void)
   else
     gtk_box_pack_start (GTK_BOX (vbox), layout, TRUE, TRUE, 0);
 
-  /* get buttons container */
-  bbox = gtk_dialog_get_action_area (GTK_DIALOG (dlg));
-
 #ifdef HAVE_HTML
   /* enable no-buttons mode if --browser is specified and sets no custom buttons */
   if (options.mode == YAD_MODE_HTML && options.html_data.browser && !options.data.buttons)
     options.data.no_buttons = TRUE;
 #endif
 
-  /* add buttons */
   if (!options.data.no_buttons)
     {
+      GtkWidget *btn;
+      /* create buttons container */
+#if !GTK_CHECK_VERSION(3,0,0)
+      GtkWidget *bbox = gtk_hbutton_box_new ();
+#else
+      GtkWidget *bbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+#endif
+      gtk_container_set_border_width (GTK_CONTAINER (bbox), 2);
+      gtk_box_set_spacing (GTK_BOX (bbox), 5);
+      gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), options.data.buttons_layout);
+
+      /* add buttons */
       if (options.data.buttons)
         {
           GSList *tmp = options.data.buttons;
           do
             {
-              GtkWidget *btn;
               YadButton *b = (YadButton *) tmp->data;
 
               btn = gtk_button_new ();
@@ -500,20 +525,48 @@ create_dialog (void)
         {
           if (options.mode == YAD_MODE_PROGRESS || options.mode == YAD_MODE_MULTI_PROGRESS ||
               options.mode == YAD_MODE_DND || options.mode == YAD_MODE_PICTURE)
-            gtk_dialog_add_buttons (GTK_DIALOG (dlg), GTK_STOCK_CLOSE, YAD_RESPONSE_OK, NULL);
+            {
+              /* add close button */
+              btn = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
+              g_object_set_data (G_OBJECT (btn), "resp", GINT_TO_POINTER (YAD_RESPONSE_OK));
+              g_signal_connect (G_OBJECT (btn), "clicked", G_CALLBACK (btn_cb), NULL);
+              gtk_box_pack_start (GTK_BOX (bbox), btn, FALSE, FALSE, 0);
+
+            }
           else
             {
               if (gtk_alternative_dialog_button_order (NULL))
-                gtk_dialog_add_buttons (GTK_DIALOG (dlg),
-                                        GTK_STOCK_OK, YAD_RESPONSE_OK, GTK_STOCK_CANCEL, YAD_RESPONSE_CANCEL, NULL);
+                {
+                  /* add ok button */
+                  btn = gtk_button_new_from_stock (GTK_STOCK_OK);
+                  g_object_set_data (G_OBJECT (btn), "resp", GINT_TO_POINTER (YAD_RESPONSE_OK));
+                  g_signal_connect (G_OBJECT (btn), "clicked", G_CALLBACK (btn_cb), NULL);
+                  gtk_box_pack_start (GTK_BOX (bbox), btn, FALSE, FALSE, 0);
+
+                  /* add cancel button */
+                  btn = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+                  g_object_set_data (G_OBJECT (btn), "resp", GINT_TO_POINTER (YAD_RESPONSE_CANCEL));
+                  g_signal_connect (G_OBJECT (btn), "clicked", G_CALLBACK (btn_cb), NULL);
+                  gtk_box_pack_start (GTK_BOX (bbox), btn, FALSE, FALSE, 0);
+                }
               else
-                gtk_dialog_add_buttons (GTK_DIALOG (dlg),
-                                        GTK_STOCK_CANCEL, YAD_RESPONSE_CANCEL, GTK_STOCK_OK, YAD_RESPONSE_OK, NULL);
+                {
+                  /* add cancel button */
+                  btn = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+                  g_object_set_data (G_OBJECT (btn), "resp", GINT_TO_POINTER (YAD_RESPONSE_CANCEL));
+                  g_signal_connect (G_OBJECT (btn), "clicked", G_CALLBACK (btn_cb), NULL);
+                  gtk_box_pack_start (GTK_BOX (bbox), btn, FALSE, FALSE, 0);
+
+                  /*add ok button */
+                  btn = gtk_button_new_from_stock (GTK_STOCK_OK);
+                  g_object_set_data (G_OBJECT (btn), "resp", GINT_TO_POINTER (YAD_RESPONSE_OK));
+                  g_signal_connect (G_OBJECT (btn), "clicked", G_CALLBACK (btn_cb), NULL);
+                  gtk_box_pack_start (GTK_BOX (bbox), btn, FALSE, FALSE, 0);
+                }
             }
-          gtk_dialog_set_default_response (GTK_DIALOG (dlg), YAD_RESPONSE_OK);
         }
-      gtk_button_box_set_layout (GTK_BUTTON_BOX (gtk_dialog_get_action_area (GTK_DIALOG (dlg))),
-                                 options.data.buttons_layout);
+      /* add buttons box to main window */
+      gtk_box_pack_start (GTK_BOX (vbox), bbox, FALSE, FALSE, 0);
     }
 
   /* show widgets */
@@ -525,9 +578,6 @@ create_dialog (void)
       gtk_window_parse_geometry (GTK_WINDOW (dlg), options.data.geometry);
     }
   gtk_widget_show (dlg);
-
-  if (options.data.no_buttons)
-    gtk_widget_hide (bbox);
 
   /* set maximized or fixed size after showing widget */
   if (options.data.maximized)
@@ -586,7 +636,7 @@ create_plug (void)
 }
 
 void
-print_result (void)
+yad_print_result (void)
 {
   switch (options.mode)
     {
@@ -634,7 +684,6 @@ main (gint argc, gchar ** argv)
   GError *err = NULL;
   gint w, h;
   gchar *str;
-  gint ret = YAD_RESPONSE_ESC;
 
   setlocale (LC_ALL, "");
 
@@ -787,8 +836,6 @@ main (gint argc, gchar ** argv)
 
     default:
       dialog = create_dialog ();
-      g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (dlg_response_cb), &ret);
-      gtk_widget_show_all (dialog);
 
 #ifndef G_OS_WIN32
       /* add YAD_XID variable */
@@ -814,15 +861,15 @@ main (gint argc, gchar ** argv)
       if (ret != YAD_RESPONSE_TIMEOUT && ret != YAD_RESPONSE_ESC)
         {
           if (options.data.always_print)
-            print_result ();
+            yad_print_result ();
           else
             {
               /* standard OK button pressed */
               if (ret == YAD_RESPONSE_OK && options.data.buttons == NULL)
-                print_result ();
+                yad_print_result ();
               /* custom even button pressed */
               else if (!(ret & 1))
-                print_result ();
+                yad_print_result ();
             }
         }
 #ifndef G_OS_WIN32

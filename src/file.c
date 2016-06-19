@@ -27,11 +27,11 @@ static void
 file_activated_cb (GtkFileChooser * chooser, gpointer data)
 {
   if (options.plug == -1)
-    gtk_dialog_response (GTK_DIALOG (data), YAD_RESPONSE_OK);
+    yad_exit (YAD_RESPONSE_OK);
 }
 
 gboolean
-file_confirm_overwrite (GtkDialog * dlg)
+file_confirm_overwrite (GtkWidget * dlg)
 {
   if (options.file_data.save && options.file_data.confirm_overwrite && !options.common_data.multi)
     {

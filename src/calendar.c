@@ -82,7 +82,7 @@ static void
 double_click_cb (GtkWidget * w, gpointer data)
 {
   if (options.plug == -1)
-    gtk_dialog_response (GTK_DIALOG (data), YAD_RESPONSE_OK);
+    yad_exit (YAD_RESPONSE_OK);
 }
 
 GtkWidget *
