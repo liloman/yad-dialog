@@ -964,7 +964,7 @@ row_sep_func (GtkTreeModel * m, GtkTreeIter * it, gpointer data)
   return (strcmp (name, options.list_data.sep_value) == 0);
 }
 
-static void
+static inline void
 parse_cols_props ()
 {
   /* set editable property for columns */
