@@ -542,6 +542,9 @@ Allow multiple rows to be selected.
 .B \-\-editable
 Allow changes to text.
 .TP
+.B \-\-editable-cols=\fILIST\fP
+Set the list of editable columns. \fILIST\fP must be a string of numbers separated by comma.
+.TP
 .B \-\-no-headers
 Do not show column headers.
 .TP
@@ -582,8 +585,17 @@ Set the \fITEXT\fP as a row separator value. This feature highly depends on your
 .B \-\-limit=\fINUMBER\fP
 Set the number of rows in list dialog. Will be shown only the last \fINUMBER\fP rows. This option will take effect only when data reading from stdin.
 .TP
+.B \-\-wrap-width=\fINUMBER\fP
+Set the width of column before wrapping to \fINUMBER\fP.
+.TP
+.B \-\-wrap-cols=\fILIST\fP
+Set the list of wrapped columns. \fILIST\fP must be a string of numbers separated by comma.
+.TP
 .B \-\-ellipsize=\fITYPE\fP
 Set ellipsize mode for text columns. \fITYPE\fP may be \fINONE\fP, \fISTART\fP, \fIMIDDLE\fP or \fIEND\fP.
+.TP
+.B \-\-ellipsize-cols=\fILIST\fP
+Set the list of ellipsized columns. \fILIST\fP must be a string of numbers separated by comma.
 .TP
 .B \-\-dclick-action=\fICMD\fP
 Set the \fICMD\fP as a double-click command. When user double-clicked on row, \fICMD\fP will be launched with values of all columns as an arguments. By default double-click selects row and act as \fIOK\fP button for simple lists, set the checkbox if \fI\-\-checklist\fP specified and do nothing when list run with \fI\-\-multiple\fP option.

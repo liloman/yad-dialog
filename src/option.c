@@ -380,8 +380,16 @@ static GOptionEntry list_options[] = {
     N_("Disable rules hints"), NULL },
   { "print-all", 0, 0, G_OPTION_ARG_NONE, &options.list_data.print_all,
     N_("Print all data from list"), NULL },
+  { "editable-cols", 0, 0, G_OPTION_ARG_STRING, &options.list_data.editable_cols,
+    N_("Set the list of editable columns"), N_("LIST") },
+  { "wrap-width", 0, 0, G_OPTION_ARG_INT, &options.list_data.wrap_width,
+    N_("Set the width of a column for start wrapping text"), N_("NUMBER") },
+  { "wrap-cols", 0, 0, G_OPTION_ARG_STRING, &options.list_data.wrap_cols,
+    N_("Set the list of wrapped columns"), N_("LIST") },
   { "ellipsize", 0, 0, G_OPTION_ARG_CALLBACK, set_ellipsize,
     N_("Set ellipsize mode for text columns (none, start, middle or end)"), N_("TYPE") },
+  { "ellipsize-cols", 0, 0, G_OPTION_ARG_STRING, &options.list_data.ellipsize_cols,
+    N_("Set the list of ellipsized columns"), N_("LIST") },
   { "print-column", 0, 0, G_OPTION_ARG_INT, &options.list_data.print_column,
     N_("Print a specific column. By default or if 0 is specified will be printed all columns"), N_("NUMBER") },
   { "hide-column", 0, 0, G_OPTION_ARG_INT, &options.list_data.hide_column,
@@ -1396,7 +1404,11 @@ yad_options_init (void)
   options.list_data.sep_column = 0;
   options.list_data.sep_value = NULL;
   options.list_data.limit = 0;
+  options.list_data.editable_cols = NULL;
+  options.list_data.wrap_width = 0;
+  options.list_data.wrap_cols = NULL;
   options.list_data.ellipsize = PANGO_ELLIPSIZE_NONE;
+  options.list_data.ellipsize_cols = NULL;
   options.list_data.dclick_action = NULL;
   options.list_data.select_action = NULL;
   options.list_data.regex_search = FALSE;

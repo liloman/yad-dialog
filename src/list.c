@@ -294,7 +294,7 @@ add_columns (gint n_columns)
         case YAD_COLUMN_SIZE:
         case YAD_COLUMN_FLOAT:
           renderer = gtk_cell_renderer_text_new ();
-          if (options.common_data.editable)
+          if (col->editable)
             {
               g_object_set (G_OBJECT (renderer), "editable", TRUE, NULL);
               g_signal_connect (renderer, "edited", G_CALLBACK (cell_edited_cb), NULL);
@@ -323,7 +323,7 @@ add_columns (gint n_columns)
           break;
         default:
           renderer = gtk_cell_renderer_text_new ();
-          if (options.common_data.editable)
+          if (col->editable)
             {
               g_object_set (G_OBJECT (renderer), "editable", TRUE, NULL);
               g_signal_connect (renderer, "edited", G_CALLBACK (cell_edited_cb), NULL);
@@ -332,7 +332,9 @@ add_columns (gint n_columns)
             column = gtk_tree_view_column_new_with_attributes (col->name, renderer, "text", i, NULL);
           else
             column = gtk_tree_view_column_new_with_attributes (col->name, renderer, "markup", i, NULL);
-          g_object_set (G_OBJECT (renderer), "ellipsize", options.list_data.ellipsize, NULL);
+          g_object_set (G_OBJECT (renderer), "ellipsize", col->ellipsize, NULL);
+          if (col->wrap)
+            g_object_set (G_OBJECT (renderer), "wrap-width", options.list_data.wrap_width, NULL);
           if (fore_col != -1)
             gtk_tree_view_column_add_attribute (column, renderer, "foreground", fore_col);
           if (back_col != -1)
@@ -979,6 +981,109 @@ list_create_widget (GtkWidget * dlg)
       return NULL;
     }
 
+  /* set editable property for columns */
+  if (options.common_data.editable)
+    {
+      if (options.list_data.editable_cols)
+        {
+          gchar **cnum;
+          guint i = 0;
+
+          cnum = g_strsplit (options.list_data.editable_cols, ",", -1);
+
+          while (cnum[i])
+            {
+              gint num = atoi (cnum[i]);
+              if (num)
+                {
+                  YadColumn *col = (YadColumn *) g_slist_nth_data (options.list_data.columns, num - 1);
+                  if (col)
+                    col->editable = TRUE;
+                }
+              i++;
+            }
+          g_strfreev (cnum);
+        }
+      else
+        {
+          GSList *c;
+          for (c = options.list_data.columns; c; c = c->next)
+            {
+              YadColumn *col = (YadColumn *) c->data;
+              col->editable = TRUE;
+            }
+        }
+    }
+
+  /* set wrap property for columns */
+  if (options.list_data.wrap_width > 0)
+    {
+      if (options.list_data.wrap_cols)
+        {
+          gchar **cnum;
+          guint i = 0;
+
+          cnum = g_strsplit (options.list_data.wrap_cols, ",", -1);
+
+          while (cnum[i])
+            {
+              gint num = atoi (cnum[i]);
+              if (num)
+                {
+                  YadColumn *col = (YadColumn *) g_slist_nth_data (options.list_data.columns, num - 1);
+                  if (col)
+                    col->wrap = TRUE;
+                }
+              i++;
+            }
+          g_strfreev (cnum);
+        }
+      else
+        {
+          GSList *c;
+          for (c = options.list_data.columns; c; c = c->next)
+            {
+              YadColumn *col = (YadColumn *) c->data;
+              col->wrap = TRUE;
+            }
+        }
+    }
+
+  /* set ellipsize property for columns */
+  if (options.list_data.ellipsize)
+    {
+      if (options.list_data.ellipsize_cols)
+        {
+          gchar **cnum;
+          guint i = 0;
+
+          cnum = g_strsplit (options.list_data.ellipsize_cols, ",", -1);
+
+          while (cnum[i])
+            {
+              gint num = atoi (cnum[i]);
+              if (num)
+                {
+                  YadColumn *col = (YadColumn *) g_slist_nth_data (options.list_data.columns, num - 1);
+                  if (col)
+                    col->ellipsize = TRUE;
+                }
+              i++;
+            }
+          g_strfreev (cnum);
+        }
+      else
+        {
+          GSList *c;
+          for (c = options.list_data.columns; c; c = c->next)
+            {
+              YadColumn *col = (YadColumn *) c->data;
+              col->ellipsize = TRUE;
+            }
+        }
+    }
+
+  /* create widget */
   w = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (w), GTK_SHADOW_ETCHED_IN);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (w), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);

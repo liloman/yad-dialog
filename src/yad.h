@@ -172,6 +172,9 @@ typedef struct {
 typedef struct {
   gchar *name;
   YadColumnType type;
+  gboolean wrap;
+  gboolean ellipsize;
+  gboolean editable;
 } YadColumn;
 
 typedef struct {
@@ -319,7 +322,11 @@ typedef struct {
   gint sep_column;
   gchar *sep_value;
   guint limit;
+  gchar *editable_cols;
+  gint wrap_width;
+  gchar *wrap_cols;
   PangoEllipsizeMode ellipsize;
+  gchar *ellipsize_cols;
   gchar *dclick_action;
   gchar *select_action;
   gboolean regex_search;
