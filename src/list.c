@@ -964,23 +964,9 @@ row_sep_func (GtkTreeModel * m, GtkTreeIter * it, gpointer data)
   return (strcmp (name, options.list_data.sep_value) == 0);
 }
 
-GtkWidget *
-list_create_widget (GtkWidget * dlg)
+static void
+parse_cols_props ()
 {
-  GtkWidget *w;
-  GtkTreeModel *model;
-  gint n_columns;
-
-  fore_col = back_col = font_col = -1;
-
-  n_columns = g_slist_length (options.list_data.columns);
-
-  if (n_columns == 0)
-    {
-      g_printerr (_("No column titles specified for List dialog.\n"));
-      return NULL;
-    }
-
   /* set editable property for columns */
   if (options.common_data.editable)
     {
@@ -1082,6 +1068,26 @@ list_create_widget (GtkWidget * dlg)
             }
         }
     }
+}
+
+GtkWidget *
+list_create_widget (GtkWidget * dlg)
+{
+  GtkWidget *w;
+  GtkTreeModel *model;
+  gint n_columns;
+
+  fore_col = back_col = font_col = -1;
+
+  n_columns = g_slist_length (options.list_data.columns);
+
+  if (n_columns == 0)
+    {
+      g_printerr (_("No column titles specified for List dialog.\n"));
+      return NULL;
+    }
+
+  parse_cols_props ();
 
   /* create widget */
   w = gtk_scrolled_window_new (NULL, NULL);
