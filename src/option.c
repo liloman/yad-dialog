@@ -79,9 +79,13 @@ static GOptionEntry general_options[] = {
   { "window-icon", 0, 0, G_OPTION_ARG_FILENAME, &options.data.window_icon,
     N_("Set the window icon"), N_("ICONPATH") },
   { "width", 0, 0, G_OPTION_ARG_INT, &options.data.width,
-    N_("Set the width"), N_("WIDTH") },
+    N_("Set the window width"), N_("WIDTH") },
   { "height", 0, 0, G_OPTION_ARG_INT, &options.data.height,
-    N_("Set the height"), N_("HEIGHT") },
+    N_("Set the window height"), N_("HEIGHT") },
+  { "posx", 0, 0, G_OPTION_ARG_INT, &options.data.posx,
+    N_("Set the X position of a window"), N_("NUMBER") },
+  { "posy", 0, 0, G_OPTION_ARG_INT, &options.data.posy,
+    N_("Set the Y position of a window"), N_("NUMBER") },
   { "geometry", 0, 0, G_OPTION_ARG_STRING, &options.data.geometry,
     N_("Set the window geometry"), N_("WxH+X+Y") },
   { "timeout", 0, 0, G_OPTION_ARG_INT, &options.data.timeout,
@@ -1246,6 +1250,8 @@ yad_options_init (void)
   options.data.window_icon = "yad";
   options.data.width = settings.width;
   options.data.height = settings.height;
+  options.data.posx = -1;
+  options.data.posy = -1;
   options.data.geometry = NULL;
   options.data.dialog_text = NULL;
   options.data.text_align = GTK_JUSTIFY_LEFT;

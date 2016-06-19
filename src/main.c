@@ -571,13 +571,31 @@ create_dialog (void)
 
   /* show widgets */
   gtk_widget_show_all (vbox);
-  /* parse geometry, if given. must be after showing widget */
-  if (options.data.geometry && !options.data.maximized && !options.data.fullscreen)
+  /* parse geometry or move window, if given. must be after showing widget */
+  if (!options.data.maximized && !options.data.fullscreen)
     {
-      gtk_widget_realize (dlg);
-      gtk_window_parse_geometry (GTK_WINDOW (dlg), options.data.geometry);
+      if (options.data.geometry)
+        {
+          gtk_widget_realize (dlg);
+          gtk_window_parse_geometry (GTK_WINDOW (dlg), options.data.geometry);
+          gtk_widget_show (dlg);
+        }
+      else
+        {
+          gtk_widget_show (dlg);
+          if (options.data.posx != -1 || options.data.posy != -1)
+            {
+              /* place window to specified coordinates */
+              if (options.data.posx == -1)
+                gtk_window_get_position (GTK_WINDOW (dlg), &options.data.posx, NULL);
+              if (options.data.posy == -1)
+                gtk_window_get_position (GTK_WINDOW (dlg), NULL, &options.data.posy);
+              gtk_window_move (GTK_WINDOW (dlg), options.data.posx, options.data.posy);
+            }
+        }
     }
-  gtk_widget_show (dlg);
+  else
+    gtk_widget_show (dlg);
 
   /* set maximized or fixed size after showing widget */
   if (options.data.maximized)
