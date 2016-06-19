@@ -314,6 +314,7 @@ typedef struct {
   gboolean radiobox;
   gboolean print_all;
   gboolean rules_hint;
+  GtkTreeViewGridLines grid_lines;
   gint print_column;
   gint hide_column;
   gint expand_column;

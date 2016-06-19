@@ -1094,6 +1094,7 @@ list_create_widget (GtkWidget * dlg)
   gtk_widget_set_name (list_view, "yad-list-widget");
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (list_view), !options.list_data.no_headers);
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (list_view), options.list_data.rules_hint);
+  gtk_tree_view_set_grid_lines (GTK_TREE_VIEW (list_view), options.list_data.grid_lines);
   gtk_tree_view_set_reorderable (GTK_TREE_VIEW (list_view), options.common_data.editable);
   g_object_unref (model);
 

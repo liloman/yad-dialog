@@ -48,6 +48,7 @@ static gboolean parse_signal (const gchar *, const gchar *, gpointer, GError **)
 #endif
 static gboolean add_image_path (const gchar *, const gchar *, gpointer, GError **);
 static gboolean set_complete_type (const gchar *, const gchar *, gpointer, GError **);
+static gboolean set_grid_lines (const gchar *, const gchar *, gpointer, GError **);
 
 static gboolean about_mode = FALSE;
 static gboolean version_mode = FALSE;
@@ -378,6 +379,8 @@ static GOptionEntry list_options[] = {
     N_("Disable clickable column headers"), NULL },
   { "no-rules-hint", 0, G_OPTION_FLAG_REVERSE, G_OPTION_ARG_NONE, &options.list_data.rules_hint,
     N_("Disable rules hints"), NULL },
+  { "grid-lines", 0, 0, G_OPTION_ARG_CALLBACK, set_grid_lines,
+    N_("Set grid lines (hor[izontal], vert[ical] or both)"), N_("TYPE") },
   { "print-all", 0, 0, G_OPTION_ARG_NONE, &options.list_data.print_all,
     N_("Print all data from list"), NULL },
   { "editable-cols", 0, 0, G_OPTION_ARG_STRING, &options.list_data.editable_cols,
@@ -1086,6 +1089,21 @@ set_complete_type (const gchar * option_name, const gchar * value, gpointer data
   return TRUE;
 }
 
+static gboolean
+set_grid_lines (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
+{
+  if (strncasecmp (value, "hor", 3) == 0)
+    options.list_data.grid_lines = GTK_TREE_VIEW_GRID_LINES_HORIZONTAL;
+  else if (strncasecmp (value, "vert", 4) == 0)
+    options.list_data.grid_lines = GTK_TREE_VIEW_GRID_LINES_VERTICAL;
+  else if (strncasecmp (value, "both", 4) == 0)
+    options.list_data.grid_lines = GTK_TREE_VIEW_GRID_LINES_BOTH;
+  else
+    g_printerr (_("Unknown grid lines type: %s\n"), value);
+
+  return TRUE;
+}
+
 #ifndef G_OS_WIN32
 static gboolean
 parse_signal (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
@@ -1396,6 +1414,7 @@ yad_options_init (void)
   options.list_data.radiobox = FALSE;
   options.list_data.print_all = FALSE;
   options.list_data.rules_hint = TRUE;
+  options.list_data.grid_lines = GTK_TREE_VIEW_GRID_LINES_NONE;
   options.list_data.print_column = 0;
   options.list_data.hide_column = 0;
   options.list_data.expand_column = -1; // must be -1 for disable expand by default (keep the original behavior)
