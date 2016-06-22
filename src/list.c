@@ -334,7 +334,10 @@ add_columns (gint n_columns)
             column = gtk_tree_view_column_new_with_attributes (col->name, renderer, "markup", i, NULL);
           g_object_set (G_OBJECT (renderer), "ellipsize", col->ellipsize, NULL);
           if (col->wrap)
-            g_object_set (G_OBJECT (renderer), "wrap-width", options.list_data.wrap_width, NULL);
+            {
+              g_object_set (G_OBJECT (renderer), "wrap-width", options.list_data.wrap_width, NULL);
+              g_object_set (G_OBJECT (renderer), "wrap-mode", PANGO_WRAP_WORD_CHAR, NULL);
+            }
           if (fore_col != -1)
             gtk_tree_view_column_add_attribute (column, renderer, "foreground", fore_col);
           if (back_col != -1)
