@@ -156,8 +156,6 @@ static GOptionEntry general_options[] = {
   { "print-xid", 0, 0, G_OPTION_ARG_NONE, &options.print_xid,
     N_("Print X Window Id to the stderr"), NULL },
 #endif
-  { "image-path", 0, 0, G_OPTION_ARG_CALLBACK, add_image_path,
-    N_("Add path for search icons by name"), N_("PATH") },
   { NULL }
 };
 
@@ -595,6 +593,8 @@ static GOptionEntry misc_options[] = {
     N_("Print version"), NULL },
   { "gtkrc", 0, 0, G_OPTION_ARG_FILENAME, &options.gtkrc_file,
     N_("Load additional GTK settings from file"), N_("FILENAME") },
+  { "image-path", 0, 0, G_OPTION_ARG_CALLBACK, add_image_path,
+    N_("Add path for search icons by name"), N_("PATH") },
   { NULL }
 };
 
