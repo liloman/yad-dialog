@@ -49,6 +49,7 @@ static gboolean parse_signal (const gchar *, const gchar *, gpointer, GError **)
 static gboolean add_image_path (const gchar *, const gchar *, gpointer, GError **);
 static gboolean set_complete_type (const gchar *, const gchar *, gpointer, GError **);
 static gboolean set_grid_lines (const gchar *, const gchar *, gpointer, GError **);
+static gboolean set_scroll_policy (const gchar *, const gchar *, gpointer, GError **);
 
 static gboolean about_mode = FALSE;
 static gboolean version_mode = FALSE;
@@ -595,6 +596,10 @@ static GOptionEntry misc_options[] = {
     N_("Print version"), NULL },
   { "gtkrc", 0, 0, G_OPTION_ARG_FILENAME, &options.gtkrc_file,
     N_("Load additional GTK settings from file"), N_("FILENAME") },
+  { "hscroll-policy", 0, 0, G_OPTION_ARG_CALLBACK, set_scroll_policy,
+    N_("Set policy for horizontal scrollbars (auto, always, never)"), N_("TYPE") },
+  { "vscroll-policy", 0, 0, G_OPTION_ARG_CALLBACK, set_scroll_policy,
+    N_("Set policy for vertical scrollbars (auto, always, never)"), N_("TYPE") },
   { "image-path", 0, 0, G_OPTION_ARG_CALLBACK, add_image_path,
     N_("Add path for search icons by name"), N_("PATH") },
   { NULL }
@@ -1106,6 +1111,26 @@ set_grid_lines (const gchar * option_name, const gchar * value, gpointer data, G
   return TRUE;
 }
 
+static gboolean
+set_scroll_policy (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
+{
+  GtkPolicyType pt = GTK_POLICY_AUTOMATIC;
+
+  if (strcmp (value, "auto") == 0)
+    pt = GTK_POLICY_AUTOMATIC;
+  else if (strcmp (value, "always") == 0)
+    pt = GTK_POLICY_ALWAYS;
+  else if (strcmp (value, "never") == 0)
+    pt = GTK_POLICY_NEVER;
+  else
+    g_printerr (_("Unknown scrollbar policy type: %s\n"), value);
+
+  if (option_name[0] == 'h')
+    options.hscroll_policy = pt;
+  else
+    options.vscroll_policy = pt;
+}
+
 #ifndef G_OS_WIN32
 static gboolean
 parse_signal (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
@@ -1268,6 +1293,9 @@ yad_options_init (void)
   options.kill_parent = 0;
   options.print_xid = FALSE;
 #endif
+
+  options.hscroll_policy = GTK_POLICY_AUTOMATIC;
+  options.vscroll_policy = GTK_POLICY_AUTOMATIC;
 
   /* plug settings */
   options.plug = -1;

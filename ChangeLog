@@ -1,3 +1,76 @@
+2016-06-29 09:55  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/main.c, src/option.c,
+	  src/yad.h: add --close-on-unfocus option
+
+2016-06-26 05:34  v1c0nt
+
+	* po/ru.po, po/uk.po, src/option.c: move --image-path option to
+	  misc group
+
+2016-06-22 14:42  v1c0nt
+
+	* src/list.c: change wrap mode in list dialog
+
+2016-06-19 16:31  v1c0nt
+
+	* src/main.c: fix closing yad's window
+
+2016-06-19 16:19  v1c0nt
+
+	* data/yad.1: fix man page
+
+2016-06-19 13:46  v1c0nt
+
+	* src/list.c: refactoring
+
+2016-06-19 13:45  v1c0nt
+
+	* src/list.c: refactoring
+
+2016-06-19 13:35  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/list.c, src/option.c,
+	  src/yad.h: add --grid-lines option to list dialog
+
+2016-06-19 13:01  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/list.c, src/option.c,
+	  src/yad.h: add wrapping to the list dialog. add ability to
+	  specify list of wrapped, editable and ellipsized columns
+
+2016-06-19 11:02  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/main.c, src/option.c,
+	  src/yad.h: added --posx and --posy options
+
+2016-06-19 09:51  v1c0nt
+
+	* configure.ac, src/calendar.c, src/entry.c, src/file.c,
+	  src/form.c, src/list.c, src/main.c, src/multi-progress.c,
+	  src/progress.c, src/text.c, src/yad.h: use GtkWindow instead of
+	  GtkDialog
+
+2016-06-17 10:33  v1c0nt
+
+	* src/list.c: fix previous commit
+
+2016-06-17 09:20  v1c0nt
+
+	* src/list.c: block select signal on clear list view
+
+2016-05-22 07:03  v1c0nt
+
+	* data/yad.1: update date in man page
+
+2016-05-22 07:03  v1c0nt
+
+	* data/yad.1: fix man page
+
+2016-05-11 16:49  v1c0nt
+
+	* ChangeLog, NEWS: release 0.36.3
+
 2016-05-11 09:30  v1c0nt
 
 	* configure.ac, src/text.c: cleanup

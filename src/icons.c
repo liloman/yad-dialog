@@ -285,7 +285,7 @@ parse_desktop_file (gchar * filename)
             }
           else
             ent->comment = g_strdup (ent->name);
-              
+
           /* parse command or url */
           if (type == TYPE_APP)
             {
@@ -399,7 +399,7 @@ icons_create_widget (GtkWidget * dlg)
 
   w = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (w), GTK_SHADOW_ETCHED_IN);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (w), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (w), options.hscroll_policy, options.vscroll_policy);
 
   store = gtk_list_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
                               GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_BOOLEAN);

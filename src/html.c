@@ -267,7 +267,7 @@ html_create_widget (GtkWidget * dlg)
   const gchar *enc;
 
   sw = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), options.hscroll_policy, options.vscroll_policy);
 
   view = WEBKIT_WEB_VIEW (webkit_web_view_new ());
   gtk_container_add (GTK_CONTAINER (sw), GTK_WIDGET (view));

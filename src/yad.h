@@ -473,6 +473,9 @@ typedef struct {
 
   gchar *gtkrc_file;
 
+  GtkPolicyType hscroll_policy;
+  GtkPolicyType vscroll_policy;
+
   gchar *rest_file;
   gchar **extra_data;
 
