@@ -291,16 +291,17 @@ create_layout (GtkWidget *dlg)
   if (options.data.image_on_top)
     {
 #if !GTK_CHECK_VERSION(3,0,0)
-      layout = gtk_vbox_new (FALSE, 0);
-      box = gtk_hbox_new (FALSE, 0);
+      layout = gtk_vbox_new (FALSE, 5);
+      box = gtk_hbox_new (FALSE, 5);
 #else
-      layout = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-      box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+      layout = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
+      box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
 #endif
+
       if (image)
-        gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 2);
+        gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 0);
       if (text)
-        gtk_box_pack_start (GTK_BOX (box), text, TRUE, TRUE, 2);
+        gtk_box_pack_start (GTK_BOX (box), text, TRUE, TRUE, 0);
 
       gtk_box_pack_start (GTK_BOX (layout), box, FALSE, FALSE, 0);
       if (imw)
@@ -309,20 +310,21 @@ create_layout (GtkWidget *dlg)
   else
     {
 #if !GTK_CHECK_VERSION(3,0,0)
-      layout = gtk_hbox_new (FALSE, 0);
-      box = gtk_vbox_new (FALSE, 0);
+      layout = gtk_hbox_new (FALSE, 5);
+      box = gtk_vbox_new (FALSE, 5);
 #else
-      layout = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-      box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+      layout = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
+      box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
 #endif
+
       if (text)
         gtk_box_pack_start (GTK_BOX (box), text, FALSE, FALSE, 0);
       if (imw)
         gtk_box_pack_start (GTK_BOX (box), imw, TRUE, TRUE, 0);
 
       if (image)
-        gtk_box_pack_start (GTK_BOX (layout), image, FALSE, FALSE, 2);
-      gtk_box_pack_start (GTK_BOX (layout), box, TRUE, TRUE, 2);
+        gtk_box_pack_start (GTK_BOX (layout), image, FALSE, FALSE, 0);
+      gtk_box_pack_start (GTK_BOX (layout), box, TRUE, TRUE, 0);
     }
 
   return layout;
@@ -393,7 +395,6 @@ create_dialog (void)
 #else
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 #endif
-  gtk_container_set_border_width (GTK_CONTAINER (vbox), 2);
   gtk_container_add (GTK_CONTAINER (dlg), vbox);
 
   layout = create_layout (dlg);
