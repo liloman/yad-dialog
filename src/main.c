@@ -118,6 +118,14 @@ timeout_cb (gpointer data)
   return TRUE;
 }
 
+static gboolean
+unfocus_cb (GtkWidget *w, GdkEventFocus *ev, gpointer d)
+{
+  if (options.data.close_on_unfocus)
+    gtk_main_quit ();
+  return FALSE;
+}
+
 #if !GTK_CHECK_VERSION(3,0,0)
 static void
 text_size_allocate_cb (GtkWidget * w, GtkAllocation * al, gpointer data)
@@ -332,8 +340,9 @@ create_dialog (void)
   gtk_window_set_title (GTK_WINDOW (dlg), options.data.dialog_title);
   gtk_widget_set_name (dlg, "yad-dialog-window");
 
-  g_signal_connect (G_OBJECT (dlg), "delete-event", G_CALLBACK (gtk_main_quit), NULL);  
+  g_signal_connect (G_OBJECT (dlg), "delete-event", G_CALLBACK (gtk_main_quit), NULL);
   g_signal_connect (G_OBJECT (dlg), "key-press-event", G_CALLBACK (keys_cb), NULL);
+  g_signal_connect (G_OBJECT (dlg), "focus-out-event", G_CALLBACK (unfocus_cb), NULL);
 
 #ifndef  G_OS_WIN32
   /* FIXME: is that very useful !? */

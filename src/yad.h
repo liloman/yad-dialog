@@ -223,6 +223,7 @@ typedef struct {
   gboolean fullscreen;
   gboolean splash;
   gboolean focus;
+  gboolean close_on_unfocus;
 } YadData;
 
 typedef struct {

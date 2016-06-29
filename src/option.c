@@ -142,6 +142,8 @@ static GOptionEntry general_options[] = {
     N_("Set window fulscreen"), NULL },
   { "no-focus", 0, G_OPTION_FLAG_REVERSE, G_OPTION_ARG_NONE, &options.data.focus,
     N_("Don't focus dialog window"), NULL },
+  { "close-on-unfocus", 0, 0, G_OPTION_ARG_NONE, &options.data.close_on_unfocus,
+    N_("Close window when it sets unfocused"), NULL },
   { "splash", 0, 0, G_OPTION_ARG_NONE, &options.data.splash,
     N_("Open window as a splashscreen"), NULL },
   { "plug", 0, 0, G_OPTION_ARG_INT, &options.plug,
@@ -1308,6 +1310,7 @@ yad_options_init (void)
   options.data.fullscreen = FALSE;
   options.data.splash = FALSE;
   options.data.focus = TRUE;
+  options.data.close_on_unfocus = FALSE;
 
   /* Initialize common data */
   options.common_data.uri = NULL;
