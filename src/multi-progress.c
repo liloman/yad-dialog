@@ -30,6 +30,13 @@ static GSList *progress_bars = NULL;
 static guint nbars = 0;
 
 static gboolean
+pulsate_progress_bar (GtkProgressBar *bar)
+{
+  gtk_progress_bar_pulse (bar);
+  return TRUE;
+}
+
+static gboolean
 handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
 {
   float percentage = 0.0;
@@ -83,13 +90,11 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
 
           if (value[1] && value[1][0] == '#')
             {
-              gchar *match, *p;
+              gchar *match;
 
               /* We have a comment, so let's try to change the label */
               match = g_strcompress (value[1] + 1);
-              p = g_strrstr (match, "\n");
-              if (p)
-                *p = '\0';
+              strip_new_line (match);
               gtk_progress_bar_set_text (pb, match);
               g_free (match);
             }
@@ -97,6 +102,29 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
             {
               if (value[1] && b->type == YAD_PROGRESS_PULSE)
                 gtk_progress_bar_pulse (pb);
+              else if (value[1] && b->type == YAD_PROGRESS_PERM)
+                {
+                  guint id;
+                  
+                  if (strncmp (value[1], "start", 5) == 0)
+                    {
+                      id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (pb), "id"));
+                      if (id == 0)
+                        {
+                          id = g_timeout_add (100, (GSourceFunc) pulsate_progress_bar, pb);
+                          g_object_set_data (G_OBJECT (pb), "id", GINT_TO_POINTER (id));
+                        }
+                    }
+                  else if (strncmp (value[1], "stop", 4) == 0)
+                    {
+                      id = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (pb), "id"));
+                      if (id > 0)
+                        {
+                          g_source_remove (id);
+                          g_object_set_data (G_OBJECT (pb), "id", GINT_TO_POINTER (0));
+                        }                      
+                    }                    
+                }
               else
                 {
                   if (!value[1] || !g_ascii_isdigit (*value[1]))

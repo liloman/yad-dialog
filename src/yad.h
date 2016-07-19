@@ -143,7 +143,8 @@ typedef enum {
 typedef enum {
   YAD_PROGRESS_NORMAL = 0,
   YAD_PROGRESS_RTL,
-  YAD_PROGRESS_PULSE
+  YAD_PROGRESS_PULSE,
+  YAD_PROGRESS_PERM
 } YadProgressType;
 
 typedef enum {

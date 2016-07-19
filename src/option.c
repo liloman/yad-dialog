@@ -425,7 +425,7 @@ static GOptionEntry multi_progress_options[] = {
   { "multi-progress", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &multi_progress_mode,
     N_("Display multi progress bars dialog"), NULL },
   { "bar", 0, 0, G_OPTION_ARG_CALLBACK, add_bar,
-    N_("Add the progress bar (norm, rtl or pulse)"), N_("LABEL[:TYPE]") },
+    N_("Add the progress bar (norm, rtl, pulse or perm)"), N_("LABEL[:TYPE]") },
   { "watch-bar", 0, 0, G_OPTION_ARG_INT, &options.multi_progress_data.watch_bar,
     N_("Watch for specific bar for auto close"), N_("NUMBER") },
   { "align", 0, G_OPTION_FLAG_NOALIAS, G_OPTION_ARG_CALLBACK, set_align,
@@ -776,6 +776,8 @@ add_bar (const gchar * option_name, const gchar * value, gpointer data, GError *
         bar->type = YAD_PROGRESS_RTL;
       else if (strcasecmp (bstr[1], "PULSE") == 0)
         bar->type = YAD_PROGRESS_PULSE;
+      else if (strcasecmp (bstr[1], "PERM") == 0)
+        bar->type = YAD_PROGRESS_PERM;
       else
         bar->type = YAD_PROGRESS_NORMAL;
     }
