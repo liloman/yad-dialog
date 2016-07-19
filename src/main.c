@@ -299,9 +299,9 @@ create_layout (GtkWidget *dlg)
 #endif
 
       if (image)
-        gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 0);
+        gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 2);
       if (text)
-        gtk_box_pack_start (GTK_BOX (box), text, TRUE, TRUE, 0);
+        gtk_box_pack_start (GTK_BOX (box), text, TRUE, TRUE, 2);
 
       gtk_box_pack_start (GTK_BOX (layout), box, FALSE, FALSE, 0);
       if (imw)
