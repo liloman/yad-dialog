@@ -193,7 +193,9 @@ typedef struct {
   gchar *window_icon;
   gint width;
   gint height;
+  gboolean use_posx;
   gint posx;
+  gboolean use_posy;
   gint posy;
   gchar *geometry;
   guint timeout;

@@ -43,6 +43,8 @@ static gboolean set_orient (const gchar *, const gchar *, gpointer, GError **);
 static gboolean set_print_type (const gchar *, const gchar *, gpointer, GError **);
 static gboolean set_progress_log (const gchar *, const gchar *, gpointer, GError **);
 static gboolean set_size (const gchar *, const gchar *, gpointer, GError **);
+static gboolean set_posx (const gchar *, const gchar *, gpointer, GError **);
+static gboolean set_posy (const gchar *, const gchar *, gpointer, GError **);
 #ifndef G_OS_WIN32
 static gboolean parse_signal (const gchar *, const gchar *, gpointer, GError **);
 #endif
@@ -84,9 +86,9 @@ static GOptionEntry general_options[] = {
     N_("Set the window width"), N_("WIDTH") },
   { "height", 0, 0, G_OPTION_ARG_INT, &options.data.height,
     N_("Set the window height"), N_("HEIGHT") },
-  { "posx", 0, 0, G_OPTION_ARG_INT, &options.data.posx,
+  { "posx", 0, 0, G_OPTION_ARG_CALLBACK, set_posx,
     N_("Set the X position of a window"), N_("NUMBER") },
-  { "posy", 0, 0, G_OPTION_ARG_INT, &options.data.posy,
+  { "posy", 0, 0, G_OPTION_ARG_CALLBACK, set_posy,
     N_("Set the Y position of a window"), N_("NUMBER") },
   { "geometry", 0, 0, G_OPTION_ARG_STRING, &options.data.geometry,
     N_("Set the window geometry"), N_("WxH+X+Y") },
@@ -1075,6 +1077,20 @@ set_size (const gchar * option_name, const gchar * value, gpointer data, GError 
 }
 
 static gboolean
+set_posx (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
+{
+  options.data.use_posx = TRUE;
+  options.data.posx = atol (value);
+}
+
+static gboolean
+set_posy (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
+{
+  options.data.use_posy = TRUE;
+  options.data.posy = atol (value);
+}
+
+static gboolean
 add_image_path (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
 {
   if (value)
@@ -1308,8 +1324,10 @@ yad_options_init (void)
   options.data.window_icon = "yad";
   options.data.width = settings.width;
   options.data.height = settings.height;
-  options.data.posx = -1;
-  options.data.posy = -1;
+  options.data.use_posx = FALSE;
+  options.data.posx = 0;
+  options.data.use_posy = FALSE;
+  options.data.posy = 0;
   options.data.geometry = NULL;
   options.data.dialog_text = NULL;
   options.data.text_align = GTK_JUSTIFY_LEFT;

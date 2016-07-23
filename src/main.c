@@ -594,14 +594,26 @@ create_dialog (void)
       else
         {
           gtk_widget_show (dlg);
-          if (options.data.posx != -1 || options.data.posy != -1)
+          if (options.data.use_posx || options.data.use_posy)
             {
+              gint ww, wh;
+              gtk_window_get_size (GTK_WINDOW (dlg), &ww, &wh);
               /* place window to specified coordinates */
-              if (options.data.posx == -1)
+              if (!options.data.use_posx)
                 gtk_window_get_position (GTK_WINDOW (dlg), &options.data.posx, NULL);
-              if (options.data.posy == -1)
+              if (!options.data.use_posy)
                 gtk_window_get_position (GTK_WINDOW (dlg), NULL, &options.data.posy);
-              gtk_window_move (GTK_WINDOW (dlg), options.data.posx, options.data.posy);
+              if (options.data.posx < 0)
+                {
+                  gint sw = gdk_screen_get_width (gdk_screen_get_default ());
+                  options.data.posx = sw - ww + options.data.posx;
+                }
+              if (options.data.posy < 0)
+                {
+                  gint sh = gdk_screen_get_height (gdk_screen_get_default ());
+                  options.data.posy = sh - wh + options.data.posy;
+                }
+              gtk_window_move (GTK_WINDOW (dlg), options.data.posx, options.data.posy);              
             }
         }
     }
