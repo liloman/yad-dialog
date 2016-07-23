@@ -86,10 +86,15 @@ Set the dialog window width.
 Set the dialog window height.
 .TP
 .B \-\-posx=\fINUMBER\fP
-Set the X position of dialog window.
+Set the X position of dialog window. \fINUMBER\fP can be negative.
 .TP
 .B \-\-posy=\fINUMBER\fP
-Set the Y position of dialog window.
+Set the Y position of dialog window. \fINUMBER\fP can be negative.
+.TP
+.B \-\-geometry=\fIWIDTHxHEIGHT+X+Y\fP
+Use standard X Window geometry notation for placing dialog.
+When this option is used, \fIwidth\fP, \fIheight\fP, \fIposx\fP, \fIposy\fP, \fImouse\fP and \fIcenter\fP options are
+ignored. This option is obsolete for gtk3 builds.
 .TP
 .B \-\-timeout=\fITIMEOUT\fP
 Set the dialog timeout in seconds.
@@ -198,11 +203,6 @@ Dialog window never take focus.
 .TP
 .B \-\-close-on-unfocus
 Close the dialog window when it loose the focus.
-.TP
-.B \-\-geometry=\fIWIDTHxHEIGHT+X+Y\fP
-Use standard X Window geometry notation for placing dialog.
-When this option is used, \fIwidth\fP, \fIheight\fP, \fImouse\fP and \fIcenter\fP options are
-ignored.
 .TP
 .B \-\-selectable-labels
 If set, user can select dialog's text and copy it to clipboard.
