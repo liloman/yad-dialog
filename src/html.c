@@ -23,11 +23,8 @@
 #include "yad.h"
 
 #include <glib/gprintf.h>
-#if GTK_CHECK_VERSION(3,0,0)
-#include <webkit2/webkit2.h>
-#else
 #include <webkit/webkit.h>
-#endif
+
 static WebKitWebView *view;
 
 static GString *inbuf;
