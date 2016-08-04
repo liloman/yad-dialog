@@ -28,7 +28,7 @@ case "$with_gtk" in
         GTK_MODULE="gtk+-3.0"
         GTK_REQUIRED="3.0.0"
         GTK_PRINT="gtk+-unix-print-3.0"
-        WEBKIT="webkitgtk-3.0"
+        WEBKIT="webkit2gtk-4.0"
         SPELL="gtkspell3-3.0"
         SOURCEVIEW="gtksourceview-3.0"
         ;;

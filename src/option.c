@@ -1340,7 +1340,7 @@ yad_options_init (void)
   options.data.buttons = NULL;
   options.data.no_buttons = FALSE;
   options.data.buttons_layout = GTK_BUTTONBOX_END;
-  options.data.borders = -1;
+  options.data.borders = 2;
   options.data.no_markup = FALSE;
   options.data.no_escape = FALSE;
   options.data.always_print = FALSE;

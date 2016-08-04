@@ -366,8 +366,8 @@ create_dialog (void)
     }
 
   /* set window borders */
-  if (options.data.borders == -1)
-    options.data.borders = (gint) gtk_container_get_border_width (GTK_CONTAINER (dlg));
+  if (options.data.borders < 0)
+    options.data.borders = 2;
   gtk_container_set_border_width (GTK_CONTAINER (dlg), (guint) options.data.borders);
 
   /* set window size and position */
