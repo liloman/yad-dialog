@@ -455,6 +455,10 @@ escape_str (gchar *str)
           strcpy (res + i, "\\t");
           i += 2;
           break;
+        case '\\':
+          strcpy (res + i, "\\\\");
+          i += 2;
+          break;        
         default:
           *(res + i) = *buf;
           i++;
