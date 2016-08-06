@@ -1,3 +1,49 @@
+2016-08-06 11:18  v1c0nt
+
+	* data/yad.1: update man page
+
+2016-08-05 17:04  v1c0nt
+
+	* src/util.c: fix escaping
+
+2016-08-04 06:09  v1c0nt
+
+	* configure.ac, src/html.c:
+
+2016-08-04 06:09  v1c0nt
+
+	* configure.ac, src/html.c, src/main.c, src/option.c: set default
+	  dialogs borders width to 2
+
+2016-07-23 06:54  v1c0nt
+
+	* data/yad.1: update man page
+
+2016-07-23 06:51  v1c0nt
+
+	* src/main.c, src/option.c, src/yad.h: enable negative values for
+	  posx and posy
+
+2016-07-19 12:04  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/multi-progress.c,
+	  src/option.c, src/yad.h: add perm type for multiprogress dialog
+
+2016-07-19 09:42  v1c0nt
+
+	* src/main.c: improve layout
+
+2016-06-29 12:21  v1c0nt
+
+	* src/main.c: improve layout
+
+2016-06-29 10:32  v1c0nt
+
+	* ChangeLog, data/yad.1, po/ru.po, po/uk.po, src/color.c,
+	  src/form.c, src/html.c, src/icons.c, src/list.c, src/option.c,
+	  src/picture.c, src/progress.c, src/text.c, src/yad.h: add options
+	  for setting scrollbars policy
+
 2016-06-29 09:55  v1c0nt
 
 	* data/yad.1, po/ru.po, po/uk.po, src/main.c, src/option.c,
