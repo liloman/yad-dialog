@@ -1,3 +1,13 @@
+version 0.37.0
+    - new layout management (fix gtk3 warning about missing parent)
+    - fix single-click selection in list dialog
+    - add --grid-lines option to list dialog
+    - add --posx and --posy options for setting window position
+    - fix quoting and escaping arguments for handlers in list and form dialogs
+    - add wrapping ability for columns in list dialog
+    - wrapped, ellipsized and editable columns may be specified as list
+    - add 'perm' type of bar in multiprogress dialog
+
 Version 0.36.3
     - fix segfault when parse desktop files with missed or empty Comment field 
       in icons dialog
