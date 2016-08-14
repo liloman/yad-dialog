@@ -25,15 +25,12 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 
-#include <gdk/gdkx.h>
-
-#include <gtk/gtk.h>
+#include <glib.h>
 #include <glib/gi18n.h>
+#include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms.h>
-
-#if GTK_CHECK_VERSION(3,0,0)
+#include <gtk/gtk.h>
 #include <gtk/gtkx.h>
-#endif
 
 #ifdef HAVE_SPELL
 #include <gtkspell/gtkspell.h>

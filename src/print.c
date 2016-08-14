@@ -286,11 +286,7 @@ yad_print_run (void)
   /* create yad's top box */
   if (options.data.dialog_text || options.data.dialog_image)
     {
-#if !GTK_CHECK_VERSION(3,0,0)
-      box = gtk_hbox_new (FALSE, 0);
-#else
       box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-#endif
 
       if (options.data.dialog_image)
         {

@@ -379,11 +379,7 @@ get_label (gchar * str, guint border)
   a = gtk_alignment_new (0.0, 0.5, 0, 0);
   gtk_container_set_border_width (GTK_CONTAINER (a), border);
 
-#if !GTK_CHECK_VERSION(3,0,0)
-  t = gtk_hbox_new (FALSE, 0);
-#else
   t = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-#endif
   gtk_container_add (GTK_CONTAINER (a), t);
 
   vals = g_strsplit_set (str, options.common_data.item_separator, 3);

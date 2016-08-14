@@ -117,11 +117,7 @@ color_create_widget (GtkWidget * dlg)
 {
   GtkWidget *w;
 
-#if !GTK_CHECK_VERSION(3,0,0)
-  w = gtk_vbox_new (FALSE, 2);
-#else
   w = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
-#endif
 
   color = gtk_color_selection_new ();
   gtk_widget_set_name (color, "yad-color-widget");
