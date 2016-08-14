@@ -2,9 +2,9 @@ AM_CPPFLAGS =                           \
 	-DLOCALEDIR=\""$(datadir)/locale"\"	\
 	@DISABLE_DEPRECATED@
 
-bin_PROGRAMS = yad
+bin_PROGRAMS = yad3
 
-yad_SOURCES = 			\
+yad3_SOURCES = 			\
 	about.c			\
 	calendar.c		\
 	color.c			\
@@ -31,11 +31,11 @@ yad_SOURCES = 			\
 	calendar.xpm
 
 if HTML
-yad_SOURCES += html.c
+yad3_SOURCES += html.c
 endif
 
-yad_CFLAGS = $(GTK_CFLAGS) $(HTML_CFLAGS) $(SPELL_CFLAGS) $(SOURCEVIEW_CFLAGS)
-yad_LDADD = $(GTK_LIBS) $(HTML_LIBS) $(SPELL_LIBS) $(SOURCEVIEW_LIBS)
+yad3_CFLAGS = $(GTK_CFLAGS) $(HTML_CFLAGS) $(SPELL_CFLAGS) $(SOURCEVIEW_CFLAGS)
+yad3_LDADD = $(GTK_LIBS) $(HTML_LIBS) $(SPELL_LIBS) $(SOURCEVIEW_LIBS)
 
 if BUILD_IB
 bin_PROGRAMS += yad-icon-browser
@@ -43,4 +43,9 @@ bin_PROGRAMS += yad-icon-browser
 yad_icon_browser_SOURCES = browser.c
 yad_icon_browser_CFLAGS = $(GTK_CFLAGS)
 yad_icon_browser_LDADD = $(GTK_LIBS)
+endif
+
+if SYMLINK
+install-exec-hook:
+    $(LN_S) yad3$(EXEEXT) $(DESTDIR)$(bindir)/yad$(EXEEXT)
 endif

@@ -97,10 +97,17 @@ if test x$have_sourceview = xyes; then
     AC_DEFINE([HAVE_SOURCEVIEW], [1], [Define this if you need GtkSourceView support])
 fi
 
+dnl yad symlink
+AC_ARG_ENABLE([symlink],
+	[AS_HELP_STRING([--enable-symlink],
+			[Make yad symlink (default - no)])],
+	[enable_symlink=$enableval], [enable_symlink=no])
+AM_CONDITIONAL([SYMLINK], [test x$enable_symlink = xyes])
+
 dnl icon browser
 AC_ARG_ENABLE([icon-browser],
 	[AS_HELP_STRING([--enable-icon-browser],
-			[Build YAD icon browser])],
+			[Build YAD icon browser (default - no)])],
 	[build_ib=$enableval], [build_ib=no])
 AM_CONDITIONAL([BUILD_IB], [test x$build_ib = xyes])
 
@@ -148,5 +155,6 @@ echo "  HTML widget          - $have_html"
 echo "  Spell checking       - $have_spell"
 echo "  GtkSourceView        - $have_sourceview"
 echo "  GIO support          - $have_gio"
+echo "  Make yad symlink     - $enable_symlink"
 echo "  Icon browser         - $build_ib"
 echo
