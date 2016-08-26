@@ -23,7 +23,7 @@
 #include "yad.h"
 
 #include <glib/gprintf.h>
-#include <webkit/webkit.h>
+#include <webkit2/webkit2.h>
 
 static WebKitWebView *view;
 
@@ -74,31 +74,32 @@ load_uri (const gchar * uri)
 }
 
 static void
-loaded_cb (WebKitWebView * v, WebKitWebFrame * f, gpointer d)
+loaded_cb (WebKitWebView *v, WebKitLoadEvent ev, gpointer d)
 {
-  is_loaded = TRUE;
+  if (ev == WEBKIT_LOAD_FINISHED)
+    is_loaded = TRUE;
 }
 
 static gboolean
-link_cb (WebKitWebView * v, WebKitWebFrame * f, WebKitNetworkRequest * r,
-         WebKitWebNavigationAction * act, WebKitWebPolicyDecision * pd, gpointer d)
+policy_cb (WebKitWebView *v, WebKitPolicyDecision *pd, WebKitPolicyDecisionType pt, gpointer d)
 {
-  gchar *uri = (gchar *) webkit_network_request_get_uri (r);
-
   if (is_loaded && !options.html_data.browser)
     {
-      if (options.html_data.print_uri)
-        g_printf ("%s\n", uri);
-      else
+      WebKitNavigationAction *act = webkit_navigation_policy_decision_get_navigation_action (WEBKIT_NAVIGATION_POLICY_DECISION (pd));
+      webkit_policy_decision_ignore (pd);
+      if (webkit_navigation_action_get_navigation_type (act) == WEBKIT_NAVIGATION_TYPE_LINK_CLICKED)
         {
-          gchar *cmd = g_strdup_printf (settings.open_cmd, uri);
-          g_spawn_command_line_async (cmd, NULL);
-          g_free (cmd);
+          WebKitURIRequest *r = webkit_navigation_action_get_request (act);
+          gchar *uri = (gchar *) webkit_uri_request_get_uri (r);
+
+          if (options.html_data.print_uri)
+            g_printf ("%s\n", uri);
+          else
+            g_app_info_launch_default_for_uri (uri, NULL, NULL);
         }
-      webkit_web_policy_decision_ignore (pd);
     }
   else
-    webkit_web_policy_decision_use (pd);
+    return FALSE;
 
   return TRUE;
 }
@@ -106,10 +107,7 @@ link_cb (WebKitWebView * v, WebKitWebFrame * f, WebKitNetworkRequest * r,
 static void
 link_hover_cb (WebKitWebView * v, const gchar * t, const gchar * link, gpointer * d)
 {
-  if (link)
-    is_link = TRUE;
-  else
-    is_link = FALSE;
+  is_link = (link != NULL);
 }
 
 static void
@@ -222,7 +220,7 @@ title_cb (GObject *obj, GParamSpec *spec, GtkWindow *dlg)
 static void
 icon_cb (GObject *obj, GParamSpec *spec, GtkWindow *dlg)
 {
-  GdkPixbuf *pb = webkit_web_view_try_get_favicon_pixbuf (view, 16, 16);
+  GdkPixbuf *pb = gdk_pixbuf_get_from_surface (webkit_web_view_get_favicon (view), 0, 0, -1, -1);
   if (pb)
     {
       gtk_window_set_icon (dlg, pb);
@@ -234,6 +232,7 @@ static gboolean
 handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer d)
 {
   gchar *buf;
+  GBytes *data;
   GError *err = NULL;
 
   switch (g_io_channel_read_line (ch, &buf, NULL, NULL, &err))
@@ -248,7 +247,10 @@ handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer d)
       return FALSE;
 
     case G_IO_STATUS_EOF:
-      webkit_web_view_load_string (view, inbuf->str, options.html_data.mime, options.html_data.encoding, NULL);
+      data = g_bytes_new (inbuf->str, inbuf->len);
+      g_string_free (inbuf, TRUE);
+      webkit_web_view_load_bytes (view, data, options.html_data.mime, options.html_data.encoding, NULL);
+      g_bytes_unref (data);
       return FALSE;
 
     case G_IO_STATUS_AGAIN:
@@ -262,7 +264,7 @@ GtkWidget *
 html_create_widget (GtkWidget * dlg)
 {
   GtkWidget *sw;
-  WebKitWebSettings *settings;
+  WebKitSettings *settings;
   SoupSession *sess;
   const gchar *enc;
 
@@ -277,7 +279,7 @@ html_create_widget (GtkWidget * dlg)
   g_object_set (G_OBJECT (settings), "default-encoding", enc, NULL);
 
   g_signal_connect (view, "hovering-over-link", G_CALLBACK (link_hover_cb), NULL);
-  g_signal_connect (view, "navigation-policy-decision-requested", G_CALLBACK (link_cb), NULL);
+  g_signal_connect (view, "decide-policy", G_CALLBACK (policy_cb), NULL);
 
   if (options.html_data.browser)
     {
@@ -288,11 +290,13 @@ html_create_widget (GtkWidget * dlg)
         g_signal_connect (view, "icon-loaded", G_CALLBACK (icon_cb), dlg);
     }
   else
-    g_signal_connect (view, "document-load-finished", G_CALLBACK (loaded_cb), NULL);
+    g_signal_connect (view, "load-changed", G_CALLBACK (loaded_cb), NULL);
 
+#if 0
   sess = webkit_get_default_session ();
   soup_session_add_feature_by_type (sess, SOUP_TYPE_PROXY_RESOLVER_DEFAULT);
   g_object_set (G_OBJECT (sess), SOUP_SESSION_ACCEPT_LANGUAGE_AUTO, TRUE, NULL);
+#endif
 
   gtk_widget_show_all (sw);
   gtk_widget_grab_focus (GTK_WIDGET (view));
