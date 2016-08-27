@@ -249,18 +249,6 @@ typedef struct {
 } YadDNDData;
 
 typedef struct {
-  gchar *entry_text;
-  gchar *entry_label;
-  gboolean hide_text;
-  gboolean completion;
-  gboolean numeric;
-  gchar *licon;
-  gchar *licon_action;
-  gchar *ricon;
-  gchar *ricon_action;
-} YadEntryData;
-
-typedef struct {
   gboolean directory;
   gboolean save;
   gboolean confirm_overwrite;
@@ -449,7 +437,6 @@ typedef struct {
   YadCalendarData calendar_data;
   YadColorData color_data;
   YadDNDData dnd_data;
-  YadEntryData entry_data;
   YadFileData file_data;
   YadFontData font_data;
   YadFormData form_data;
@@ -533,7 +520,6 @@ void yad_exit (gint id);
 
 GtkWidget *calendar_create_widget (GtkWidget *dlg);
 GtkWidget *color_create_widget (GtkWidget *dlg);
-GtkWidget *entry_create_widget (GtkWidget *dlg);
 GtkWidget *file_create_widget (GtkWidget *dlg);
 GtkWidget *font_create_widget (GtkWidget *dlg);
 GtkWidget *form_create_widget (GtkWidget *dlg);
@@ -557,7 +543,6 @@ void picture_fit_to_window (void);
 
 void calendar_print_result (void);
 void color_print_result (void);
-void entry_print_result (void);
 void file_print_result (void);
 void font_print_result (void);
 void form_print_result (void);

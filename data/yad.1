@@ -29,9 +29,6 @@ Display color selection dialog.
 .B \-\-dnd
 Display drag-and-drop box.
 .TP
-.B \-\-entry
-Display text entry dialog.
-.TP
 .B \-\-icons
 Display box with shortcut icons.
 .TP
@@ -286,54 +283,6 @@ Use dialog text as a tooltip for Drag-and-Drop box.
 .B \-\-command=\fICMD\fP
 Run command when data received. Data strings pass to command as an agrument.
 By default data just prints to stdout.
-
-.SS Text entry options
-.TP
-.B \-\-entry-label=\fISTRING\fP
-Set the entry label text.
-.TP
-.B \-\-entry-text=\fISTRING\fP
-Set the initial entry text or default item in combo-box.
-.TP
-.B \-\-hide-text
-Hide the entry text.
-.TP
-.B \-\-completion
-Use completion instead of combo-box.
-.TP
-.B \-\-complete=\fITYPE\fP
-Use specific type for extended completion. \fITYPE\fP can be \fIany\fP for match any of typed words, \fIall\fP for match all of typed words or
-\fIregex\fP when typed text treats as regular expression.
-.TP
-.B \-\-editable
-Allow make changes to text in combo-box.
-.TP
-.B \-\-numeric
-Use spin button instead of text entry. Additional parameters in command line treats as minimum and maximum
-values, step value and precisions (in that order). All this values are optional. Default range is from 0 to 65535 with step 1.
-.TP
-.B \-\-float-precision=\fINUMBER\fP
-Set precision of floating point numbers. By default precision is three digits after point.
-.TP
-.B \-\-licon=\fIIMAGE\fP
-Set an icon on a left side of entry.
-.TP
-.B \-\-licon-action=\fICMD\fP
-Specify a command which will be run when the left icon clicked. Output of command will be set as entry text.
-.TP
-.B \-\-ricon=\fIIMAGE\fP
-Set an icon on a right side of entry.
-.TP
-.B \-\-ricon-action=\fICMD\fP
-Specify a command which will be run when the right icon clicked. Output of command will be set as entry text.
-.TP
-.B \-\-num-output
-Output index of active element instead of text for combo-box entry.
-.PP
-Any extra data specified in command line adds as an items of combo-box entry, except of numeric mode.
-
-If icon specified and icon action is not given, click on icon just clear the entry.
-Numeric fields will ignore the icons.
 
 .SS Iconbox options
 .TP

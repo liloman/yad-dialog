@@ -204,9 +204,6 @@ create_layout (GtkWidget *dlg)
     case YAD_MODE_DND:
       dnd_init (dlg);
       break;
-    case YAD_MODE_ENTRY:
-      mw = entry_create_widget (dlg);
-      break;
     case YAD_MODE_FILE:
       mw = file_create_widget (dlg);
       break;
@@ -550,7 +547,7 @@ create_dialog (void)
                   gint sh = gdk_screen_get_height (gdk_screen_get_default ());
                   options.data.posy = sh - wh + options.data.posy;
                 }
-              gtk_window_move (GTK_WINDOW (dlg), options.data.posx, options.data.posy);              
+              gtk_window_move (GTK_WINDOW (dlg), options.data.posx, options.data.posy);
             }
         }
     }
@@ -623,9 +620,6 @@ yad_print_result (void)
       break;
     case YAD_MODE_COLOR:
       color_print_result ();
-      break;
-    case YAD_MODE_ENTRY:
-      entry_print_result ();
       break;
     case YAD_MODE_FILE:
       file_print_result ();

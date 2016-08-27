@@ -9,7 +9,6 @@ yad3_SOURCES = 			\
 	calendar.c		\
 	color.c			\
 	dnd.c           	\
-	entry.c			\
 	file.c			\
 	font.c			\
 	form.c			\

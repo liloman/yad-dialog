@@ -58,7 +58,6 @@ static gboolean version_mode = FALSE;
 static gboolean calendar_mode = FALSE;
 static gboolean color_mode = FALSE;
 static gboolean dnd_mode = FALSE;
-static gboolean entry_mode = FALSE;
 static gboolean file_mode = FALSE;
 static gboolean font_mode = FALSE;
 static gboolean form_mode = FALSE;
@@ -249,30 +248,6 @@ static GOptionEntry dnd_options[] = {
     N_("Display drag-n-drop box"), NULL },
   { "tooltip", 0, 0, G_OPTION_ARG_NONE, &options.dnd_data.tooltip,
     N_("Use dialog text as tooltip"), NULL },
-  { NULL }
-};
-
-static GOptionEntry entry_options[] = {
-  { "entry", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &entry_mode,
-    N_("Display text entry or combo-box dialog"), NULL },
-  { "entry-label", 0, 0, G_OPTION_ARG_STRING, &options.entry_data.entry_label,
-    N_("Set the entry label"), N_("TEXT") },
-  { "entry-text", 0, 0, G_OPTION_ARG_STRING, &options.entry_data.entry_text,
-    N_("Set the entry text"), N_("TEXT") },
-  { "hide-text", 0, 0, G_OPTION_ARG_NONE, &options.entry_data.hide_text,
-    N_("Hide the entry text"), N_("TEXT") },
-  { "completion", 0, 0, G_OPTION_ARG_NONE, &options.entry_data.completion,
-    N_("Use completion instead of combo-box"), NULL },
-  { "numeric", 0, 0, G_OPTION_ARG_NONE, &options.entry_data.numeric,
-    N_("Use spin button for text entry"), NULL },
-  { "licon", 0, 0, G_OPTION_ARG_FILENAME, &options.entry_data.licon,
-    N_("Set the left entry icon"), N_("IMAGE") },
-  { "licon-action", 0, 0, G_OPTION_ARG_STRING, &options.entry_data.licon_action,
-    N_("Set the left entry icon action"), N_("CMD") },
-  { "ricon", 0, 0, G_OPTION_ARG_FILENAME, &options.entry_data.ricon,
-    N_("Set the right entry icon"), N_("IMAGE") },
-  { "ricon-action", 0, 0, G_OPTION_ARG_STRING, &options.entry_data.ricon_action,
-    N_("Set the right entry icon action"), N_("CMD") },
   { NULL }
 };
 
@@ -1258,8 +1233,6 @@ yad_set_mode (void)
     options.mode = YAD_MODE_COLOR;
   else if (dnd_mode)
     options.mode = YAD_MODE_DND;
-  else if (entry_mode)
-    options.mode = YAD_MODE_ENTRY;
   else if (file_mode)
     options.mode = YAD_MODE_FILE;
   else if (font_mode)
@@ -1403,17 +1376,6 @@ yad_options_init (void)
 
   /* Initialize DND data */
   options.dnd_data.tooltip = FALSE;
-
-  /* Initialize entry data */
-  options.entry_data.entry_text = NULL;
-  options.entry_data.entry_label = NULL;
-  options.entry_data.hide_text = FALSE;
-  options.entry_data.completion = FALSE;
-  options.entry_data.numeric = FALSE;
-  options.entry_data.licon = NULL;
-  options.entry_data.licon_action = NULL;
-  options.entry_data.ricon = NULL;
-  options.entry_data.ricon_action = NULL;
 
   /* Initialize file data */
   options.file_data.directory = FALSE;
@@ -1590,12 +1552,6 @@ yad_create_context (void)
   /* Adds dnd option entries */
   a_group = g_option_group_new ("dnd", _("DND options"), _("Show drag-n-drop options"), NULL, NULL);
   g_option_group_add_entries (a_group, dnd_options);
-  g_option_group_set_translation_domain (a_group, GETTEXT_PACKAGE);
-  g_option_context_add_group (tmp_ctx, a_group);
-
-  /* Adds entry option entries */
-  a_group = g_option_group_new ("entry", _("Text entry options"), _("Show text entry options"), NULL, NULL);
-  g_option_group_add_entries (a_group, entry_options);
   g_option_group_set_translation_domain (a_group, GETTEXT_PACKAGE);
   g_option_context_add_group (tmp_ctx, a_group);
 

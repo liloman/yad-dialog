@@ -1,6 +1,5 @@
 src/about.c
 src/calendar.c
-src/entry.c
 src/file.c
 src/font.c
 src/form.c
