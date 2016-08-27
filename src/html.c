@@ -29,7 +29,6 @@ static WebKitWebView *view;
 
 static GString *inbuf;
 
-static gboolean is_link = FALSE;
 static gboolean is_loaded = FALSE;
 
 #ifndef PATH_MAX
@@ -105,13 +104,7 @@ policy_cb (WebKitWebView *v, WebKitPolicyDecision *pd, WebKitPolicyDecisionType 
 }
 
 static void
-link_hover_cb (WebKitWebView * v, const gchar * t, const gchar * link, gpointer * d)
-{
-  is_link = (link != NULL);
-}
-
-static void
-select_file_cb (GtkEntry * entry, GtkEntryIconPosition pos, GdkEventButton * ev, gpointer d)
+select_file_cb (GtkEntry *entry, GtkEntryIconPosition pos, GdkEventButton *ev, gpointer d)
 {
   GtkWidget *dlg;
   static gchar *dir = NULL;
@@ -141,13 +134,13 @@ select_file_cb (GtkEntry * entry, GtkEntryIconPosition pos, GdkEventButton * ev,
 }
 
 static void
-do_open_cb (GtkWidget * w, GtkDialog * dlg)
+do_open_cb (GtkWidget *w, GtkDialog *dlg)
 {
   gtk_dialog_response (dlg, GTK_RESPONSE_ACCEPT);
 }
 
 static void
-open_cb (GtkWidget * w, gpointer d)
+open_cb (GtkWidget *w, gpointer d)
 {
   GtkWidget *dlg, *cnt, *lbl, *entry;
 
@@ -165,7 +158,7 @@ open_cb (GtkWidget * w, gpointer d)
   gtk_box_pack_start (GTK_BOX (cnt), lbl, TRUE, FALSE, 2);
 
   entry = gtk_entry_new ();
-  gtk_entry_set_icon_from_stock (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY, "gtk-directory");
+  gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY, "gtk-directory");
   gtk_widget_show (entry);
   gtk_box_pack_start (GTK_BOX (cnt), entry, TRUE, FALSE, 2);
 
@@ -179,10 +172,11 @@ open_cb (GtkWidget * w, gpointer d)
 }
 
 static gboolean
-menu_cb (WebKitWebView * view, GtkWidget * menu, WebKitHitTestResult * hit, gboolean kb, gpointer d)
+menu_cb (WebKitWebView *v, GtkWidget *menu, WebKitHitTestResult *hit, gboolean kb, gpointer d)
 {
   GtkWidget *mi;
 
+#if 0
   if (!is_link)
     {
       /* add open item */
@@ -205,6 +199,7 @@ menu_cb (WebKitWebView * view, GtkWidget * menu, WebKitHitTestResult * hit, gboo
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), mi);
       g_signal_connect (G_OBJECT (mi), "activate", G_CALLBACK (gtk_main_quit), NULL);
     }
+#endif
 
   return FALSE;
 }
@@ -266,7 +261,6 @@ html_create_widget (GtkWidget * dlg)
   GtkWidget *sw;
   WebKitSettings *settings;
   SoupSession *sess;
-  const gchar *enc;
 
   sw = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), options.hscroll_policy, options.vscroll_policy);
@@ -275,10 +269,10 @@ html_create_widget (GtkWidget * dlg)
   gtk_container_add (GTK_CONTAINER (sw), GTK_WIDGET (view));
 
   settings = webkit_web_view_get_settings (view);
-  g_get_charset (&enc);
-  g_object_set (G_OBJECT (settings), "default-encoding", enc, NULL);
+  g_object_set (G_OBJECT(settings), "user-agent", "YAD3/" VERSION " (KHTML, like Gecko)", NULL);
+  g_object_set (G_OBJECT(settings), "default-charset", "utf-8", NULL);
+  g_object_set (G_OBJECT(settings), "enable-fullscreen", options.data.fullscreen, NULL);
 
-  g_signal_connect (view, "hovering-over-link", G_CALLBACK (link_hover_cb), NULL);
   g_signal_connect (view, "decide-policy", G_CALLBACK (policy_cb), NULL);
 
   if (options.html_data.browser)
@@ -287,10 +281,20 @@ html_create_widget (GtkWidget * dlg)
       if (!options.data.dialog_title)
         g_signal_connect (view, "notify::title", G_CALLBACK (title_cb), dlg);
       if (strcmp (options.data.window_icon, "yad") == 0)
-        g_signal_connect (view, "icon-loaded", G_CALLBACK (icon_cb), dlg);
+        g_signal_connect (view, "notify::favicon", G_CALLBACK (icon_cb), dlg);
     }
   else
-    g_signal_connect (view, "load-changed", G_CALLBACK (loaded_cb), NULL);
+    {
+      g_object_set (G_OBJECT(settings), "enable-caret-browsing", FALSE, NULL);
+      g_object_set (G_OBJECT(settings), "enable-developer-extras", FALSE, NULL);
+      g_object_set (G_OBJECT(settings), "enable-html5-database", FALSE, NULL);
+      g_object_set (G_OBJECT(settings), "enable-html5-local-storage", FALSE, NULL);
+      g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache", FALSE, NULL);
+      g_object_set (G_OBJECT(settings), "enable-page-cache", FALSE, NULL);
+      g_object_set (G_OBJECT(settings), "enable-plugins", FALSE, NULL);
+      g_object_set (G_OBJECT (settings), "enable-private-browsing", TRUE, NULL);
+      g_signal_connect (view, "load-changed", G_CALLBACK (loaded_cb), NULL);
+    }
 
 #if 0
   sess = webkit_get_default_session ();
