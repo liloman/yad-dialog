@@ -281,7 +281,7 @@ In RGBA mode opacity have values from 0.0 to 1.0.
 Use dialog text as a tooltip for Drag-and-Drop box.
 .TP
 .B \-\-command=\fICMD\fP
-Run command when data received. Data strings pass to command as an agrument.
+Run command when data received. Data strings pass to command as an argument.
 By default data just prints to stdout.
 
 .SS Iconbox options
@@ -401,7 +401,7 @@ Add field to form. Type may be \fIH\fP, \fIRO\fP, \fINUM\fP, \fICHK\fP, \fICB\fP
 \fBCLR\fP - color selection button. Output values for this field generates in the same manner as for color dialog.
 .br
 \fBBTN\fP - button field. Label may be in form text in a form \fILABEL[!ICON[!TOOLTIP]]\fP where `!' is an item separator. \fILABEL\fP is a text of button label or gtk stock id. \fIICON\fP is a buttons icon (stock id or file name). \fITOOLTIP\fP is an optional text for popup help string. Initial value is a command which is running when button is clicked. A special sympols \fI%N\fP in command are replaced by value of field \fIN\fP. If command starts with \fI@\fP, the output of command will be parsed and lines started with number and colon will be treats as a new field values.
-A quoting style for value when \fIsh -c\fP is used \- a single quotes aroung command and double quotes aroung -c argument
+A quoting style for value when \fIsh -c\fP is used \- a single quotes around command and double quotes aroung -c argument
 .br
 \fBFBTN\fP - same as button field, but with full relief of a button.
 .br
@@ -477,7 +477,7 @@ Set the column header. Types are \fITEXT\fP, \fINUM\fP, \fISZ\fP, \fIFLT\fP, \fI
 \fITEXT\fP type is default. Use \fINUM\fP for integers and \fIFLT\fP for double values. \fITIP\fP is used for define tooltip column.
 \fISZ\fP size column type. Works exactly like \fINUM\fP column but shows human readable sizes instead of numbers.
 \fICHK\fP (checkboxes) and \fIRD\fP (radio toggle) are a boolean columns.
-\fIBAR\fP is a progress bar column. Vaule must be between \fI0\fP and \fI100\fP. If value is outside is range it will be croped to neares legal value.
+\fIBAR\fP is a progress bar column. Value must be between \fI0\fP and \fI100\fP. If value is outside is range it will be croped to neares legal value.
 \fIHD\fP type means a hidden column. Such columns are not displayes in the list, only in output.
 \fIIMG\fP may be path to image or icon name from currnet GTK+ icon theme.
 Size of icons may be set in gtk config file at GTK_ICON_SIZE_MENU position of gtk-icon-sizes. Image field prints as empty value.

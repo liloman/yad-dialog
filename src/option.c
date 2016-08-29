@@ -151,7 +151,7 @@ static GOptionEntry general_options[] = {
   { "plug", 0, 0, G_OPTION_ARG_INT, &options.plug,
     N_("Special type of dialog for XEMBED"), N_("KEY") },
   { "tabnum", 0, 0, G_OPTION_ARG_INT, &options.tabnum,
-    N_("Tab nubmer of this dialog"), N_("NUMBER") },
+    N_("Tab number of this dialog"), N_("NUMBER") },
 #ifndef G_OS_WIN32
   { "parent-win", 0, 0, G_OPTION_ARG_INT, &options.parent,
     N_("XID of parent window"), "XID" },
