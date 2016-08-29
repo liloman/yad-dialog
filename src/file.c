@@ -82,7 +82,7 @@ file_create_widget (GtkWidget * dlg)
 
   if (options.common_data.uri && g_file_test (options.common_data.uri, G_FILE_TEST_EXISTS))
     {
-      if (g_file_test (options.common_data.uri, G_FILE_TEST_IS_DIR))
+      if (!options.file_data.directory && g_file_test (options.common_data.uri, G_FILE_TEST_IS_DIR))
         gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (w), options.common_data.uri);
       else
         {
