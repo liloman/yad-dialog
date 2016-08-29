@@ -28,7 +28,7 @@ static GtkWidget *font;
 static void
 realize_cb (GtkWidget * w, gpointer d)
 {
-  gtk_font_selection_set_font_name (GTK_FONT_SELECTION (w), options.common_data.font);
+  gtk_font_chooser_set_font (GTK_FONT_CHOOSER (w), options.common_data.font);
 }
 
 GtkWidget *
@@ -36,11 +36,11 @@ font_create_widget (GtkWidget * dlg)
 {
   GtkWidget *w;
 
-  w = font = gtk_font_selection_new ();
+  w = font = gtk_font_chooser_widget_new ();
   gtk_widget_set_name (w, "yad-font-widget");
 
   if (options.font_data.preview)
-    gtk_font_selection_set_preview_text (GTK_FONT_SELECTION (w), options.font_data.preview);
+    gtk_font_chooser_set_preview_text (GTK_FONT_CHOOSER (w), options.font_data.preview);
 
   /* font must be set after widget inserted in toplevel */
   if (options.common_data.font)
@@ -58,9 +58,9 @@ font_print_result (void)
       PangoFontFamily *family;
       gint size;
 
-      face = gtk_font_selection_get_face (GTK_FONT_SELECTION (font));
-      family = gtk_font_selection_get_family (GTK_FONT_SELECTION (font));
-      size = gtk_font_selection_get_size (GTK_FONT_SELECTION (font));
+      face = gtk_font_chooser_get_font_face (GTK_FONT_CHOOSER (font));
+      family = gtk_font_chooser_get_font_family (GTK_FONT_CHOOSER (font));
+      size = gtk_font_chooser_get_font_size (GTK_FONT_CHOOSER (font));
 
       if (options.common_data.quoted_output)
         {
@@ -81,7 +81,7 @@ font_print_result (void)
     }
   else
     {
-      gchar *fn = gtk_font_selection_get_font_name (GTK_FONT_SELECTION (font));
+      gchar *fn = gtk_font_chooser_get_font (GTK_FONT_CHOOSER (font));
 
       if (options.common_data.quoted_output)
         {
