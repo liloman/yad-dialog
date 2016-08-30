@@ -103,11 +103,11 @@ expand_action (gchar * cmd)
                   break;
                 case YAD_FIELD_COLOR:
                   {
-                    GdkColor c;
-                    GtkColorButton *cb = GTK_COLOR_BUTTON (g_slist_nth_data (fields, num));
+                    GdkRGBA c;
+                    GtkColorChooser *cb = GTK_COLOR_CHOOSER (g_slist_nth_data (fields, num));
 
-                    gtk_color_button_get_color (cb, &c);
-                    buf = get_color (&c, gtk_color_button_get_alpha (cb));
+                    gtk_color_chooser_get_rgba (cb, &c);
+                    buf = get_color (&c);
                     arg = g_shell_quote (buf ? buf : "");
                     g_free (buf);
                     break;
@@ -312,10 +312,10 @@ set_field_value (guint num, gchar * value)
 
     case YAD_FIELD_COLOR:
       {
-        GdkColor c;
+        GdkRGBA c;
 
-        gdk_color_parse (value, &c);
-        gtk_color_button_set_color (GTK_COLOR_BUTTON (w), &c);
+        gdk_rgba_parse (&c, value);
+        gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (w), &c);
         break;
       }
 
@@ -707,8 +707,7 @@ form_create_widget (GtkWidget * dlg)
           GtkWidget *sw = gtk_scrolled_window_new (NULL, NULL);
           gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_NONE);
           gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), options.hscroll_policy, options.vscroll_policy);
-
-          gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), tbl);
+          gtk_container_add (GTK_CONTAINER (sw), tbl);
           w = sw;
         }
       else
@@ -752,7 +751,7 @@ form_create_widget (GtkWidget * dlg)
                 gtk_widget_set_sensitive (e, FALSE);
               gtk_grid_attach (GTK_GRID (tbl), e, 1 + col * 2, row, 1, 1);
               gtk_widget_set_hexpand (e, TRUE);
-              
+
               if (fld->type == YAD_FIELD_COMPLETE)
                 {
                   GtkEntryCompletion *c = gtk_entry_completion_new ();
@@ -1124,11 +1123,11 @@ form_print_field (guint fn)
     case YAD_FIELD_COLOR:
       {
         gchar *cs;
-        GdkColor c;
-        GtkColorButton *cb = GTK_COLOR_BUTTON (g_slist_nth_data (fields, fn));
+        GdkRGBA c;
+        GtkColorChooser *cb = GTK_COLOR_CHOOSER (g_slist_nth_data (fields, fn));
 
-        gtk_color_button_get_color (cb, &c);
-        cs = get_color (&c, gtk_color_button_get_alpha (cb));
+        gtk_color_chooser_get_rgba (cb, &c);
+        cs = get_color (&c);
         if (options.common_data.quoted_output)
           {
             buf = g_shell_quote (cs ? cs : "");

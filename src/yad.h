@@ -236,12 +236,9 @@ typedef struct {
 
 typedef struct {
   gchar *init_color;
-  gboolean gtk_palette;
   gboolean use_palette;
   gboolean expand_palette;
   gchar *palette;
-  gboolean extra;
-  gboolean alpha;
   YadColorMode mode;
 } YadColorData;
 
@@ -571,7 +568,7 @@ void update_preview (GtkFileChooser *chooser, GtkWidget *p);
 void filechooser_mapped (GtkWidget *w, gpointer data);
 
 GdkPixbuf *get_pixbuf (gchar *name, YadIconSize size);
-gchar *get_color (GdkColor *c, guint64 alpha);
+gchar *get_color (GdkRGBA *c);
 
 gchar **split_arg (const gchar *str);
 

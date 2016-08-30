@@ -187,38 +187,25 @@ get_pixbuf (gchar * name, YadIconSize size)
 }
 
 gchar *
-get_color (GdkColor *c, guint64 alpha)
+get_color (GdkRGBA *c)
 {
-  gchar *cs;
+  gshort r, g, b, a;
   gchar *res = NULL;
 
   switch (options.color_data.mode)
     {
     case YAD_COLOR_HEX:
-      cs = gdk_color_to_string (c);
-      if (options.color_data.alpha)
-        {
-          if (options.color_data.extra)
-            res = g_strdup_printf ("#%s%hx", cs + 1, alpha);
-          else
-            res = g_strdup_printf ("#%c%c%c%c%c%c%hx", cs[1], cs[2], cs[5], cs[6], cs[9], cs[10], alpha / 256);
-        }
+      r = (gshort) 255 * c->red;
+      g = (gshort) 255 * c->green;
+      b = (gshort) 255 * c->blue;
+      a = (gshort) 255 * c->alpha;
+      if (a)
+        res = g_strdup_printf ("#%02hx%02hx%02hx", r, g, b);
       else
-        {
-          if (options.color_data.extra)
-            res = g_strdup_printf ("%s", cs);
-          else
-            res = g_strdup_printf ("#%c%c%c%c%c%c", cs[1], cs[2], cs[5], cs[6], cs[9], cs[10]);
-        }
-      g_free (cs);
+        res = g_strdup_printf ("#%02hx%02hx%02hx%02hx", r, g, b, a);
       break;
     case YAD_COLOR_RGB:
-      if (options.color_data.alpha)
-        res = g_strdup_printf ("rgba(%.1f, %.1f, %.1f, %.1f)", (double) c->red / 255.0, (double) c->green / 255.0,
-                               (double) c->blue / 255.0, (double) alpha / 255 / 255);
-      else
-        res = g_strdup_printf ("rgb(%.1f, %.1f, %.1f)", (double) c->red / 255.0, (double) c->green / 255.0,
-                               (double) c->blue / 255.0);
+      res = gdk_rgba_to_string (c);
       break;
     }
 
@@ -454,7 +441,7 @@ escape_str (gchar *str)
         case '\\':
           strcpy (res + i, "\\\\");
           i += 2;
-          break;        
+          break;
         default:
           *(res + i) = *buf;
           i++;
