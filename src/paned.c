@@ -46,11 +46,7 @@ paned_create_widget (GtkWidget * dlg)
     exit (-1);
 
   /* create widget */
-  if (options.paned_data.orient == GTK_ORIENTATION_HORIZONTAL)
-    paned = w = gtk_hpaned_new ();
-  else
-    paned = w = gtk_vpaned_new ();
-
+  paned = w = gtk_paned_new (options.paned_data.orient);
   gtk_paned_set_position (GTK_PANED (w), options.paned_data.splitter);
 
   s = gtk_socket_new ();

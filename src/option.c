@@ -218,6 +218,8 @@ static GOptionEntry calendar_options[] = {
     N_("Set the calendar year"), N_("YEAR") },
   { "details", 0, 0, G_OPTION_ARG_FILENAME, &options.calendar_data.details,
     N_("Set the filename with dates details"), N_("FILENAME") },
+  { "show-weeks", 0, 0, G_OPTION_ARG_NONE, &options.calendar_data.weeks,
+    N_("Show week numbers at the left of calendar"), NULL },
   { NULL }
 };
 
@@ -1363,6 +1365,7 @@ yad_options_init (void)
   options.calendar_data.month = -1;
   options.calendar_data.year = -1;
   options.calendar_data.details = NULL;
+  options.calendar_data.weeks = FALSE;
 
   /* Initialize color data */
   options.color_data.init_color = NULL;

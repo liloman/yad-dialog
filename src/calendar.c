@@ -89,6 +89,7 @@ GtkWidget *
 calendar_create_widget (GtkWidget * dlg)
 {
   GtkWidget *w;
+  gint cal_opts;
 
   w = calendar = gtk_calendar_new ();
   gtk_widget_set_name (w, "yad-calendar-widget");
@@ -104,9 +105,10 @@ calendar_create_widget (GtkWidget * dlg)
       gtk_calendar_set_detail_func (GTK_CALENDAR (w), get_details, NULL, NULL);
     }
 
-  gtk_calendar_set_display_options (GTK_CALENDAR (w),
-                                    GTK_CALENDAR_SHOW_HEADING |
-                                    GTK_CALENDAR_SHOW_DAY_NAMES | GTK_CALENDAR_SHOW_WEEK_NUMBERS);
+  cal_opts = GTK_CALENDAR_SHOW_HEADING | GTK_CALENDAR_SHOW_DAY_NAMES;
+  if (options.calendar_data.weeks)
+    cal_opts |= GTK_CALENDAR_SHOW_WEEK_NUMBERS;
+  gtk_calendar_set_display_options (GTK_CALENDAR (w), cal_opts);
 
   g_signal_connect (w, "day-selected-double-click", G_CALLBACK (double_click_cb), dlg);
 
