@@ -856,6 +856,7 @@ form_create_widget (GtkWidget * dlg)
 
             case YAD_FIELD_COLOR:
               e = gtk_color_button_new ();
+              gtk_color_chooser_set_use_alpha (GTK_COLOR_CHOOSER (e), options.color_data.use_alpha);
               gtk_widget_set_name (e, "yad-form-color");
               gtk_grid_attach (GTK_GRID (tbl), e, 1 + col * 2, row, 1, 1);
               gtk_widget_set_hexpand (e, TRUE);

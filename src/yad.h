@@ -236,6 +236,7 @@ typedef struct {
 
 typedef struct {
   gchar *init_color;
+  gboolean use_alpha;
   gboolean use_palette;
   gboolean expand_palette;
   gchar *palette;

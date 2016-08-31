@@ -192,20 +192,24 @@ get_color (GdkRGBA *c)
   gshort r, g, b, a;
   gchar *res = NULL;
 
+  r = (gshort) 255 * c->red;
+  g = (gshort) 255 * c->green;
+  b = (gshort) 255 * c->blue;
+  a = (gshort) 255 * c->alpha;
+
   switch (options.color_data.mode)
     {
     case YAD_COLOR_HEX:
-      r = (gshort) 255 * c->red;
-      g = (gshort) 255 * c->green;
-      b = (gshort) 255 * c->blue;
-      a = (gshort) 255 * c->alpha;
-      if (a)
-        res = g_strdup_printf ("#%02hx%02hx%02hx", r, g, b);
-      else
+      if (options.color_data.use_alpha)
         res = g_strdup_printf ("#%02hx%02hx%02hx%02hx", r, g, b, a);
+      else
+        res = g_strdup_printf ("#%02hx%02hx%02hx", r, g, b);
       break;
     case YAD_COLOR_RGB:
-      res = gdk_rgba_to_string (c);
+      if (options.color_data.use_alpha)
+        res = g_strdup_printf ("rgba(%d,%d,%d,%.1f)", r, g, b, c->alpha);
+      else
+        res = g_strdup_printf ("rgb(%d,%d,%d)", r, g, b);
       break;
     }
 

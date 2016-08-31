@@ -234,8 +234,10 @@ static GOptionEntry color_options[] = {
     N_("Set path to palette file. Default - " RGB_FILE), N_("FILENAME") },
   { "expand-palette", 0, 0, G_OPTION_ARG_NONE, &options.color_data.expand_palette,
     N_("Expand user palette"), NULL },
-  { "mode", 0, 0, G_OPTION_ARG_CALLBACK, set_color_mode,
+  { "color-out", 0, 0, G_OPTION_ARG_CALLBACK, set_color_mode,
     N_("Set output mode to MODE. Values are hex (default) or rgb"), N_("MODE") },
+  { "use-alpha", 0, 0, G_OPTION_ARG_NONE, &options.color_data.use_alpha,
+    N_("Use alpha channel"), NULL },
   { NULL }
 };
 
@@ -1367,6 +1369,7 @@ yad_options_init (void)
   options.color_data.expand_palette = FALSE;
   options.color_data.palette = NULL;
   options.color_data.mode = YAD_COLOR_HEX;
+  options.color_data.use_alpha = FALSE;
 
   /* Initialize DND data */
   options.dnd_data.tooltip = FALSE;
