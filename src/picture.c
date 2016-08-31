@@ -61,7 +61,7 @@ load_picture (gchar *filename)
       loaded = TRUE;
     }
   else
-    gtk_image_set_from_stock (GTK_IMAGE (picture), "gtk-missing-image", GTK_ICON_SIZE_DIALOG);
+    gtk_image_set_from_icon_name (GTK_IMAGE (picture), "image-missing", GTK_ICON_SIZE_DIALOG);
 }
 
 void
