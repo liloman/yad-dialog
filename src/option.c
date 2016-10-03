@@ -141,7 +141,7 @@ static GOptionEntry general_options[] = {
   { "maximized", 0, 0, G_OPTION_ARG_NONE, &options.data.maximized,
     N_("Set window maximized"), NULL },
   { "fullscreen", 0, 0, G_OPTION_ARG_NONE, &options.data.fullscreen,
-    N_("Set window fulscreen"), NULL },
+    N_("Set window fullscreen"), NULL },
   { "no-focus", 0, G_OPTION_FLAG_REVERSE, G_OPTION_ARG_NONE, &options.data.focus,
     N_("Don't focus dialog window"), NULL },
   { "close-on-unfocus", 0, 0, G_OPTION_ARG_NONE, &options.data.close_on_unfocus,
