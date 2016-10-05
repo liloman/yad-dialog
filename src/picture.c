@@ -23,8 +23,8 @@ static GtkWidget *picture;
 static GtkWidget *viewport;
 static GtkWidget *popup_menu;
 
-static GdkPixbufAnimation *anim_pb;
-static GdkPixbuf *orig_pb;
+static GdkPixbufAnimation *anim_pb = NULL;
+static GdkPixbuf *orig_pb = NULL;
 
 static gboolean loaded = FALSE;
 static gboolean animated = FALSE;
@@ -46,8 +46,16 @@ enum {
 static void
 load_picture (gchar *filename)
 {
-  anim_pb = gdk_pixbuf_animation_new_from_file (filename, NULL);
-  orig_pb = gdk_pixbuf_animation_get_static_image (anim_pb);
+  GError *err = NULL;
+
+  anim_pb = gdk_pixbuf_animation_new_from_file (filename, &err);
+  if (anim_pb)  
+    orig_pb = gdk_pixbuf_animation_get_static_image (anim_pb);
+  else
+    {
+      g_printerr ("picture: can't load image %s: %s", filename, err->message);
+      g_error_free (err);
+    }
 
   if (orig_pb)
     {
