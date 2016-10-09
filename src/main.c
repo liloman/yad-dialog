@@ -66,7 +66,7 @@ keys_cb (GtkWidget *w, GdkEventKey *ev, gpointer d)
 {
   if (ev->keyval == GDK_KEY_Escape)
     {
-      if (options.plug == -1 || !options.data.no_escape)
+      if (options.plug == -1 && !options.data.no_escape)
         yad_exit (YAD_RESPONSE_ESC);
       return TRUE;
     }
