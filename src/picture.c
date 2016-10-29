@@ -285,8 +285,8 @@ picture_create_widget (GtkWidget * dlg)
   if (loaded && !animated)
     {
       create_popup_menu ();
-      g_signal_connect (G_OBJECT (viewport), "button-press-event", G_CALLBACK (button_handler), NULL);
-      g_signal_connect (G_OBJECT (viewport), "key-press-event", G_CALLBACK (key_handler), NULL);
+      g_signal_connect (G_OBJECT (picture), "button-press-event", G_CALLBACK (button_handler), NULL);
+      g_signal_connect (G_OBJECT (picture), "key-press-event", G_CALLBACK (key_handler), NULL);
     }
 
   return sw;

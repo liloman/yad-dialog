@@ -46,5 +46,5 @@ endif
 
 if SYMLINK
 install-exec-hook:
-    $(LN_S) yad3$(EXEEXT) $(DESTDIR)$(bindir)/yad$(EXEEXT)
+	$(LN_S) yad3$(EXEEXT) $(DESTDIR)$(bindir)/yad$(EXEEXT)
 endif
