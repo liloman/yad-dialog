@@ -18,7 +18,7 @@ AC_PROG_CC
 GTK_DISABLE_DEPRECATED
 
 dnl glib check needed for g_format_string()
-PKG_CHECK_MODULES([GTK], [glib-2.0 >= 2.30 gtk+-3.0 >= 3.10.0 gtk+-unix-print-3.0])
+PKG_CHECK_MODULES([GTK], [glib-2.0 >= 2.30 gtk+-3.0 >= 3.16.0 gtk+-unix-print-3.0])
 AC_SUBST([GTK_CFLAGS])
 AC_SUBST([GTK_LIBS])
 

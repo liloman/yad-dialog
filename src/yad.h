@@ -37,10 +37,7 @@
 #endif
 
 #ifdef HAVE_SOURCEVIEW
-#include <gtksourceview/gtksourceview.h>
-#include <gtksourceview/gtksourcebuffer.h>
-#include <gtksourceview/gtksourcelanguage.h>
-#include <gtksourceview/gtksourcelanguagemanager.h>
+#include <gtksourceview/gtksource.h>
 #endif
 
 G_BEGIN_DECLS

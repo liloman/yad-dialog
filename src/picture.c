@@ -270,12 +270,10 @@ picture_create_widget (GtkWidget * dlg)
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_NONE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), options.hscroll_policy, options.vscroll_policy);
 
-  viewport = gtk_viewport_new (gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (sw)),
-                               gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (sw)));
-  gtk_container_add (GTK_CONTAINER (sw), viewport);
-
   picture = gtk_image_new ();
-  gtk_container_add (GTK_CONTAINER (viewport), picture);
+  gtk_container_add (GTK_CONTAINER (sw), picture);
+
+  viewport = gtk_bin_get_child (GTK_BIN (scrolled_window));
 
   /* load picture */
   if (options.common_data.uri &&
