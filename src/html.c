@@ -153,7 +153,7 @@ open_cb (GtkWidget *w, gpointer d)
   cnt = gtk_dialog_get_content_area (GTK_DIALOG (dlg));
 
   lbl = gtk_label_new (_("Enter URI or file name:"));
-  gtk_label_set_xalign (GTK_MISC (lbl), 0);
+  gtk_label_set_xalign (GTK_LABEL (lbl), 0);
   gtk_widget_show (lbl);
   gtk_box_pack_start (GTK_BOX (cnt), lbl, TRUE, FALSE, 2);
 
