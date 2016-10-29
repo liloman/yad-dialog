@@ -273,7 +273,7 @@ picture_create_widget (GtkWidget * dlg)
   picture = gtk_image_new ();
   gtk_container_add (GTK_CONTAINER (sw), picture);
 
-  viewport = gtk_bin_get_child (GTK_BIN (scrolled_window));
+  viewport = gtk_bin_get_child (GTK_BIN (sw));
 
   /* load picture */
   if (options.common_data.uri &&
