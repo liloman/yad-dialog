@@ -217,7 +217,7 @@ multi_progress_create_widget (GtkWidget * dlg)
         gtk_label_set_text (GTK_LABEL (l), p->name);
       else
         gtk_label_set_markup (GTK_LABEL (l), p->name);
-      gtk_label_set_xalign (GTK_MISC (l), options.common_data.align);
+      gtk_label_set_xalign (GTK_LABEL (l), options.common_data.align);
       if (options.common_data.vertical)
         gtk_grid_attach (GTK_GRID (table), l, i, 1, 1, 1);
       else
