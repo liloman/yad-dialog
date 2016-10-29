@@ -154,7 +154,7 @@ create_layout (GtkWidget *dlg)
         g_object_unref (pb);
 
       gtk_widget_set_name (image, "yad-dialog-image");
-      gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
+      gtk_widget_set_valign (image, GTK_ALIGN_START);
     }
 
   /* create text label */
@@ -180,13 +180,13 @@ create_layout (GtkWidget *dlg)
             {
             case GTK_JUSTIFY_LEFT:
             case GTK_JUSTIFY_FILL:
-              gtk_misc_set_alignment (GTK_MISC (text), 0.0, 0.5);
+              gtk_label_set_xalign (GTK_LABEL (text), 0.0);
               break;
             case GTK_JUSTIFY_CENTER:
-              gtk_misc_set_alignment (GTK_MISC (text), 0.5, 0.5);
+              gtk_label_set_xalign (GTK_LABEL (text), 0.5);
               break;
             case GTK_JUSTIFY_RIGHT:
-              gtk_misc_set_alignment (GTK_MISC (text), 1.0, 0.5);
+              gtk_label_set_xalign (GTK_LABEL (text), 1.0);
               break;
             }
         }

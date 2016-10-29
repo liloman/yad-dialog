@@ -227,34 +227,34 @@ main (gint argc, gchar * argv[])
 
   w = gtk_label_new (NULL);
   gtk_label_set_markup (GTK_LABEL (w), _("<b>Name:</b>"));
-  gtk_misc_set_alignment (GTK_MISC (w), 0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (w), 0.0);
   gtk_grid_attach (GTK_GRID (t), w, 1, 0, 1, 1);
 
   data->lname = gtk_label_new (NULL);
   gtk_label_set_selectable (GTK_LABEL (data->lname), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (data->lname), 0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (data->lname), 0.0);
   gtk_grid_attach (GTK_GRID (t), data->lname, 2, 0, 1, 1);
   gtk_widget_set_hexpand (data->lname, TRUE);
 
   w = gtk_label_new (NULL);
   gtk_label_set_markup (GTK_LABEL (w), _("<b>Sizes:</b>"));
-  gtk_misc_set_alignment (GTK_MISC (w), 0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (w), 0.0);
   gtk_grid_attach (GTK_GRID (t), w, 1, 1, 1, 1);
 
   data->lsize = gtk_label_new (NULL);
   gtk_label_set_selectable (GTK_LABEL (data->lsize), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (data->lsize), 0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (data->lsize), 0.0);
   gtk_grid_attach (GTK_GRID (t), data->lsize, 2, 1, 1, 1);
   gtk_widget_set_hexpand (data->lsize, TRUE);
 
   w = gtk_label_new (NULL);
   gtk_label_set_markup (GTK_LABEL (w), _("<b>Filename:</b>"));
-  gtk_misc_set_alignment (GTK_MISC (w), 0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (w), 0.0);
   gtk_grid_attach (GTK_GRID (t), w, 1, 2, 1, 1);
 
   data->lfile = gtk_label_new (NULL);
   gtk_label_set_selectable (GTK_LABEL (data->lfile), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (data->lfile), 0, 0.5);
+  gtk_label_set_xalign (GTK_LABEL (data->lfile), 0.0);
   gtk_grid_attach (GTK_GRID (t), data->lfile, 2, 2, 1, 1);
   gtk_widget_set_hexpand (data->lfile, TRUE);
 

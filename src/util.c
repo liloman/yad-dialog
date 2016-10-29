@@ -377,7 +377,7 @@ get_label (gchar * str, guint border)
   if (gtk_stock_lookup (vals[0], &it))
     {
       l = gtk_label_new_with_mnemonic (it.label);
-      gtk_misc_set_alignment (GTK_MISC (l), 0.0, 0.5);
+      gtk_label_set_xalign (GTK_LABEL (l), 0.0);
 
       i = gtk_image_new_from_pixbuf (get_pixbuf (it.stock_id, YAD_SMALL_ICON));
     }
@@ -390,7 +390,7 @@ get_label (gchar * str, guint border)
             gtk_label_set_markup_with_mnemonic (GTK_LABEL (l), vals[0]);
           else
             gtk_label_set_text_with_mnemonic (GTK_LABEL (l), vals[0]);
-          gtk_misc_set_alignment (GTK_MISC (l), 0.0, 0.5);
+          gtk_label_set_xalign (GTK_MISC (l), 0.0);
         }
 
       if (vals[1] && *vals[1])
