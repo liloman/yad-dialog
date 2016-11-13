@@ -358,51 +358,37 @@ get_tabs (key_t key, gboolean create)
 GtkWidget *
 get_label (gchar * str, guint border)
 {
-  GtkWidget *a, *t, *i, *l;
+  GtkWidget *t, *i = NULL, *l = NULL;
   GtkStockItem it;
   gchar **vals;
 
   if (!str || !*str)
     return gtk_label_new (NULL);
 
-  l = i = NULL;
-
-  a = gtk_alignment_new (0.0, 0.5, 0, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (a), border);
-
   t = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_container_add (GTK_CONTAINER (a), t);
+  gtk_widget_set_halign (t, GTK_ALIGN_CENTER);
+  gtk_container_set_border_width (GTK_CONTAINER (t), border);
 
   vals = g_strsplit_set (str, options.common_data.item_separator, 3);
-  if (gtk_stock_lookup (vals[0], &it))
+  if (vals[0] && *vals[0])
     {
-      l = gtk_label_new_with_mnemonic (it.label);
-      gtk_label_set_xalign (GTK_LABEL (l), 0.0);
-
-      i = gtk_image_new_from_pixbuf (get_pixbuf (it.stock_id, YAD_SMALL_ICON));
+      l = gtk_label_new (NULL);
+      if (!options.data.no_markup)
+        gtk_label_set_markup_with_mnemonic (GTK_LABEL (l), vals[0]);
+      else
+        gtk_label_set_text_with_mnemonic (GTK_LABEL (l), vals[0]);
+      gtk_label_set_xalign (GTK_MISC (l), 0.0);
     }
-  else
-    {
-      if (vals[0] && *vals[0])
-        {
-          l = gtk_label_new (NULL);
-          if (!options.data.no_markup)
-            gtk_label_set_markup_with_mnemonic (GTK_LABEL (l), vals[0]);
-          else
-            gtk_label_set_text_with_mnemonic (GTK_LABEL (l), vals[0]);
-          gtk_label_set_xalign (GTK_MISC (l), 0.0);
-        }
 
-      if (vals[1] && *vals[1])
-        i = gtk_image_new_from_pixbuf (get_pixbuf (vals[1], YAD_SMALL_ICON));
-    }
+  if (vals[1] && *vals[1])
+    i = gtk_image_new_from_pixbuf (get_pixbuf (vals[1], YAD_SMALL_ICON));
 
   if (i)
     gtk_box_pack_start (GTK_BOX (t), i, FALSE, FALSE, 1);
   if (l)
     gtk_box_pack_start (GTK_BOX (t), l, FALSE, FALSE, 1);
 
-  /* !!! must check both 1 and 2 values for !NULL */
+  /* !!! must check both 1 and 2 values for NULL */
   if (vals[1] && vals[2] && *vals[2])
     {
       if (!options.data.no_markup)
@@ -413,9 +399,9 @@ get_label (gchar * str, guint border)
 
   g_strfreev (vals);
 
-  gtk_widget_show_all (a);
+  gtk_widget_show_all (t);
 
-  return a;
+  return t;
 }
 
 gchar *
