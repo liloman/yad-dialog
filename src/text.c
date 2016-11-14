@@ -150,18 +150,11 @@ show_search ()
 static gboolean
 key_press_cb (GtkWidget * w, GdkEventKey * key, gpointer data)
 {
-  if ((key->keyval == GDK_KEY_Return || key->keyval == GDK_KEY_KP_Enter) && (key->state & GDK_CONTROL_MASK))
-    {
-      if (options.plug == -1)
-        yad_exit (YAD_RESPONSE_OK);
-      return TRUE;
-    }
-  else if ((key->keyval == GDK_KEY_S || key->keyval == GDK_KEY_s) && (key->state & GDK_CONTROL_MASK))
+  if ((key->keyval == GDK_KEY_S || key->keyval == GDK_KEY_s) && (key->state & GDK_CONTROL_MASK))
     {
       show_search ();
       return TRUE;
     }
-
   return FALSE;
 }
 

@@ -64,10 +64,19 @@ sa_usr2 (gint sig)
 static gboolean
 keys_cb (GtkWidget *w, GdkEventKey *ev, gpointer d)
 {
-  if (ev->keyval == GDK_KEY_Escape)
+  if (options.plug != -1)
+    return FALSE;
+
+  switch (ev->keyval)
     {
-      if (options.plug == -1 && !options.data.no_escape)
+    case GDK_KEY_Escape:
+      if (!options.data.no_escape)
         yad_exit (YAD_RESPONSE_ESC);
+      return TRUE;
+    case GDK_KEY_Return:
+    case GDK_KEY_KP_Enter:
+      if (ev->state & GDK_CONTROL_MASK)
+        yad_exit (options.data.def_resp);
       return TRUE;
     }
   return FALSE;
