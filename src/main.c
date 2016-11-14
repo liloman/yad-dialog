@@ -348,7 +348,7 @@ create_dialog (void)
   gtk_container_set_border_width (GTK_CONTAINER (dlg), (guint) options.data.borders);
 
   /* set window size and position */
-  if (!options.data.geometry && !options.data.maximized && !options.data.fullscreen)
+  if (!options.data.maximized && !options.data.fullscreen)
     {
       gtk_window_set_default_size (GTK_WINDOW (dlg), options.data.width, options.data.height);
       if (options.data.center)
@@ -527,36 +527,25 @@ create_dialog (void)
   /* parse geometry or move window, if given. must be after showing widget */
   if (!options.data.maximized && !options.data.fullscreen)
     {
-      if (options.data.geometry)
+      gtk_widget_show (dlg);
+      if (options.data.use_posx || options.data.use_posy)
         {
-          gtk_widget_realize (dlg);
-          gtk_window_parse_geometry (GTK_WINDOW (dlg), options.data.geometry);
-          gtk_widget_show (dlg);
-        }
-      else
-        {
-          gtk_widget_show (dlg);
-          if (options.data.use_posx || options.data.use_posy)
-            {
-              gint ww, wh;
-              gtk_window_get_size (GTK_WINDOW (dlg), &ww, &wh);
-              /* place window to specified coordinates */
-              if (!options.data.use_posx)
-                gtk_window_get_position (GTK_WINDOW (dlg), &options.data.posx, NULL);
-              if (!options.data.use_posy)
-                gtk_window_get_position (GTK_WINDOW (dlg), NULL, &options.data.posy);
-              if (options.data.posx < 0)
-                {
-                  gint sw = gdk_screen_get_width (gdk_screen_get_default ());
-                  options.data.posx = sw - ww + options.data.posx;
-                }
-              if (options.data.posy < 0)
-                {
-                  gint sh = gdk_screen_get_height (gdk_screen_get_default ());
-                  options.data.posy = sh - wh + options.data.posy;
-                }
-              gtk_window_move (GTK_WINDOW (dlg), options.data.posx, options.data.posy);
-            }
+          /* make sure that all coordinates are sets */
+          if (!options.data.use_posx)
+            gtk_window_get_position (GTK_WINDOW (dlg), &options.data.posx, NULL);
+          if (!options.data.use_posy)
+            gtk_window_get_position (GTK_WINDOW (dlg), NULL, &options.data.posy);
+
+          /* set correct gravity */  
+          if (options.data.posx < 0 && options.data.posy < 0)
+            gtk_window_set_gravity (GTK_WINDOW (dlg), GDK_GRAVITY_SOUTH_EAST);
+          else if (options.data.posx < 0)
+            gtk_window_set_gravity (GTK_WINDOW (dlg), GDK_GRAVITY_NORTH_EAST);
+          else if (options.data.posy < 0)
+            gtk_window_set_gravity (GTK_WINDOW (dlg), GDK_GRAVITY_SOUTH_WEST);
+
+          /* place window to specified coordinates */
+          gtk_window_move (GTK_WINDOW (dlg), ABS (options.data.posx), ABS (options.data.posy));
         }
     }
   else
@@ -716,9 +705,17 @@ main (gint argc, gchar ** argv)
     }
   yad_set_mode ();
 
-  /* parse custom gtkrc */
+  /* parse custom css file */
   if (options.gtkrc_file)
-    gtk_rc_parse (options.gtkrc_file);
+    {
+      GtkCssProvider *css = gtk_css_provider_new ();
+      if (gtk_css_provider_load_from_path (css, options.gtkrc_file, NULL))
+        gtk_style_context_add_provider_for_screen (gdk_screen_get_default (), 
+                                                   GTK_STYLE_PROVIDER (css), 
+                                                   GTK_STYLE_PROVIDER_PRIORITY_USER);
+      else
+        g_object_unref (css);
+    }
 
   /* set default icons and icon theme */
   if (options.data.icon_theme)

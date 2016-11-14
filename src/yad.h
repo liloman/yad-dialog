@@ -191,7 +191,6 @@ typedef struct {
   gint posx;
   gboolean use_posy;
   gint posy;
-  gchar *geometry;
   guint timeout;
   gchar *to_indicator;
   gchar *dialog_text;

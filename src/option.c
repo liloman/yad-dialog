@@ -89,8 +89,6 @@ static GOptionEntry general_options[] = {
     N_("Set the X position of a window"), N_("NUMBER") },
   { "posy", 0, 0, G_OPTION_ARG_CALLBACK, set_posy,
     N_("Set the Y position of a window"), N_("NUMBER") },
-  { "geometry", 0, 0, G_OPTION_ARG_STRING, &options.data.geometry,
-    N_("Set the window geometry"), N_("WxH+X+Y") },
   { "timeout", 0, 0, G_OPTION_ARG_INT, &options.data.timeout,
     N_("Set dialog timeout in seconds"), N_("TIMEOUT") },
   { "timeout-indicator", 0, 0, G_OPTION_ARG_STRING, &options.data.to_indicator,
@@ -1295,7 +1293,6 @@ yad_options_init (void)
   options.data.posx = 0;
   options.data.use_posy = FALSE;
   options.data.posy = 0;
-  options.data.geometry = NULL;
   options.data.dialog_text = NULL;
   options.data.text_align = GTK_JUSTIFY_LEFT;
   options.data.dialog_image = NULL;
