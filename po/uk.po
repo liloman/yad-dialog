@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-02 22:33+0200\n"
+"POT-Creation-Date: 2016-11-14 11:13+0200\n"
 "PO-Revision-Date: 2009-04-30 16:47+0300\n"
 "Last-Translator: Victor Ananjevsky <ananasik@gmail.com>\n"
 "Language-Team: \n"
@@ -166,13 +166,13 @@ msgid "Maximum value must be greater than minimum value.\n"
 msgstr "Максимальне значення повинне бути більше за мінімальне.\n"
 
 # # FIXME: "Initial value IS less than minimal.\n" 
-#: ../src/scale.c:48
+#: ../src/scale.c:62
 #, c-format
 msgid "Initial value less than minimal.\n"
 msgstr "Початкове значення - менше за мінімальне.\n"
 
 # # FIXME: "Initial value IS greater than maximum.\n"
-#: ../src/scale.c:53
+#: ../src/scale.c:67
 #, c-format
 msgid "Initial value greater than maximum.\n"
 msgstr "Початкове значення - більше за максимальне.\n"
@@ -284,7 +284,7 @@ msgstr "Задати вирівнювання тексту діалогу (left,
 #: ../src/option.c:278 ../src/option.c:303 ../src/option.c:351
 #: ../src/option.c:361 ../src/option.c:399 ../src/option.c:416
 #: ../src/option.c:438 ../src/option.c:448 ../src/option.c:458
-#: ../src/option.c:527 ../src/option.c:567 ../src/option.c:569
+#: ../src/option.c:529 ../src/option.c:569 ../src/option.c:571
 msgid "TYPE"
 msgstr "ТИП"
 
@@ -498,7 +498,7 @@ msgid "Set source filename"
 msgstr "Задати ім'я файлу"
 
 #: ../src/option.c:194 ../src/option.c:220 ../src/option.c:232
-#: ../src/option.c:565 ../src/option.c:577
+#: ../src/option.c:567 ../src/option.c:579
 msgid "FILENAME"
 msgstr "НАЗВА ФАЙЛУ"
 
@@ -570,8 +570,8 @@ msgstr "Відобразити діалог для вибору кольору"
 msgid "Set initial color value"
 msgstr "Задати початковий колір"
 
-#: ../src/option.c:230 ../src/option.c:521 ../src/option.c:523
-#: ../src/option.c:537
+#: ../src/option.c:230 ../src/option.c:523 ../src/option.c:525
+#: ../src/option.c:539
 msgid "COLOR"
 msgstr "КОЛІР"
 
@@ -1056,411 +1056,415 @@ msgid "Invert direction"
 msgstr "Зворотній напрямок"
 
 #: ../src/option.c:513
+msgid "Show +/- buttons in scale"
+msgstr "Відобразити кнопки +/-"
+
+#: ../src/option.c:515
 msgid "Add mark to scale (may be used multiple times)"
 msgstr "Додати мітку шкали (може використовуватись декілька разів)"
 
-#: ../src/option.c:513
+#: ../src/option.c:515
 msgid "NAME:VALUE"
 msgstr "НАЗВА:ЗНАЧЕННЯ"
 
-#: ../src/option.c:519
+#: ../src/option.c:521
 msgid "Display text information dialog"
 msgstr "Відобразити діалог з текстовою інформацією"
 
-#: ../src/option.c:521
+#: ../src/option.c:523
 msgid "Use specified color for text"
 msgstr "Використовувати вказаний колір тексту"
 
-#: ../src/option.c:523
+#: ../src/option.c:525
 msgid "Use specified color for background"
 msgstr "Використовувати вказаний колір фону"
 
-#: ../src/option.c:525
+#: ../src/option.c:527
 msgid "Enable text wrapping"
 msgstr "Дозволити перенос тексту"
 
-#: ../src/option.c:527
+#: ../src/option.c:529
 msgid "Set justification (left, right, center or fill)"
 msgstr "Встановити вирівнювання (left, right, center або fill)"
 
-#: ../src/option.c:529
+#: ../src/option.c:531
 msgid "Set text margins"
 msgstr "Встановити відступи"
 
-#: ../src/option.c:529
+#: ../src/option.c:531
 msgid "SIZE"
 msgstr "РОЗМІР"
 
-#: ../src/option.c:531
+#: ../src/option.c:533
 msgid "Autoscroll to end of text"
 msgstr "Автопрокрутка в кінець тексту"
 
-#: ../src/option.c:533
+#: ../src/option.c:535
 msgid "Show cursor in read-only mode"
 msgstr "Відображувати курсор у режимі тільки для читання"
 
-#: ../src/option.c:535
+#: ../src/option.c:537
 msgid "Make URI clickable"
 msgstr "Зробити посилання активними"
 
-#: ../src/option.c:537
+#: ../src/option.c:539
 msgid "Use specified color for links"
 msgstr "Використовувати вказаний колір для посилань"
 
-#: ../src/option.c:544
+#: ../src/option.c:546
 msgid "Use specified langauge for syntax highlighting"
 msgstr "Використовувати вказану мову для підсвітки синтаксису"
 
-#: ../src/option.c:544
+#: ../src/option.c:546
 msgid "LANG"
 msgstr "МОВА"
 
-#: ../src/option.c:551
+#: ../src/option.c:553
 msgid "Sets a filename filter"
 msgstr "Задати фільтр файлів по масці"
 
-#: ../src/option.c:551
+#: ../src/option.c:553
 msgid "NAME | PATTERN1 PATTERN2 ..."
 msgstr "НАЗВА | ШАБЛОН1 ШАБЛОН2 ..."
 
-#: ../src/option.c:553
+#: ../src/option.c:555
 msgid "Sets a mime-type filter"
 msgstr "Задати фільтр файлів по типу mime"
 
-#: ../src/option.c:553
+#: ../src/option.c:555
 msgid "NAME | MIME1 MIME2 ..."
 msgstr "НАЗВА | ТИП1 ТИП2 ..."
 
-#: ../src/option.c:555
+#: ../src/option.c:557
 msgid "Add filter for images"
 msgstr "Додати фільтр для зображень"
 
-#: ../src/option.c:555
+#: ../src/option.c:557
 msgid "NAME"
 msgstr "ІМ'Я"
 
-#: ../src/option.c:561
+#: ../src/option.c:563
 msgid "Show about dialog"
 msgstr "Показати діалог 'Про програму'"
 
-#: ../src/option.c:563
+#: ../src/option.c:565
 msgid "Print version"
 msgstr "Вивести версію"
 
-#: ../src/option.c:565
+#: ../src/option.c:567
 msgid "Load additional GTK settings from file"
 msgstr "Завантажити додаткові налаштування GTK з файлу"
 
-#: ../src/option.c:567
+#: ../src/option.c:569
 msgid "Set policy for horizontal scrollbars (auto, always, never)"
 msgstr "Задати тип горизонтальної прокрутки (auto, always, never)"
 
-#: ../src/option.c:569
+#: ../src/option.c:571
 msgid "Set policy for vertical scrollbars (auto, always, never)"
 msgstr "Задати тип вертикальної прокрутки (auto, always, never)"
 
-#: ../src/option.c:571
+#: ../src/option.c:573
 msgid "Add path for search icons by name"
 msgstr "Додати каталог для пошуку іконок"
 
-#: ../src/option.c:571
+#: ../src/option.c:573
 msgid "PATH"
 msgstr "КАТАЛОГ"
 
-#: ../src/option.c:577
+#: ../src/option.c:579
 msgid "Load extra arguments from file"
 msgstr "Завантажити додаткові аргументи з файлу"
 
-#: ../src/option.c:618 ../src/option.c:917
+#: ../src/option.c:620 ../src/option.c:919
 #, c-format
 msgid "Unknown align type: %s\n"
 msgstr "Невідомий тип вирівнювання: %s\n"
 
-#: ../src/option.c:781
+#: ../src/option.c:783
 #, c-format
 msgid "Mark %s doesn't have a value\n"
 msgstr "Помітці %s не надано значення\n"
 
-#: ../src/option.c:818
+#: ../src/option.c:820
 msgid "Images"
 msgstr "Зображення"
 
-#: ../src/option.c:883
+#: ../src/option.c:885
 #, c-format
 msgid "Unknown color mode: %s\n"
 msgstr "Невідомий режим кольору: '%s'\n"
 
-#: ../src/option.c:902
+#: ../src/option.c:904
 #, c-format
 msgid "Unknown buttons layout type: %s\n"
 msgstr "Невідомий тип розміщення кнопок: %s\n"
 
-#: ../src/option.c:934
+#: ../src/option.c:936
 #, c-format
 msgid "Unknown justification type: %s\n"
 msgstr "Невідомий тип вирівнювання: %s\n"
 
-#: ../src/option.c:951
+#: ../src/option.c:953
 #, c-format
 msgid "Unknown tab position type: %s\n"
 msgstr "Невідомий тип позиції вкладки: %s\n"
 
-#: ../src/option.c:987
+#: ../src/option.c:989
 #, c-format
 msgid "Unknown ellipsize type: %s\n"
 msgstr "Невідомий тип урізання: %s\n"
 
-#: ../src/option.c:1000
+#: ../src/option.c:1002
 #, c-format
 msgid "Unknown orientation: %s\n"
 msgstr "Невідома орієнтація: %s\n"
 
-#: ../src/option.c:1015
+#: ../src/option.c:1017
 #, c-format
 msgid "Unknown source type: %s\n"
 msgstr "Невідомий тип даних: %s\n"
 
-#: ../src/option.c:1026
+#: ../src/option.c:1028
 msgid "Progress log"
 msgstr "Вікно журналу"
 
-#: ../src/option.c:1039
+#: ../src/option.c:1041
 #, c-format
 msgid "Unknown size type: %s\n"
 msgstr "Невідомий тип розміру: %s\n"
 
-#: ../src/option.c:1077
+#: ../src/option.c:1079
 #, c-format
 msgid "Unknown completion type: %s\n"
 msgstr "Невідомий тип доповнення: %s\n"
 
-#: ../src/option.c:1092
+#: ../src/option.c:1094
 #, c-format
 msgid "Unknown grid lines type: %s\n"
 msgstr "Невідомий тип розподільних ліній: %s\n"
 
-#: ../src/option.c:1109
+#: ../src/option.c:1111
 #, c-format
 msgid "Unknown scrollbar policy type: %s\n"
 msgstr "Невідомий тип прокрутки: %s\n"
 
-#: ../src/option.c:1211
+#: ../src/option.c:1213
 #, c-format
 msgid "Unknown signal: %s\n"
 msgstr "Невідомий сигнал: %s\n"
 
-#: ../src/option.c:1373
+#: ../src/option.c:1375
 msgid "File exist. Overwrite?"
 msgstr "Файл існує. Перезаписати?"
 
-#: ../src/option.c:1513
+#: ../src/option.c:1516
 msgid "- Yet another dialoging program"
 msgstr "- Програма для відображення діалогів"
 
 #. Adds general option entries
-#: ../src/option.c:1517
+#: ../src/option.c:1520
 msgid "General options"
 msgstr "Основні параметри"
 
-#: ../src/option.c:1517
+#: ../src/option.c:1520
 msgid "Show general options"
 msgstr "Показувати основні параметри"
 
 #. Adds common option entries
-#: ../src/option.c:1523
+#: ../src/option.c:1526
 msgid "Common options"
 msgstr "Загальні параметри"
 
-#: ../src/option.c:1523
+#: ../src/option.c:1526
 msgid "Show common options"
 msgstr "Показувати загальні параметри діалогів"
 
 #. Adds calendar option entries
-#: ../src/option.c:1529
+#: ../src/option.c:1532
 msgid "Calendar options"
 msgstr "Параметри календаря"
 
-#: ../src/option.c:1529
+#: ../src/option.c:1532
 msgid "Show calendar options"
 msgstr "Показувати параметри календаря"
 
 #. Adds color option entries
-#: ../src/option.c:1535
+#: ../src/option.c:1538
 msgid "Color selection options"
 msgstr "Параметри діалогу вибору кольору"
 
-#: ../src/option.c:1535
+#: ../src/option.c:1538
 msgid "Show color selection options"
 msgstr "Показувати параметри діалогу вибору кольору"
 
 #. Adds dnd option entries
-#: ../src/option.c:1541
+#: ../src/option.c:1544
 msgid "DND options"
 msgstr "Параметри DND"
 
-#: ../src/option.c:1541
+#: ../src/option.c:1544
 msgid "Show drag-n-drop options"
 msgstr "Показувати параметри dnd"
 
 #. Adds file selection option entries
-#: ../src/option.c:1547
+#: ../src/option.c:1550
 msgid "File selection options"
 msgstr "Параметри діалогу вибору файлів"
 
-#: ../src/option.c:1547
+#: ../src/option.c:1550
 msgid "Show file selection options"
 msgstr "Показувати параметри діалогу вибору файлів"
 
 #. Add font selection option entries
-#: ../src/option.c:1553
+#: ../src/option.c:1556
 msgid "Font selection options"
 msgstr "Параметри діалогу вибору шрифту"
 
-#: ../src/option.c:1553
+#: ../src/option.c:1556
 msgid "Show font selection options"
 msgstr "Показувати параметри діалоги вибору шрифту"
 
 #. Add form option entries
-#: ../src/option.c:1559
+#: ../src/option.c:1562
 msgid "Form options"
 msgstr "Параметри діалогу форми"
 
-#: ../src/option.c:1559
+#: ../src/option.c:1562
 msgid "Show form options"
 msgstr "Показувати параметри діалогу форми"
 
 #. Add html options entries
-#: ../src/option.c:1566
+#: ../src/option.c:1569
 msgid "HTML options"
 msgstr "Параметри HTML діалогу"
 
-#: ../src/option.c:1566
+#: ../src/option.c:1569
 msgid "Show HTML options"
 msgstr "Показувати параметри HTML діалогу"
 
 #. Add icons option entries
-#: ../src/option.c:1573
+#: ../src/option.c:1576
 msgid "Icons box options"
 msgstr "Параметри діалогу іконок"
 
-#: ../src/option.c:1573
+#: ../src/option.c:1576
 msgid "Show icons box options"
 msgstr "Показувати параметри діалогу іконок швидкого доступу"
 
 #. Adds list option entries
-#: ../src/option.c:1579
+#: ../src/option.c:1582
 msgid "List options"
 msgstr "Параметри списку"
 
-#: ../src/option.c:1579
+#: ../src/option.c:1582
 msgid "Show list options"
 msgstr "Показувати параметри списку"
 
 #. Adds multi progress option entries
-#: ../src/option.c:1585
+#: ../src/option.c:1588
 msgid "Multi progress bars options"
 msgstr "Параметри діалогу з декількома індикаторами"
 
-#: ../src/option.c:1586
+#: ../src/option.c:1589
 msgid "Show multi progress bars options"
 msgstr "Показувати параметри діалогу з декількома індикаторами"
 
 #. Adds notebook option entries
-#: ../src/option.c:1592
+#: ../src/option.c:1595
 msgid "Notebook options"
 msgstr "Параметри діалогу з вкладками"
 
-#: ../src/option.c:1592
+#: ../src/option.c:1595
 msgid "Show notebook dialog options"
 msgstr "Показувати параметри діалогу з вкладками"
 
 #. Adds notification option entries
-#: ../src/option.c:1598
+#: ../src/option.c:1601
 msgid "Notification icon options"
 msgstr "Параметри іконки повідомлень"
 
-#: ../src/option.c:1599
+#: ../src/option.c:1602
 msgid "Show notification icon options"
 msgstr "Показувати параметри іконки повідомлень"
 
 #. Adds paned option entries
-#: ../src/option.c:1605
+#: ../src/option.c:1608
 msgid "Paned dialog options"
 msgstr "Параметри діалогу з панелями"
 
-#: ../src/option.c:1605
+#: ../src/option.c:1608
 msgid "Show paned dialog options"
 msgstr "Показувати параметри діалогу з панелями"
 
 #. Adds picture option entries
-#: ../src/option.c:1611
+#: ../src/option.c:1614
 msgid "Picture dialog options"
 msgstr "Параметри діалогу з картинкою"
 
-#: ../src/option.c:1611
+#: ../src/option.c:1614
 msgid "Show picture dialog options"
 msgstr "Показувати параметри діалогу відображення картинки"
 
 #. Adds print option entries
-#: ../src/option.c:1617
+#: ../src/option.c:1620
 msgid "Print dialog options"
 msgstr "Параметри діалогу друку"
 
-#: ../src/option.c:1617
+#: ../src/option.c:1620
 msgid "Show print dialog options"
 msgstr "Показувати параметри діалогу друку"
 
 #. Adds progress option entries
-#: ../src/option.c:1623
+#: ../src/option.c:1626
 msgid "Progress options"
 msgstr "Параметри прогресу"
 
-#: ../src/option.c:1623
+#: ../src/option.c:1626
 msgid "Show progress options"
 msgstr "Показувати параметри прогресу"
 
 #. Adds scale option entries
-#: ../src/option.c:1629
+#: ../src/option.c:1632
 msgid "Scale options"
 msgstr "Параметри масштабу"
 
-#: ../src/option.c:1629
+#: ../src/option.c:1632
 msgid "Show scale options"
 msgstr "Показувати параметри масштабу"
 
 #. Adds text option entries
-#: ../src/option.c:1635
+#: ../src/option.c:1638
 msgid "Text information options"
 msgstr "Параметри текстової інформації"
 
-#: ../src/option.c:1635
+#: ../src/option.c:1638
 msgid "Show text information options"
 msgstr "Показувати параметри текстової інформації"
 
 #. Adds sourceview option entries
-#: ../src/option.c:1642
+#: ../src/option.c:1645
 msgid "SourceView options"
 msgstr "Параметри SourceView"
 
-#: ../src/option.c:1642
+#: ../src/option.c:1645
 msgid "Show SourceView options"
 msgstr "Показувати параметри SourceView"
 
 #. Adds file filters option entries
-#: ../src/option.c:1649
+#: ../src/option.c:1652
 msgid "File filter options"
 msgstr "Параметри фільтрів для діалогу вибору файлів"
 
-#: ../src/option.c:1649
+#: ../src/option.c:1652
 msgid "Show file filter options"
 msgstr "Показувати параметри фільтрів для діалогу вибору файлів"
 
 #. Adds miscellaneous option entries
-#: ../src/option.c:1655
+#: ../src/option.c:1658
 msgid "Miscellaneous options"
 msgstr "Додаткові параметри"
 
-#: ../src/option.c:1655
+#: ../src/option.c:1658
 msgid "Show miscellaneous options"
 msgstr "Показувати додаткові параметри"
 
