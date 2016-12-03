@@ -23,8 +23,8 @@ static GtkWidget *picture;
 static GtkWidget *viewport;
 static GtkWidget *popup_menu;
 
-static GdkPixbufAnimation *anim_pb = NULL;
-static GdkPixbuf *orig_pb = NULL;
+static GdkPixbufAnimation *anim_pb;
+static GdkPixbuf *orig_pb;
 
 static gboolean loaded = FALSE;
 static gboolean animated = FALSE;
@@ -46,16 +46,8 @@ enum {
 static void
 load_picture (gchar *filename)
 {
-  GError *err = NULL;
-
-  anim_pb = gdk_pixbuf_animation_new_from_file (filename, &err);
-  if (anim_pb)  
-    orig_pb = gdk_pixbuf_animation_get_static_image (anim_pb);
-  else
-    {
-      g_printerr ("picture: can't load image %s: %s", filename, err->message);
-      g_error_free (err);
-    }
+  anim_pb = gdk_pixbuf_animation_new_from_file (filename, NULL);
+  orig_pb = gdk_pixbuf_animation_get_static_image (anim_pb);
 
   if (orig_pb)
     {
@@ -69,7 +61,7 @@ load_picture (gchar *filename)
       loaded = TRUE;
     }
   else
-    gtk_image_set_from_icon_name (GTK_IMAGE (picture), "image-missing", GTK_ICON_SIZE_DIALOG);
+    gtk_image_set_from_stock (GTK_IMAGE (picture), "gtk-missing-image", GTK_ICON_SIZE_DIALOG);
 }
 
 void
@@ -270,10 +262,12 @@ picture_create_widget (GtkWidget * dlg)
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_NONE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), options.hscroll_policy, options.vscroll_policy);
 
-  picture = gtk_image_new ();
-  gtk_container_add (GTK_CONTAINER (sw), picture);
+  viewport = gtk_viewport_new (gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (sw)),
+                               gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (sw)));
+  gtk_container_add (GTK_CONTAINER (sw), viewport);
 
-  viewport = gtk_bin_get_child (GTK_BIN (sw));
+  picture = gtk_image_new ();
+  gtk_container_add (GTK_CONTAINER (viewport), picture);
 
   /* load picture */
   if (options.common_data.uri &&
@@ -285,8 +279,8 @@ picture_create_widget (GtkWidget * dlg)
   if (loaded && !animated)
     {
       create_popup_menu ();
-      g_signal_connect (G_OBJECT (picture), "button-press-event", G_CALLBACK (button_handler), NULL);
-      g_signal_connect (G_OBJECT (picture), "key-press-event", G_CALLBACK (key_handler), NULL);
+      g_signal_connect (G_OBJECT (viewport), "button-press-event", G_CALLBACK (button_handler), NULL);
+      g_signal_connect (G_OBJECT (viewport), "key-press-event", G_CALLBACK (key_handler), NULL);
     }
 
   return sw;

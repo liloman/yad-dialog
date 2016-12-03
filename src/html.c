@@ -23,12 +23,13 @@
 #include "yad.h"
 
 #include <glib/gprintf.h>
-#include <webkit2/webkit2.h>
+#include <webkit/webkit.h>
 
 static WebKitWebView *view;
 
 static GString *inbuf;
 
+static gboolean is_link = FALSE;
 static gboolean is_loaded = FALSE;
 
 #ifndef PATH_MAX
@@ -73,38 +74,46 @@ load_uri (const gchar * uri)
 }
 
 static void
-loaded_cb (WebKitWebView *v, WebKitLoadEvent ev, gpointer d)
+loaded_cb (WebKitWebView * v, WebKitWebFrame * f, gpointer d)
 {
-  if (ev == WEBKIT_LOAD_FINISHED)
-    is_loaded = TRUE;
+  is_loaded = TRUE;
 }
 
 static gboolean
-policy_cb (WebKitWebView *v, WebKitPolicyDecision *pd, WebKitPolicyDecisionType pt, gpointer d)
+link_cb (WebKitWebView * v, WebKitWebFrame * f, WebKitNetworkRequest * r,
+         WebKitWebNavigationAction * act, WebKitWebPolicyDecision * pd, gpointer d)
 {
+  gchar *uri = (gchar *) webkit_network_request_get_uri (r);
+
   if (is_loaded && !options.html_data.browser)
     {
-      WebKitNavigationAction *act = webkit_navigation_policy_decision_get_navigation_action (WEBKIT_NAVIGATION_POLICY_DECISION (pd));
-      webkit_policy_decision_ignore (pd);
-      if (webkit_navigation_action_get_navigation_type (act) == WEBKIT_NAVIGATION_TYPE_LINK_CLICKED)
+      if (options.html_data.print_uri)
+        g_printf ("%s\n", uri);
+      else
         {
-          WebKitURIRequest *r = webkit_navigation_action_get_request (act);
-          gchar *uri = (gchar *) webkit_uri_request_get_uri (r);
-
-          if (options.html_data.print_uri)
-            g_printf ("%s\n", uri);
-          else
-            g_app_info_launch_default_for_uri (uri, NULL, NULL);
+          gchar *cmd = g_strdup_printf (settings.open_cmd, uri);
+          g_spawn_command_line_async (cmd, NULL);
+          g_free (cmd);
         }
+      webkit_web_policy_decision_ignore (pd);
     }
   else
-    return FALSE;
+    webkit_web_policy_decision_use (pd);
 
   return TRUE;
 }
 
 static void
-select_file_cb (GtkEntry *entry, GtkEntryIconPosition pos, GdkEventButton *ev, gpointer d)
+link_hover_cb (WebKitWebView * v, const gchar * t, const gchar * link, gpointer * d)
+{
+  if (link)
+    is_link = TRUE;
+  else
+    is_link = FALSE;
+}
+
+static void
+select_file_cb (GtkEntry * entry, GtkEntryIconPosition pos, GdkEventButton * ev, gpointer d)
 {
   GtkWidget *dlg;
   static gchar *dir = NULL;
@@ -134,13 +143,13 @@ select_file_cb (GtkEntry *entry, GtkEntryIconPosition pos, GdkEventButton *ev, g
 }
 
 static void
-do_open_cb (GtkWidget *w, GtkDialog *dlg)
+do_open_cb (GtkWidget * w, GtkDialog * dlg)
 {
   gtk_dialog_response (dlg, GTK_RESPONSE_ACCEPT);
 }
 
 static void
-open_cb (GtkWidget *w, gpointer d)
+open_cb (GtkWidget * w, gpointer d)
 {
   GtkWidget *dlg, *cnt, *lbl, *entry;
 
@@ -153,12 +162,12 @@ open_cb (GtkWidget *w, gpointer d)
   cnt = gtk_dialog_get_content_area (GTK_DIALOG (dlg));
 
   lbl = gtk_label_new (_("Enter URI or file name:"));
-  gtk_label_set_xalign (GTK_LABEL (lbl), 0);
+  gtk_misc_set_alignment (GTK_MISC (lbl), 0, 0);
   gtk_widget_show (lbl);
   gtk_box_pack_start (GTK_BOX (cnt), lbl, TRUE, FALSE, 2);
 
   entry = gtk_entry_new ();
-  gtk_entry_set_icon_from_icon_name (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY, "gtk-directory");
+  gtk_entry_set_icon_from_stock (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY, "gtk-directory");
   gtk_widget_show (entry);
   gtk_box_pack_start (GTK_BOX (cnt), entry, TRUE, FALSE, 2);
 
@@ -172,11 +181,10 @@ open_cb (GtkWidget *w, gpointer d)
 }
 
 static gboolean
-menu_cb (WebKitWebView *v, GtkWidget *menu, WebKitHitTestResult *hit, gboolean kb, gpointer d)
+menu_cb (WebKitWebView * view, GtkWidget * menu, WebKitHitTestResult * hit, gboolean kb, gpointer d)
 {
   GtkWidget *mi;
 
-#if 0
   if (!is_link)
     {
       /* add open item */
@@ -199,7 +207,6 @@ menu_cb (WebKitWebView *v, GtkWidget *menu, WebKitHitTestResult *hit, gboolean k
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), mi);
       g_signal_connect (G_OBJECT (mi), "activate", G_CALLBACK (gtk_main_quit), NULL);
     }
-#endif
 
   return FALSE;
 }
@@ -215,7 +222,7 @@ title_cb (GObject *obj, GParamSpec *spec, GtkWindow *dlg)
 static void
 icon_cb (GObject *obj, GParamSpec *spec, GtkWindow *dlg)
 {
-  GdkPixbuf *pb = gdk_pixbuf_get_from_surface (webkit_web_view_get_favicon (view), 0, 0, -1, -1);
+  GdkPixbuf *pb = webkit_web_view_try_get_favicon_pixbuf (view, 16, 16);
   if (pb)
     {
       gtk_window_set_icon (dlg, pb);
@@ -227,7 +234,6 @@ static gboolean
 handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer d)
 {
   gchar *buf;
-  GBytes *data;
   GError *err = NULL;
 
   switch (g_io_channel_read_line (ch, &buf, NULL, NULL, &err))
@@ -242,10 +248,7 @@ handle_stdin (GIOChannel * ch, GIOCondition cond, gpointer d)
       return FALSE;
 
     case G_IO_STATUS_EOF:
-      data = g_bytes_new (inbuf->str, inbuf->len);
-      g_string_free (inbuf, TRUE);
-      webkit_web_view_load_bytes (view, data, options.html_data.mime, options.html_data.encoding, NULL);
-      g_bytes_unref (data);
+      webkit_web_view_load_string (view, inbuf->str, options.html_data.mime, options.html_data.encoding, NULL);
       return FALSE;
 
     case G_IO_STATUS_AGAIN:
@@ -259,8 +262,9 @@ GtkWidget *
 html_create_widget (GtkWidget * dlg)
 {
   GtkWidget *sw;
-  WebKitSettings *settings;
+  WebKitWebSettings *settings;
   SoupSession *sess;
+  const gchar *enc;
 
   sw = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), options.hscroll_policy, options.vscroll_policy);
@@ -269,11 +273,11 @@ html_create_widget (GtkWidget * dlg)
   gtk_container_add (GTK_CONTAINER (sw), GTK_WIDGET (view));
 
   settings = webkit_web_view_get_settings (view);
-  g_object_set (G_OBJECT(settings), "user-agent", "YAD3/" VERSION " (KHTML, like Gecko)", NULL);
-  g_object_set (G_OBJECT(settings), "default-charset", "utf-8", NULL);
-  g_object_set (G_OBJECT(settings), "enable-fullscreen", options.data.fullscreen, NULL);
+  g_get_charset (&enc);
+  g_object_set (G_OBJECT (settings), "default-encoding", enc, NULL);
 
-  g_signal_connect (view, "decide-policy", G_CALLBACK (policy_cb), NULL);
+  g_signal_connect (view, "hovering-over-link", G_CALLBACK (link_hover_cb), NULL);
+  g_signal_connect (view, "navigation-policy-decision-requested", G_CALLBACK (link_cb), NULL);
 
   if (options.html_data.browser)
     {
@@ -281,26 +285,14 @@ html_create_widget (GtkWidget * dlg)
       if (!options.data.dialog_title)
         g_signal_connect (view, "notify::title", G_CALLBACK (title_cb), dlg);
       if (strcmp (options.data.window_icon, "yad") == 0)
-        g_signal_connect (view, "notify::favicon", G_CALLBACK (icon_cb), dlg);
+        g_signal_connect (view, "icon-loaded", G_CALLBACK (icon_cb), dlg);
     }
   else
-    {
-      g_object_set (G_OBJECT(settings), "enable-caret-browsing", FALSE, NULL);
-      g_object_set (G_OBJECT(settings), "enable-developer-extras", FALSE, NULL);
-      g_object_set (G_OBJECT(settings), "enable-html5-database", FALSE, NULL);
-      g_object_set (G_OBJECT(settings), "enable-html5-local-storage", FALSE, NULL);
-      g_object_set (G_OBJECT(settings), "enable-offline-web-application-cache", FALSE, NULL);
-      g_object_set (G_OBJECT(settings), "enable-page-cache", FALSE, NULL);
-      g_object_set (G_OBJECT(settings), "enable-plugins", FALSE, NULL);
-      g_object_set (G_OBJECT (settings), "enable-private-browsing", TRUE, NULL);
-      g_signal_connect (view, "load-changed", G_CALLBACK (loaded_cb), NULL);
-    }
+    g_signal_connect (view, "document-load-finished", G_CALLBACK (loaded_cb), NULL);
 
-#if 0
   sess = webkit_get_default_session ();
   soup_session_add_feature_by_type (sess, SOUP_TYPE_PROXY_RESOLVER_DEFAULT);
   g_object_set (G_OBJECT (sess), SOUP_SESSION_ACCEPT_LANGUAGE_AUTO, TRUE, NULL);
-#endif
 
   gtk_widget_show_all (sw);
   gtk_widget_grab_focus (GTK_WIDGET (view));

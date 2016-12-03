@@ -268,16 +268,29 @@ yad_print_run (void)
   gtk_window_set_skip_pager_hint (GTK_WINDOW (dlg), options.data.skip_taskbar);
 
   /* set window size and position */
-  gtk_window_set_default_size (GTK_WINDOW (dlg), options.data.width, options.data.height);
-  if (options.data.center)
-    gtk_window_set_position (GTK_WINDOW (dlg), GTK_WIN_POS_CENTER);
-  else if (options.data.mouse)
-    gtk_window_set_position (GTK_WINDOW (dlg), GTK_WIN_POS_MOUSE);
+  if (!options.data.geometry)
+    {
+      gtk_window_set_default_size (GTK_WINDOW (dlg), options.data.width, options.data.height);
+      if (options.data.center)
+        gtk_window_set_position (GTK_WINDOW (dlg), GTK_WIN_POS_CENTER);
+      else if (options.data.mouse)
+        gtk_window_set_position (GTK_WINDOW (dlg), GTK_WIN_POS_MOUSE);
+    }
+  else
+    {
+      /* parse geometry, if given. must be after showing widget */
+      gtk_widget_realize (dlg);
+      gtk_window_parse_geometry (GTK_WINDOW (dlg), options.data.geometry);
+    }
 
   /* create yad's top box */
   if (options.data.dialog_text || options.data.dialog_image)
     {
+#if !GTK_CHECK_VERSION(3,0,0)
+      box = gtk_hbox_new (FALSE, 0);
+#else
       box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+#endif
 
       if (options.data.dialog_image)
         {
@@ -302,8 +315,8 @@ yad_print_run (void)
             gtk_label_set_text (GTK_LABEL (lbl), buf);
           gtk_widget_set_name (lbl, "yad-dialog-label");
           gtk_label_set_selectable (GTK_LABEL (lbl), options.data.selectable_labels);
-          gtk_label_set_xalign (GTK_LABEL (lbl), options.data.text_align);
-          if (options.data.width != -1)
+          gtk_misc_set_alignment (GTK_MISC (lbl), options.data.text_align, 0.5);
+          if (options.data.geometry || options.data.width != -1)
             gtk_label_set_line_wrap (GTK_LABEL (lbl), TRUE);
           gtk_box_pack_start (GTK_BOX (box), lbl, TRUE, TRUE, 2);
           g_signal_connect (G_OBJECT (lbl), "size-allocate", G_CALLBACK (size_allocate_cb), NULL);

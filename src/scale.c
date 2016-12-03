@@ -19,41 +19,18 @@
 
 #include "yad.h"
 
-enum {
-  PLUS_BTN = 0,
-  MINUS_BTN,
-};
-
 static GtkWidget *scale;
 
 static void
 value_changed_cb (GtkWidget * w, gpointer data)
 {
-  g_print ("%.0f\n", gtk_range_get_value (GTK_RANGE (scale)));
-}
-
-static void
-vb_pressed (GtkWidget *b, gpointer data)
-{
-  gdouble v, cv = gtk_range_get_value (GTK_RANGE (scale));
-
-  switch (GPOINTER_TO_INT (data))
-    {
-    case PLUS_BTN:
-      v = cv + options.scale_data.step;
-      gtk_range_set_value (GTK_RANGE (scale), MIN (v, options.scale_data.max_value));
-      break;
-    case MINUS_BTN:
-      v = cv - options.scale_data.step;
-      gtk_range_set_value (GTK_RANGE (scale), MAX (v, options.scale_data.min_value));
-      break;
-    }
+  g_print ("%.0f\n", gtk_range_get_value (GTK_RANGE (w)));
 }
 
 GtkWidget *
 scale_create_widget (GtkWidget * dlg)
 {
-  GtkWidget *t, *pb, *mb;
+  GtkWidget *w;
   GtkAdjustment *adj;
   gint page;
 
@@ -61,22 +38,6 @@ scale_create_widget (GtkWidget * dlg)
     {
       g_printerr (_("Maximum value must be greater than minimum value.\n"));
       return NULL;
-    }
-
-  if (options.common_data.vertical)
-    t = gtk_box_new (GTK_ORIENTATION_VERTICAL, 1);
-  else
-    t = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 1);
-
-  if (options.scale_data.buttons)
-    {
-      pb = gtk_button_new_with_label ("+");
-      gtk_button_set_relief (GTK_BUTTON (pb), GTK_RELIEF_NONE);
-      g_signal_connect (G_OBJECT (pb), "clicked", G_CALLBACK (vb_pressed), GINT_TO_POINTER (PLUS_BTN));
-
-      mb = gtk_button_new_with_label ("-");
-      gtk_button_set_relief (GTK_BUTTON (mb), GTK_RELIEF_NONE);
-      g_signal_connect (G_OBJECT (mb), "clicked", G_CALLBACK (vb_pressed), GINT_TO_POINTER (MINUS_BTN));
     }
 
   /* check for initial value */
@@ -96,6 +57,7 @@ scale_create_widget (GtkWidget * dlg)
   else
     options.scale_data.value = options.scale_data.min_value;
 
+
   page = options.scale_data.page == -1 ? options.scale_data.step * 10 : options.scale_data.page;
   /* this type conversion needs only for gtk-2.0 */
   adj = (GtkAdjustment *) gtk_adjustment_new ((double) options.scale_data.value,
@@ -104,22 +66,30 @@ scale_create_widget (GtkWidget * dlg)
                                               (double) options.scale_data.step, (double) page, 0.0);
   if (options.common_data.vertical)
     {
-      scale = gtk_scale_new (GTK_ORIENTATION_VERTICAL, GTK_ADJUSTMENT (adj));
-      gtk_range_set_inverted (GTK_RANGE (scale), !options.scale_data.invert);
+#if GTK_CHECK_VERSION(3,0,0)
+      w = scale = gtk_scale_new (GTK_ORIENTATION_VERTICAL, GTK_ADJUSTMENT (adj));
+#else
+      w = scale = gtk_vscale_new (GTK_ADJUSTMENT (adj));
+#endif
+      gtk_range_set_inverted (GTK_RANGE (w), !options.scale_data.invert);
     }
   else
     {
-      scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT (adj));
-      gtk_range_set_inverted (GTK_RANGE (scale), options.scale_data.invert);
+#if GTK_CHECK_VERSION(3,0,0)
+      w = scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, GTK_ADJUSTMENT (adj));
+#else
+      w = scale = gtk_hscale_new (GTK_ADJUSTMENT (adj));
+#endif
+      gtk_range_set_inverted (GTK_RANGE (w), options.scale_data.invert);
     }
-  gtk_widget_set_name (scale, "yad-scale-widget");
-  gtk_scale_set_digits (GTK_SCALE (scale), 0);
+  gtk_widget_set_name (w, "yad-scale-widget");
+  gtk_scale_set_digits (GTK_SCALE (w), 0);
 
   if (options.scale_data.print_partial)
-    g_signal_connect (G_OBJECT (scale), "value-changed", G_CALLBACK (value_changed_cb), NULL);
+    g_signal_connect (G_OBJECT (w), "value-changed", G_CALLBACK (value_changed_cb), NULL);
 
   if (options.scale_data.hide_value)
-    gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
+    gtk_scale_set_draw_value (GTK_SCALE (w), FALSE);
 
   /* add marks */
   if (options.scale_data.marks)
@@ -131,20 +101,11 @@ scale_create_widget (GtkWidget * dlg)
       for (; m; m = m->next)
         {
           YadScaleMark *mark = (YadScaleMark *) m->data;
-          gtk_scale_add_mark (GTK_SCALE (scale), mark->value, pos, mark->name);
+          gtk_scale_add_mark (GTK_SCALE (w), mark->value, pos, mark->name);
         }
     }
 
-  /* create widget */
-  if (options.scale_data.buttons)
-    gtk_box_pack_start (GTK_BOX (t), options.common_data.vertical ? pb : mb, FALSE, FALSE, 0);
-
-  gtk_box_pack_start (GTK_BOX (t), scale, TRUE, TRUE, 2);
-
-  if (options.scale_data.buttons)
-    gtk_box_pack_start (GTK_BOX (t), options.common_data.vertical ? mb : pb, FALSE, FALSE, 0);
-
-  return t;
+  return w;
 }
 
 void

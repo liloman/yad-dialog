@@ -104,11 +104,11 @@ palette_changed (GtkTreeSelection * sel, gpointer data)
   if (gtk_tree_selection_get_selected (sel, &model, &iter))
     {
       gchar *clr;
-      GdkRGBA c;
+      GdkColor c;
 
       gtk_tree_model_get (model, &iter, 1, &clr, -1);
-      if (gdk_rgba_parse (&c, clr))
-        gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (color), &c);
+      if (gdk_color_parse (clr, &c))
+        gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (color), &c);
     }
 }
 
@@ -117,17 +117,21 @@ color_create_widget (GtkWidget * dlg)
 {
   GtkWidget *w;
 
+#if !GTK_CHECK_VERSION(3,0,0)
+  w = gtk_vbox_new (FALSE, 2);
+#else
   w = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+#endif
 
-  color = gtk_color_chooser_widget_new ();
-  gtk_color_chooser_set_use_alpha (GTK_COLOR_CHOOSER (color), options.color_data.use_alpha);
+  color = gtk_color_selection_new ();
   gtk_widget_set_name (color, "yad-color-widget");
+  gtk_color_selection_set_has_palette (GTK_COLOR_SELECTION (color), options.color_data.gtk_palette);
   if (options.color_data.init_color)
     {
-      GdkRGBA c;
+      GdkColor c;
 
-      if (gdk_rgba_parse (&c, options.color_data.init_color))
-        gtk_color_chooser_set_rgba (GTK_COLOR_CHOOSER (color), &c);
+      if (gdk_color_parse (options.color_data.init_color, &c))
+        gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (color), &c);
     }
   gtk_box_pack_start (GTK_BOX (w), color, FALSE, FALSE, 2);
 
@@ -201,11 +205,15 @@ color_create_widget (GtkWidget * dlg)
 void
 color_print_result (void)
 {
-  GdkRGBA c;
+  GdkColor c;
+  guint64 alpha;
   gchar *cs;
 
-  gtk_color_chooser_get_rgba (GTK_COLOR_CHOOSER (color), &c);
-  cs = get_color (&c);
+  gtk_color_selection_get_current_color (GTK_COLOR_SELECTION (color), &c);
+  alpha = gtk_color_selection_get_current_alpha (GTK_COLOR_SELECTION (color));
+
+  cs = get_color (&c, alpha);
+
   if (cs)
     g_printf ("%s\n", cs);
 }

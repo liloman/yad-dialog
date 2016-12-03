@@ -80,7 +80,7 @@ file_create_widget (GtkWidget * dlg)
   w = filechooser = gtk_file_chooser_widget_new (action);
   gtk_widget_set_name (w, "yad-file-widget");
 
-  if (options.common_data.uri && g_file_test (options.common_data.uri, G_FILE_TEST_EXISTS))
+  if (options.common_data.uri)
     {
       if (!options.file_data.directory && g_file_test (options.common_data.uri, G_FILE_TEST_IS_DIR))
         gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (w), options.common_data.uri);

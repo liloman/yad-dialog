@@ -187,29 +187,38 @@ get_pixbuf (gchar * name, YadIconSize size)
 }
 
 gchar *
-get_color (GdkRGBA *c)
+get_color (GdkColor *c, guint64 alpha)
 {
-  gshort r, g, b, a;
+  gchar *cs;
   gchar *res = NULL;
-
-  r = (gshort) 255 * c->red;
-  g = (gshort) 255 * c->green;
-  b = (gshort) 255 * c->blue;
-  a = (gshort) 255 * c->alpha;
 
   switch (options.color_data.mode)
     {
     case YAD_COLOR_HEX:
-      if (options.color_data.use_alpha)
-        res = g_strdup_printf ("#%02hx%02hx%02hx%02hx", r, g, b, a);
+      cs = gdk_color_to_string (c);
+      if (options.color_data.alpha)
+        {
+          if (options.color_data.extra)
+            res = g_strdup_printf ("#%s%hx", cs + 1, alpha);
+          else
+            res = g_strdup_printf ("#%c%c%c%c%c%c%hx", cs[1], cs[2], cs[5], cs[6], cs[9], cs[10], alpha / 256);
+        }
       else
-        res = g_strdup_printf ("#%02hx%02hx%02hx", r, g, b);
+        {
+          if (options.color_data.extra)
+            res = g_strdup_printf ("%s", cs);
+          else
+            res = g_strdup_printf ("#%c%c%c%c%c%c", cs[1], cs[2], cs[5], cs[6], cs[9], cs[10]);
+        }
+      g_free (cs);
       break;
     case YAD_COLOR_RGB:
-      if (options.color_data.use_alpha)
-        res = g_strdup_printf ("rgba(%d,%d,%d,%.1f)", r, g, b, c->alpha);
+      if (options.color_data.alpha)
+        res = g_strdup_printf ("rgba(%.1f, %.1f, %.1f, %.1f)", (double) c->red / 255.0, (double) c->green / 255.0,
+                               (double) c->blue / 255.0, (double) alpha / 255 / 255);
       else
-        res = g_strdup_printf ("rgb(%d,%d,%d)", r, g, b);
+        res = g_strdup_printf ("rgb(%.1f, %.1f, %.1f)", (double) c->red / 255.0, (double) c->green / 255.0,
+                               (double) c->blue / 255.0);
       break;
     }
 
@@ -358,37 +367,55 @@ get_tabs (key_t key, gboolean create)
 GtkWidget *
 get_label (gchar * str, guint border)
 {
-  GtkWidget *t, *i = NULL, *l = NULL;
+  GtkWidget *a, *t, *i, *l;
   GtkStockItem it;
   gchar **vals;
 
   if (!str || !*str)
     return gtk_label_new (NULL);
 
+  l = i = NULL;
+
+  a = gtk_alignment_new (0.0, 0.5, 0, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (a), border);
+
+#if !GTK_CHECK_VERSION(3,0,0)
+  t = gtk_hbox_new (FALSE, 0);
+#else
   t = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  gtk_widget_set_halign (t, GTK_ALIGN_CENTER);
-  gtk_container_set_border_width (GTK_CONTAINER (t), border);
+#endif
+  gtk_container_add (GTK_CONTAINER (a), t);
 
   vals = g_strsplit_set (str, options.common_data.item_separator, 3);
-  if (vals[0] && *vals[0])
+  if (gtk_stock_lookup (vals[0], &it))
     {
-      l = gtk_label_new (NULL);
-      if (!options.data.no_markup)
-        gtk_label_set_markup_with_mnemonic (GTK_LABEL (l), vals[0]);
-      else
-        gtk_label_set_text_with_mnemonic (GTK_LABEL (l), vals[0]);
-      gtk_label_set_xalign (GTK_MISC (l), 0.0);
-    }
+      l = gtk_label_new_with_mnemonic (it.label);
+      gtk_misc_set_alignment (GTK_MISC (l), 0.0, 0.5);
 
-  if (vals[1] && *vals[1])
-    i = gtk_image_new_from_pixbuf (get_pixbuf (vals[1], YAD_SMALL_ICON));
+      i = gtk_image_new_from_pixbuf (get_pixbuf (it.stock_id, YAD_SMALL_ICON));
+    }
+  else
+    {
+      if (vals[0] && *vals[0])
+        {
+          l = gtk_label_new (NULL);
+          if (!options.data.no_markup)
+            gtk_label_set_markup_with_mnemonic (GTK_LABEL (l), vals[0]);
+          else
+            gtk_label_set_text_with_mnemonic (GTK_LABEL (l), vals[0]);
+          gtk_misc_set_alignment (GTK_MISC (l), 0.0, 0.5);
+        }
+
+      if (vals[1] && *vals[1])
+        i = gtk_image_new_from_pixbuf (get_pixbuf (vals[1], YAD_SMALL_ICON));
+    }
 
   if (i)
     gtk_box_pack_start (GTK_BOX (t), i, FALSE, FALSE, 1);
   if (l)
     gtk_box_pack_start (GTK_BOX (t), l, FALSE, FALSE, 1);
 
-  /* !!! must check both 1 and 2 values for NULL */
+  /* !!! must check both 1 and 2 values for !NULL */
   if (vals[1] && vals[2] && *vals[2])
     {
       if (!options.data.no_markup)
@@ -399,9 +426,9 @@ get_label (gchar * str, guint border)
 
   g_strfreev (vals);
 
-  gtk_widget_show_all (t);
+  gtk_widget_show_all (a);
 
-  return t;
+  return a;
 }
 
 gchar *
@@ -431,7 +458,7 @@ escape_str (gchar *str)
         case '\\':
           strcpy (res + i, "\\\\");
           i += 2;
-          break;
+          break;        
         default:
           *(res + i) = *buf;
           i++;

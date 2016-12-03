@@ -25,7 +25,6 @@
 #include "yad.h"
 
 static GtkWidget *list_view;
-static GtkWidget *list_menu = NULL;
 
 static gint fore_col, back_col, font_col;
 
@@ -34,7 +33,11 @@ static gulong select_hndl = 0;
 static gboolean
 list_activate_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
+#if GTK_CHECK_VERSION(2,24,0)
   if (event->keyval == GDK_KEY_Return || event->keyval == GDK_KEY_KP_Enter)
+#else
+  if (event->keyval == GDK_Return || event->keyval == GDK_KP_Enter)
+#endif
     {
       if (options.list_data.dclick_action)
         {
@@ -244,7 +247,13 @@ size_col_format (GtkTreeViewColumn *col, GtkCellRenderer *cell, GtkTreeModel *mo
   gchar buf[20], *sz;
 
   gtk_tree_model_get (model, iter, GPOINTER_TO_INT (data), &val, -1);
+#if GLIB_CHECK_VERSION(2,30,0)
   sz = g_format_size (val);
+#elif  GLIB_CHECK_VERSION(2,16,0)
+  sz = g_format_size_for_display (val);
+#else
+  sz = g_strdup_printf ("%d", val);
+#endif
   g_snprintf (buf, sizeof (buf), "%s", sz);
   g_free (sz);
   g_object_set (cell, "text", buf, NULL);
@@ -915,13 +924,39 @@ copy_row_cb (GtkMenuItem * item, gpointer data)
 static gboolean
 popup_menu_cb (GtkWidget * w, GdkEventButton * ev, gpointer data)
 {
+  static GtkWidget *menu = NULL;
   if (ev->button == 3)
     {
-      if (list_menu)
+      GtkWidget *item;
+
+      if (menu == NULL)
         {
-          gtk_menu_popup (GTK_MENU (list_menu), NULL, NULL, NULL, NULL, ev->button, ev->time);
-          return TRUE;
+          menu = gtk_menu_new ();
+
+          item = gtk_image_menu_item_new_with_label (_("Add row"));
+          gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
+                                         gtk_image_new_from_stock (GTK_STOCK_ADD, GTK_ICON_SIZE_MENU));
+          gtk_widget_show (item);
+          gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+          g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (add_row_cb), NULL);
+
+          item = gtk_image_menu_item_new_with_label (_("Delete row"));
+          gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
+                                         gtk_image_new_from_stock (GTK_STOCK_REMOVE, GTK_ICON_SIZE_MENU));
+          gtk_widget_show (item);
+          gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+          g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (del_row_cb), NULL);
+
+          item = gtk_image_menu_item_new_with_label (_("Duplicate row"));
+          gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
+                                         gtk_image_new_from_stock (GTK_STOCK_COPY, GTK_ICON_SIZE_MENU));
+          gtk_widget_show (item);
+          gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+          g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (copy_row_cb), NULL);
+
+          gtk_widget_show (menu);
         }
+      gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, ev->button, ev->time);
     }
   return FALSE;
 }
@@ -1073,6 +1108,7 @@ list_create_widget (GtkWidget * dlg)
   list_view = gtk_tree_view_new_with_model (model);
   gtk_widget_set_name (list_view, "yad-list-widget");
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (list_view), !options.list_data.no_headers);
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (list_view), options.list_data.rules_hint);
   gtk_tree_view_set_grid_lines (GTK_TREE_VIEW (list_view), options.list_data.grid_lines);
   gtk_tree_view_set_reorderable (GTK_TREE_VIEW (list_view), options.common_data.editable);
   g_object_unref (model);
@@ -1083,28 +1119,7 @@ list_create_widget (GtkWidget * dlg)
 
   /* add popup menu */
   if (options.common_data.editable)
-    {
-      GtkWidget *item;
-
-      list_menu = gtk_menu_new ();
-
-      item = gtk_menu_item_new_with_label (_("Add row"));
-      gtk_widget_show (item);
-      gtk_menu_shell_append (GTK_MENU_SHELL (list_menu), item);
-      g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (add_row_cb), NULL);
-
-      item = gtk_menu_item_new_with_label (_("Delete row"));
-      gtk_widget_show (item);
-      gtk_menu_shell_append (GTK_MENU_SHELL (list_menu), item);
-      g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (del_row_cb), NULL);
-
-      item = gtk_menu_item_new_with_label (_("Duplicate row"));
-      gtk_widget_show (item);
-      gtk_menu_shell_append (GTK_MENU_SHELL (list_menu), item);
-      g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (copy_row_cb), NULL);
-
-      g_signal_connect_swapped (G_OBJECT (list_view), "button_press_event", G_CALLBACK (popup_menu_cb), NULL);
-    }
+    g_signal_connect_swapped (G_OBJECT (list_view), "button_press_event", G_CALLBACK (popup_menu_cb), NULL);
 
   /* add tooltip column */
   if (options.list_data.tooltip_column > 0)

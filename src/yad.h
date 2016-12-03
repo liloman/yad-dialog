@@ -25,19 +25,25 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 
-#include <glib.h>
-#include <glib/gi18n.h>
 #include <gdk/gdkx.h>
-#include <gdk/gdkkeysyms.h>
+
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
+#include <gdk/gdkkeysyms.h>
+
+#if GTK_CHECK_VERSION(3,0,0)
 #include <gtk/gtkx.h>
+#endif
 
 #ifdef HAVE_SPELL
 #include <gtkspell/gtkspell.h>
 #endif
 
 #ifdef HAVE_SOURCEVIEW
-#include <gtksourceview/gtksource.h>
+#include <gtksourceview/gtksourceview.h>
+#include <gtksourceview/gtksourcebuffer.h>
+#include <gtksourceview/gtksourcelanguage.h>
+#include <gtksourceview/gtksourcelanguagemanager.h>
 #endif
 
 G_BEGIN_DECLS
@@ -191,6 +197,7 @@ typedef struct {
   gint posx;
   gboolean use_posy;
   gint posy;
+  gchar *geometry;
   guint timeout;
   gchar *to_indicator;
   gchar *dialog_text;
@@ -207,7 +214,6 @@ typedef struct {
   gboolean always_print;
   gboolean selectable_labels;
   GtkButtonBoxStyle buttons_layout;
-  gint def_resp;
   /* window settings */
   gboolean sticky;
   gboolean fixed;
@@ -228,21 +234,34 @@ typedef struct {
   gint month;
   gint year;
   gchar *details;
-  gboolean weeks;
 } YadCalendarData;
 
 typedef struct {
   gchar *init_color;
-  gboolean use_alpha;
+  gboolean gtk_palette;
   gboolean use_palette;
   gboolean expand_palette;
   gchar *palette;
+  gboolean extra;
+  gboolean alpha;
   YadColorMode mode;
 } YadColorData;
 
 typedef struct {
   gboolean tooltip;
 } YadDNDData;
+
+typedef struct {
+  gchar *entry_text;
+  gchar *entry_label;
+  gboolean hide_text;
+  gboolean completion;
+  gboolean numeric;
+  gchar *licon;
+  gchar *licon_action;
+  gchar *ricon;
+  gchar *ricon_action;
+} YadEntryData;
 
 typedef struct {
   gboolean directory;
@@ -298,6 +317,7 @@ typedef struct {
   gboolean checkbox;
   gboolean radiobox;
   gboolean print_all;
+  gboolean rules_hint;
   GtkTreeViewGridLines grid_lines;
   gint print_column;
   gint hide_column;
@@ -376,7 +396,6 @@ typedef struct {
   gboolean hide_value;
   gboolean have_value;
   gboolean invert;
-  gboolean buttons;
   GSList *marks;
 } YadScaleData;
 
@@ -433,6 +452,7 @@ typedef struct {
   YadCalendarData calendar_data;
   YadColorData color_data;
   YadDNDData dnd_data;
+  YadEntryData entry_data;
   YadFileData file_data;
   YadFontData font_data;
   YadFormData form_data;
@@ -516,6 +536,7 @@ void yad_exit (gint id);
 
 GtkWidget *calendar_create_widget (GtkWidget *dlg);
 GtkWidget *color_create_widget (GtkWidget *dlg);
+GtkWidget *entry_create_widget (GtkWidget *dlg);
 GtkWidget *file_create_widget (GtkWidget *dlg);
 GtkWidget *font_create_widget (GtkWidget *dlg);
 GtkWidget *form_create_widget (GtkWidget *dlg);
@@ -539,6 +560,7 @@ void picture_fit_to_window (void);
 
 void calendar_print_result (void);
 void color_print_result (void);
+void entry_print_result (void);
 void file_print_result (void);
 void font_print_result (void);
 void form_print_result (void);
@@ -566,7 +588,7 @@ void update_preview (GtkFileChooser *chooser, GtkWidget *p);
 void filechooser_mapped (GtkWidget *w, gpointer data);
 
 GdkPixbuf *get_pixbuf (gchar *name, YadIconSize size);
-gchar *get_color (GdkRGBA *c);
+gchar *get_color (GdkColor *c, guint64 alpha);
 
 gchar **split_arg (const gchar *str);
 

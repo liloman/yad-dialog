@@ -157,7 +157,11 @@ progress_create_widget (GtkWidget * dlg)
   GIOChannel *channel;
 
   // fix it when vertical specified
+#if GTK_CHECK_VERSION(3,0,0)
   w = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+#else
+  w = gtk_vbox_new (FALSE, 0);
+#endif
 
   progress_bar = gtk_progress_bar_new ();
   gtk_widget_set_name (progress_bar, "yad-progress-widget");
@@ -171,7 +175,12 @@ progress_create_widget (GtkWidget * dlg)
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progress_bar), options.progress_data.percentage / 100.0);
   if (options.progress_data.progress_text)
     gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progress_bar), options.progress_data.progress_text);
+#if GTK_CHECK_VERSION(3,0,0)
   gtk_progress_bar_set_inverted (GTK_PROGRESS_BAR (progress_bar), options.progress_data.rtl);
+#else
+  if (options.progress_data.rtl)
+    gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (progress_bar), GTK_PROGRESS_RIGHT_TO_LEFT);
+#endif
 
   if (options.progress_data.log)
     {
@@ -199,8 +208,10 @@ progress_create_widget (GtkWidget * dlg)
       gtk_text_view_set_editable (GTK_TEXT_VIEW (progress_log), FALSE);
       gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (progress_log), FALSE);
     }
+#if GTK_CHECK_VERSION(3,0,0)
   else
     gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (progress_bar), TRUE);
+#endif
 
   channel = g_io_channel_unix_new (0);
   g_io_channel_set_encoding (channel, NULL, NULL);

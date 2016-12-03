@@ -58,6 +58,7 @@ static gboolean version_mode = FALSE;
 static gboolean calendar_mode = FALSE;
 static gboolean color_mode = FALSE;
 static gboolean dnd_mode = FALSE;
+static gboolean entry_mode = FALSE;
 static gboolean file_mode = FALSE;
 static gboolean font_mode = FALSE;
 static gboolean form_mode = FALSE;
@@ -89,6 +90,8 @@ static GOptionEntry general_options[] = {
     N_("Set the X position of a window"), N_("NUMBER") },
   { "posy", 0, 0, G_OPTION_ARG_CALLBACK, set_posy,
     N_("Set the Y position of a window"), N_("NUMBER") },
+  { "geometry", 0, 0, G_OPTION_ARG_STRING, &options.data.geometry,
+    N_("Set the window geometry"), N_("WxH+X+Y") },
   { "timeout", 0, 0, G_OPTION_ARG_INT, &options.data.timeout,
     N_("Set dialog timeout in seconds"), N_("TIMEOUT") },
   { "timeout-indicator", 0, 0, G_OPTION_ARG_STRING, &options.data.to_indicator,
@@ -119,8 +122,6 @@ static GOptionEntry general_options[] = {
     N_("Set window borders"), N_("NUMBER") },
   { "always-print-result", 0, 0, G_OPTION_ARG_NONE, &options.data.always_print,
     N_("Always print result"), NULL },
-  { "response", 0, 0, G_OPTION_ARG_INT, &options.data.def_resp,
-    N_("Set default response for Ctrl+Enter"), N_("NUMBER") },
   { "selectable-labels", 0, 0, G_OPTION_ARG_NONE, &options.data.selectable_labels,
     N_("Dialog text can be selected"), NULL },
   /* window settings */
@@ -218,24 +219,28 @@ static GOptionEntry calendar_options[] = {
     N_("Set the calendar year"), N_("YEAR") },
   { "details", 0, 0, G_OPTION_ARG_FILENAME, &options.calendar_data.details,
     N_("Set the filename with dates details"), N_("FILENAME") },
-  { "show-weeks", 0, 0, G_OPTION_ARG_NONE, &options.calendar_data.weeks,
-    N_("Show week numbers at the left of calendar"), NULL },
   { NULL }
 };
 
 static GOptionEntry color_options[] = {
   { "color", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &color_mode,
     N_("Display color selection dialog"), NULL },
+  { "color-selection", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &color_mode,
+    N_("Alias for --color"), NULL },
   { "init-color", 0, 0, G_OPTION_ARG_STRING, &options.color_data.init_color,
     N_("Set initial color value"), N_("COLOR") },
+  { "gtk-palette", 0, 0, G_OPTION_ARG_NONE, &options.color_data.gtk_palette,
+    N_("Show system palette in color dialog"), NULL },
   { "palette", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, add_palette,
     N_("Set path to palette file. Default - " RGB_FILE), N_("FILENAME") },
   { "expand-palette", 0, 0, G_OPTION_ARG_NONE, &options.color_data.expand_palette,
     N_("Expand user palette"), NULL },
-  { "color-out", 0, 0, G_OPTION_ARG_CALLBACK, set_color_mode,
+  { "mode", 0, 0, G_OPTION_ARG_CALLBACK, set_color_mode,
     N_("Set output mode to MODE. Values are hex (default) or rgb"), N_("MODE") },
-  { "use-alpha", 0, 0, G_OPTION_ARG_NONE, &options.color_data.use_alpha,
-    N_("Use alpha channel"), NULL },
+  { "extra", 0, 0, G_OPTION_ARG_NONE, &options.color_data.extra,
+    N_("Use #rrrrggggbbbb format instead of #rrggbb"), NULL },
+  { "alpha", 0, 0, G_OPTION_ARG_NONE, &options.color_data.alpha,
+    N_("Add opacity to output color value"), NULL },
   { NULL }
 };
 
@@ -247,9 +252,35 @@ static GOptionEntry dnd_options[] = {
   { NULL }
 };
 
+static GOptionEntry entry_options[] = {
+  { "entry", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &entry_mode,
+    N_("Display text entry or combo-box dialog"), NULL },
+  { "entry-label", 0, 0, G_OPTION_ARG_STRING, &options.entry_data.entry_label,
+    N_("Set the entry label"), N_("TEXT") },
+  { "entry-text", 0, 0, G_OPTION_ARG_STRING, &options.entry_data.entry_text,
+    N_("Set the entry text"), N_("TEXT") },
+  { "hide-text", 0, 0, G_OPTION_ARG_NONE, &options.entry_data.hide_text,
+    N_("Hide the entry text"), N_("TEXT") },
+  { "completion", 0, 0, G_OPTION_ARG_NONE, &options.entry_data.completion,
+    N_("Use completion instead of combo-box"), NULL },
+  { "numeric", 0, 0, G_OPTION_ARG_NONE, &options.entry_data.numeric,
+    N_("Use spin button for text entry"), NULL },
+  { "licon", 0, 0, G_OPTION_ARG_FILENAME, &options.entry_data.licon,
+    N_("Set the left entry icon"), N_("IMAGE") },
+  { "licon-action", 0, 0, G_OPTION_ARG_STRING, &options.entry_data.licon_action,
+    N_("Set the left entry icon action"), N_("CMD") },
+  { "ricon", 0, 0, G_OPTION_ARG_FILENAME, &options.entry_data.ricon,
+    N_("Set the right entry icon"), N_("IMAGE") },
+  { "ricon-action", 0, 0, G_OPTION_ARG_STRING, &options.entry_data.ricon_action,
+    N_("Set the right entry icon action"), N_("CMD") },
+  { NULL }
+};
+
 static GOptionEntry file_options[] = {
   { "file", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &file_mode,
     N_("Display file selection dialog"), NULL },
+  { "file-selection", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &file_mode,
+    N_("Alias for --file"), NULL },
   { "directory", 0, 0, G_OPTION_ARG_NONE, &options.file_data.directory,
     N_("Activate directory-only selection"), NULL },
   { "save", 0, 0, G_OPTION_ARG_NONE, &options.file_data.save,
@@ -262,6 +293,8 @@ static GOptionEntry file_options[] = {
 static GOptionEntry font_options[] = {
   { "font", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &font_mode,
     N_("Display font selection dialog"), NULL },
+  { "font-selection", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_NONE, &font_mode,
+    N_("Alias for --font"), NULL },
   { "preview", 0, 0, G_OPTION_ARG_STRING, &options.font_data.preview,
     N_("Set text string for preview"), N_("TEXT") },
   { "separate-output", 0, 0, G_OPTION_ARG_NONE, &options.font_data.separate_output,
@@ -347,6 +380,8 @@ static GOptionEntry list_options[] = {
     N_("Don't show column headers"), NULL },
   { "no-click", 0, G_OPTION_FLAG_REVERSE, G_OPTION_ARG_NONE, &options.list_data.clickable,
     N_("Disable clickable column headers"), NULL },
+  { "no-rules-hint", 0, G_OPTION_FLAG_REVERSE, G_OPTION_ARG_NONE, &options.list_data.rules_hint,
+    N_("Disable rules hints"), NULL },
   { "grid-lines", 0, 0, G_OPTION_ARG_CALLBACK, set_grid_lines,
     N_("Set grid lines (hor[izontal], vert[ical] or both)"), N_("TYPE") },
   { "print-all", 0, 0, G_OPTION_ARG_NONE, &options.list_data.print_all,
@@ -509,8 +544,6 @@ static GOptionEntry scale_options[] = {
     N_("Hide value"), NULL },
   { "invert", 0, 0, G_OPTION_ARG_NONE, &options.scale_data.invert,
     N_("Invert direction"), NULL },
-  { "inc-buttons", 0, 0, G_OPTION_ARG_NONE, &options.scale_data.buttons,
-    N_("Show +/- buttons in scale"), NULL },
   { "mark", 0, 0, G_OPTION_ARG_CALLBACK, add_scale_mark,
     N_("Add mark to scale (may be used multiple times)"), N_("NAME:VALUE") },
   { NULL }
@@ -1225,6 +1258,8 @@ yad_set_mode (void)
     options.mode = YAD_MODE_COLOR;
   else if (dnd_mode)
     options.mode = YAD_MODE_DND;
+  else if (entry_mode)
+    options.mode = YAD_MODE_ENTRY;
   else if (file_mode)
     options.mode = YAD_MODE_FILE;
   else if (font_mode)
@@ -1293,6 +1328,7 @@ yad_options_init (void)
   options.data.posx = 0;
   options.data.use_posy = FALSE;
   options.data.posy = 0;
+  options.data.geometry = NULL;
   options.data.dialog_text = NULL;
   options.data.text_align = GTK_JUSTIFY_LEFT;
   options.data.dialog_image = NULL;
@@ -1309,7 +1345,6 @@ yad_options_init (void)
   options.data.no_escape = FALSE;
   options.data.always_print = FALSE;
   options.data.selectable_labels = FALSE;
-  options.data.def_resp = YAD_RESPONSE_OK;
 
   /* Initialize window options */
   options.data.sticky = FALSE;
@@ -1355,18 +1390,30 @@ yad_options_init (void)
   options.calendar_data.month = -1;
   options.calendar_data.year = -1;
   options.calendar_data.details = NULL;
-  options.calendar_data.weeks = FALSE;
 
   /* Initialize color data */
   options.color_data.init_color = NULL;
+  options.color_data.gtk_palette = FALSE;
   options.color_data.use_palette = FALSE;
   options.color_data.expand_palette = FALSE;
   options.color_data.palette = NULL;
+  options.color_data.extra = FALSE;
+  options.color_data.alpha = FALSE;
   options.color_data.mode = YAD_COLOR_HEX;
-  options.color_data.use_alpha = FALSE;
 
   /* Initialize DND data */
   options.dnd_data.tooltip = FALSE;
+
+  /* Initialize entry data */
+  options.entry_data.entry_text = NULL;
+  options.entry_data.entry_label = NULL;
+  options.entry_data.hide_text = FALSE;
+  options.entry_data.completion = FALSE;
+  options.entry_data.numeric = FALSE;
+  options.entry_data.licon = NULL;
+  options.entry_data.licon_action = NULL;
+  options.entry_data.ricon = NULL;
+  options.entry_data.ricon_action = NULL;
 
   /* Initialize file data */
   options.file_data.directory = FALSE;
@@ -1417,6 +1464,7 @@ yad_options_init (void)
   options.list_data.checkbox = FALSE;
   options.list_data.radiobox = FALSE;
   options.list_data.print_all = FALSE;
+  options.list_data.rules_hint = TRUE;
   options.list_data.grid_lines = GTK_TREE_VIEW_GRID_LINES_NONE;
   options.list_data.print_column = 0;
   options.list_data.hide_column = 0;
@@ -1487,7 +1535,6 @@ yad_options_init (void)
   options.scale_data.hide_value = FALSE;
   options.scale_data.have_value = FALSE;
   options.scale_data.invert = FALSE;
-  options.scale_data.buttons = FALSE;
   options.scale_data.marks = NULL;
 
   /* Initialize text data */
@@ -1543,6 +1590,12 @@ yad_create_context (void)
   /* Adds dnd option entries */
   a_group = g_option_group_new ("dnd", _("DND options"), _("Show drag-n-drop options"), NULL, NULL);
   g_option_group_add_entries (a_group, dnd_options);
+  g_option_group_set_translation_domain (a_group, GETTEXT_PACKAGE);
+  g_option_context_add_group (tmp_ctx, a_group);
+
+  /* Adds entry option entries */
+  a_group = g_option_group_new ("entry", _("Text entry options"), _("Show text entry options"), NULL, NULL);
+  g_option_group_add_entries (a_group, entry_options);
   g_option_group_set_translation_domain (a_group, GETTEXT_PACKAGE);
   g_option_context_add_group (tmp_ctx, a_group);
 

@@ -64,19 +64,14 @@ sa_usr2 (gint sig)
 static gboolean
 keys_cb (GtkWidget *w, GdkEventKey *ev, gpointer d)
 {
-  if (options.plug != -1)
-    return FALSE;
-
-  switch (ev->keyval)
+#if GTK_CHECK_VERSION(2,24,0)
+  if (ev->keyval == GDK_KEY_Escape)
+#else
+  if (ev->keyval == GDK_Escape)
+#endif
     {
-    case GDK_KEY_Escape:
-      if (!options.data.no_escape)
+      if (options.plug == -1 && !options.data.no_escape)
         yad_exit (YAD_RESPONSE_ESC);
-      return TRUE;
-    case GDK_KEY_Return:
-    case GDK_KEY_KP_Enter:
-      if (ev->state & GDK_CONTROL_MASK)
-        yad_exit (options.data.def_resp);
       return TRUE;
     }
   return FALSE;
@@ -131,6 +126,17 @@ unfocus_cb (GtkWidget *w, GdkEventFocus *ev, gpointer d)
   return FALSE;
 }
 
+#if !GTK_CHECK_VERSION(3,0,0)
+static void
+text_size_allocate_cb (GtkWidget * w, GtkAllocation * al, gpointer data)
+{
+  PangoLayout *pl = gtk_label_get_layout (GTK_LABEL (w));
+
+  if (pango_layout_is_wrapped (pl))
+    gtk_widget_set_size_request (w, al->width, -1);
+}
+#endif
+
 void
 yad_exit (gint id)
 {
@@ -163,7 +169,7 @@ create_layout (GtkWidget *dlg)
         g_object_unref (pb);
 
       gtk_widget_set_name (image, "yad-dialog-image");
-      gtk_widget_set_valign (image, GTK_ALIGN_START);
+      gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
     }
 
   /* create text label */
@@ -185,19 +191,24 @@ create_layout (GtkWidget *dlg)
           gtk_label_set_line_wrap (GTK_LABEL (text), TRUE);
           gtk_label_set_selectable (GTK_LABEL (text), options.data.selectable_labels);
           gtk_label_set_justify (GTK_LABEL (text), options.data.text_align);
+          gtk_widget_set_state (text, GTK_STATE_NORMAL);
           switch (options.data.text_align)
             {
             case GTK_JUSTIFY_LEFT:
             case GTK_JUSTIFY_FILL:
-              gtk_label_set_xalign (GTK_LABEL (text), 0.0);
+              gtk_misc_set_alignment (GTK_MISC (text), 0.0, 0.5);
               break;
             case GTK_JUSTIFY_CENTER:
-              gtk_label_set_xalign (GTK_LABEL (text), 0.5);
+              gtk_misc_set_alignment (GTK_MISC (text), 0.5, 0.5);
               break;
             case GTK_JUSTIFY_RIGHT:
-              gtk_label_set_xalign (GTK_LABEL (text), 1.0);
+              gtk_misc_set_alignment (GTK_MISC (text), 1.0, 0.5);
               break;
             }
+#if !GTK_CHECK_VERSION(3,0,0)
+          if (!options.data.fixed)
+            g_signal_connect (G_OBJECT (text), "size-allocate", G_CALLBACK (text_size_allocate_cb), NULL);
+#endif
         }
     }
 
@@ -212,6 +223,9 @@ create_layout (GtkWidget *dlg)
       break;
     case YAD_MODE_DND:
       dnd_init (dlg);
+      break;
+    case YAD_MODE_ENTRY:
+      mw = entry_create_widget (dlg);
       break;
     case YAD_MODE_FILE:
       mw = file_create_widget (dlg);
@@ -277,8 +291,13 @@ create_layout (GtkWidget *dlg)
   /* create layout */
   if (options.data.image_on_top)
     {
+#if !GTK_CHECK_VERSION(3,0,0)
+      layout = gtk_vbox_new (FALSE, 5);
+      box = gtk_hbox_new (FALSE, 5);
+#else
       layout = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
       box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
+#endif
 
       if (image)
         gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 2);
@@ -291,8 +310,13 @@ create_layout (GtkWidget *dlg)
     }
   else
     {
+#if !GTK_CHECK_VERSION(3,0,0)
+      layout = gtk_hbox_new (FALSE, 5);
+      box = gtk_vbox_new (FALSE, 5);
+#else
       layout = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
       box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
+#endif
 
       if (text)
         gtk_box_pack_start (GTK_BOX (box), text, FALSE, FALSE, 0);
@@ -348,7 +372,7 @@ create_dialog (void)
   gtk_container_set_border_width (GTK_CONTAINER (dlg), (guint) options.data.borders);
 
   /* set window size and position */
-  if (!options.data.maximized && !options.data.fullscreen)
+  if (!options.data.geometry && !options.data.maximized && !options.data.fullscreen)
     {
       gtk_window_set_default_size (GTK_WINDOW (dlg), options.data.width, options.data.height);
       if (options.data.center)
@@ -367,7 +391,11 @@ create_dialog (void)
   gtk_window_set_accept_focus (GTK_WINDOW (dlg), options.data.focus);
 
   /* create box */
+#if !GTK_CHECK_VERSION(3,0,0)
+  vbox = gtk_vbox_new (FALSE, 2);
+#else
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+#endif
   gtk_container_add (GTK_CONTAINER (dlg), vbox);
 
   layout = create_layout (dlg);
@@ -389,31 +417,51 @@ create_dialog (void)
         {
           if (strcasecmp (options.data.to_indicator, "top") == 0)
             {
+#if !GTK_CHECK_VERSION(3,0,0)
+              gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_LEFT_TO_RIGHT);
+              cbox = gtk_vbox_new (FALSE, 0);
+#else
               gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_HORIZONTAL);
               cbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+#endif
               gtk_box_pack_start (GTK_BOX (cbox), topb, FALSE, FALSE, 2);
               gtk_box_pack_end (GTK_BOX (cbox), layout, TRUE, TRUE, 0);
             }
           else if (strcasecmp (options.data.to_indicator, "bottom") == 0)
             {
+#if !GTK_CHECK_VERSION(3,0,0)
+              gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_LEFT_TO_RIGHT);
+              cbox = gtk_vbox_new (FALSE, 0);
+#else
               gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_HORIZONTAL);
               cbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+#endif
               gtk_box_pack_start (GTK_BOX (cbox), layout, TRUE, TRUE, 0);
               gtk_box_pack_end (GTK_BOX (cbox), topb, FALSE, FALSE, 2);
             }
           else if (strcasecmp (options.data.to_indicator, "left") == 0)
             {
+#if !GTK_CHECK_VERSION(3,0,0)
+              gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_BOTTOM_TO_TOP);
+              cbox = gtk_hbox_new (FALSE, 0);
+#else
               gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_VERTICAL);
               gtk_progress_bar_set_inverted (GTK_PROGRESS_BAR (topb), TRUE);
               cbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+#endif
               gtk_box_pack_start (GTK_BOX (cbox), topb, FALSE, FALSE, 2);
               gtk_box_pack_end (GTK_BOX (cbox), layout, TRUE, TRUE, 0);
             }
           else if (strcasecmp (options.data.to_indicator, "right") == 0)
             {
+#if !GTK_CHECK_VERSION(3,0,0)
+              gtk_progress_bar_set_orientation (GTK_PROGRESS_BAR (topb), GTK_PROGRESS_BOTTOM_TO_TOP);
+              cbox = gtk_hbox_new (FALSE, 0);
+#else
               gtk_orientable_set_orientation (GTK_ORIENTABLE (topb), GTK_ORIENTATION_VERTICAL);
               gtk_progress_bar_set_inverted (GTK_PROGRESS_BAR (topb), TRUE);
               cbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+#endif
               gtk_box_pack_start (GTK_BOX (cbox), layout, TRUE, TRUE, 0);
               gtk_box_pack_end (GTK_BOX (cbox), topb, FALSE, FALSE, 2);
             }
@@ -421,14 +469,20 @@ create_dialog (void)
           if (settings.show_remain)
             {
               gchar *lbl = g_strdup_printf (_("%d sec"), options.data.timeout);
+#if GTK_CHECK_VERSION(3,0,0)
               gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (topb), TRUE);
+#endif
               gtk_progress_bar_set_text (GTK_PROGRESS_BAR (topb), lbl);
               g_free (lbl);
             }
         }
       else
         {
+#if !GTK_CHECK_VERSION(3,0,0)
+          cbox = gtk_vbox_new (FALSE, 0);
+#else
           cbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+#endif
           gtk_box_pack_start (GTK_BOX (cbox), layout, TRUE, TRUE, 0);
         }
 
@@ -451,7 +505,11 @@ create_dialog (void)
     {
       GtkWidget *btn;
       /* create buttons container */
+#if !GTK_CHECK_VERSION(3,0,0)
+      GtkWidget *bbox = gtk_hbutton_box_new ();
+#else
       GtkWidget *bbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+#endif
       gtk_container_set_border_width (GTK_CONTAINER (bbox), 2);
       gtk_box_set_spacing (GTK_BOX (bbox), 5);
       gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), options.data.buttons_layout);
@@ -466,6 +524,7 @@ create_dialog (void)
 
               btn = gtk_button_new ();
               gtk_container_add (GTK_CONTAINER (btn), get_label (b->name, 2));
+              gtk_button_set_alignment (GTK_BUTTON (btn), 0.5, 0.5);
               g_object_set_data (G_OBJECT (btn), "resp", GINT_TO_POINTER (b->response));
               g_signal_connect (G_OBJECT (btn), "clicked", G_CALLBACK (btn_cb), b->cmd);
               gtk_box_pack_start (GTK_BOX (bbox), btn, FALSE, FALSE, 0);
@@ -527,25 +586,36 @@ create_dialog (void)
   /* parse geometry or move window, if given. must be after showing widget */
   if (!options.data.maximized && !options.data.fullscreen)
     {
-      gtk_widget_show (dlg);
-      if (options.data.use_posx || options.data.use_posy)
+      if (options.data.geometry)
         {
-          /* make sure that all coordinates are sets */
-          if (!options.data.use_posx)
-            gtk_window_get_position (GTK_WINDOW (dlg), &options.data.posx, NULL);
-          if (!options.data.use_posy)
-            gtk_window_get_position (GTK_WINDOW (dlg), NULL, &options.data.posy);
-
-          /* set correct gravity */  
-          if (options.data.posx < 0 && options.data.posy < 0)
-            gtk_window_set_gravity (GTK_WINDOW (dlg), GDK_GRAVITY_SOUTH_EAST);
-          else if (options.data.posx < 0)
-            gtk_window_set_gravity (GTK_WINDOW (dlg), GDK_GRAVITY_NORTH_EAST);
-          else if (options.data.posy < 0)
-            gtk_window_set_gravity (GTK_WINDOW (dlg), GDK_GRAVITY_SOUTH_WEST);
-
-          /* place window to specified coordinates */
-          gtk_window_move (GTK_WINDOW (dlg), ABS (options.data.posx), ABS (options.data.posy));
+          gtk_widget_realize (dlg);
+          gtk_window_parse_geometry (GTK_WINDOW (dlg), options.data.geometry);
+          gtk_widget_show (dlg);
+        }
+      else
+        {
+          gtk_widget_show (dlg);
+          if (options.data.use_posx || options.data.use_posy)
+            {
+              gint ww, wh;
+              gtk_window_get_size (GTK_WINDOW (dlg), &ww, &wh);
+              /* place window to specified coordinates */
+              if (!options.data.use_posx)
+                gtk_window_get_position (GTK_WINDOW (dlg), &options.data.posx, NULL);
+              if (!options.data.use_posy)
+                gtk_window_get_position (GTK_WINDOW (dlg), NULL, &options.data.posy);
+              if (options.data.posx < 0)
+                {
+                  gint sw = gdk_screen_get_width (gdk_screen_get_default ());
+                  options.data.posx = sw - ww + options.data.posx;
+                }
+              if (options.data.posy < 0)
+                {
+                  gint sh = gdk_screen_get_height (gdk_screen_get_default ());
+                  options.data.posy = sh - wh + options.data.posy;
+                }
+              gtk_window_move (GTK_WINDOW (dlg), options.data.posx, options.data.posy);              
+            }
         }
     }
   else
@@ -618,6 +688,9 @@ yad_print_result (void)
     case YAD_MODE_COLOR:
       color_print_result ();
       break;
+    case YAD_MODE_ENTRY:
+      entry_print_result ();
+      break;
     case YAD_MODE_FILE:
       file_print_result ();
       break;
@@ -662,6 +735,9 @@ main (gint argc, gchar ** argv)
   textdomain (GETTEXT_PACKAGE);
 #endif
 
+#if !GLIB_CHECK_VERSION(2,36,0)
+  g_type_init ();
+#endif
   read_settings ();
 
   gtk_init (&argc, &argv);
@@ -705,17 +781,9 @@ main (gint argc, gchar ** argv)
     }
   yad_set_mode ();
 
-  /* parse custom css file */
+  /* parse custom gtkrc */
   if (options.gtkrc_file)
-    {
-      GtkCssProvider *css = gtk_css_provider_new ();
-      if (gtk_css_provider_load_from_path (css, options.gtkrc_file, NULL))
-        gtk_style_context_add_provider_for_screen (gdk_screen_get_default (), 
-                                                   GTK_STYLE_PROVIDER (css), 
-                                                   GTK_STYLE_PROVIDER_PRIORITY_USER);
-      else
-        g_object_unref (css);
-    }
+    gtk_rc_parse (options.gtkrc_file);
 
   /* set default icons and icon theme */
   if (options.data.icon_theme)
