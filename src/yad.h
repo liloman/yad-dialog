@@ -398,6 +398,7 @@ typedef struct {
   gboolean hide_value;
   gboolean have_value;
   gboolean invert;
+  gboolean buttons;
   GSList *marks;
 } YadScaleData;
 

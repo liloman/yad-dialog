@@ -548,6 +548,8 @@ static GOptionEntry scale_options[] = {
     N_("Hide value"), NULL },
   { "invert", 0, 0, G_OPTION_ARG_NONE, &options.scale_data.invert,
     N_("Invert direction"), NULL },
+  { "inc-buttons", 0, 0, G_OPTION_ARG_NONE, &options.scale_data.buttons,
+    N_("Show +/- buttons in scale"), NULL },
   { "mark", 0, 0, G_OPTION_ARG_CALLBACK, add_scale_mark,
     N_("Add mark to scale (may be used multiple times)"), N_("NAME:VALUE") },
   { NULL }
@@ -1541,6 +1543,7 @@ yad_options_init (void)
   options.scale_data.hide_value = FALSE;
   options.scale_data.have_value = FALSE;
   options.scale_data.invert = FALSE;
+  options.scale_data.buttons = FALSE;
   options.scale_data.marks = NULL;
 
   /* Initialize text data */
