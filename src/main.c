@@ -34,9 +34,13 @@
 #include "yad.h"
 
 YadOptions options;
-GtkWidget *dialog = NULL;
+static GtkWidget *dialog = NULL;
 
 static gint ret = YAD_RESPONSE_ESC;
+
+#if GTK_CHECK_VERSION(3,0,0)
+static GtkCssProvider *css = NULL;
+#endif
 
 YadNTabs *tabs;
 gint t_sem;
@@ -656,6 +660,11 @@ create_dialog (void)
     }
 #endif
 
+#if GTK_CHECK_VERSION(3,0,0)
+  if (css)
+    gtk_style_context_add_provider (gtk_widget_get_style_context (dlg), css, GTK_STYLE_PROVIDER_PRIORITY_USER);
+#endif
+
   return dlg;
 }
 
@@ -680,6 +689,11 @@ create_plug (void)
   box = create_layout (win);
   if (box)
     gtk_container_add (GTK_CONTAINER (win), box);
+
+#if GTK_CHECK_VERSION(3,0,0)
+  if (css)
+    gtk_style_context_add_provider (gtk_widget_get_style_context (win), css, GTK_STYLE_PROVIDER_PRIORITY_USER);
+#endif
 
   gtk_widget_show_all (win);
 
@@ -797,7 +811,14 @@ main (gint argc, gchar ** argv)
 
   /* parse custom gtkrc */
   if (options.gtkrc_file)
-    gtk_rc_parse (options.gtkrc_file);
+    {
+#if !GTK_CHECK_VERSION(3,0,0)
+      gtk_rc_parse (options.gtkrc_file);
+#else
+      css = gtk_css_provider_new ();
+      gtk_css_provider_load_from_path (css, options.gtkrc_file, NULL);
+#endif
+    }
 
   /* set default icons and icon theme */
   if (options.data.icon_theme)
