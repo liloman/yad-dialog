@@ -30,9 +30,9 @@ For successfully build you may need to install the following packages:
 with appropriate *-dev* packages depends on your distro
 
 Additionally, you can build yad with the following libraries:
-* Webkit - for supporting HTML dialog
-* GtkSourceView - for enabling syntax highlighting in text-info dialog
-* GtkSpell3 - for support spell checking in text fields
+* Webkit - for supporting HTML dialog (http://webkitgtk.org)
+* GtkSourceView - for enabling syntax highlighting in text-info dialog (https://wiki.gnome.org/Projects/GtkSourceView)
+* GtkSpell3 - for support spell checking in text fields (http://gtkspell.sourceforge.net/)
 
 # Spell check
 ===========
