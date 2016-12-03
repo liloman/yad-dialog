@@ -163,17 +163,6 @@ static gboolean
 key_press_cb (GtkWidget * w, GdkEventKey * key, gpointer data)
 {
 #if GTK_CHECK_VERSION(2,24,0)
-  if ((key->keyval == GDK_KEY_Return || key->keyval == GDK_KEY_KP_Enter) && (key->state & GDK_CONTROL_MASK))
-#else
-  if ((key->keyval == GDK_Return || key->keyval == GDK_KP_Enter) && (key->state & GDK_CONTROL_MASK))
-#endif
-    {
-      if (options.plug == -1)
-        yad_exit (YAD_RESPONSE_OK);
-      return TRUE;
-    }
-
-#if GTK_CHECK_VERSION(2,24,0)
   if ((key->state & GDK_CONTROL_MASK) && (key->keyval == GDK_KEY_S || key->keyval == GDK_KEY_s))
 #else
   if ((key->state & GDK_CONTROL_MASK) && (key->keyval == GDK_S || key->keyval == GDK_s))

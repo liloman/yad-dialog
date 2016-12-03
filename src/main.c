@@ -64,17 +64,31 @@ sa_usr2 (gint sig)
 static gboolean
 keys_cb (GtkWidget *w, GdkEventKey *ev, gpointer d)
 {
-#if GTK_CHECK_VERSION(2,24,0)
-  if (ev->keyval == GDK_KEY_Escape)
-#else
-  if (ev->keyval == GDK_Escape)
-#endif
+  if (options.plug != -1)
+    return FALSE;
+
+  switch (ev->keyval)
     {
-      if (options.plug == -1 && !options.data.no_escape)
-        yad_exit (YAD_RESPONSE_ESC);
+#if GTK_CHECK_VERSION(2,24,0)
+    case GDK_KEY_Escape:
+#else
+    case GDK_Escape:
+#endif
+      if (!options.data.no_escape)
+         yad_exit (YAD_RESPONSE_ESC);
       return TRUE;
-    }
-  return FALSE;
+#if GTK_CHECK_VERSION(2,24,0)
+    case GDK_KEY_Return:
+    case GDK_KEY_KP_Enter:
+#else
+    case GDK_Return:
+    case GDK_KP_Enter:
+#endif
+      if (ev->state & GDK_CONTROL_MASK)
+        yad_exit (options.data.def_resp);
+       return TRUE;
+     }
+   return FALSE;
 }
 
 static void
@@ -614,7 +628,7 @@ create_dialog (void)
                   gint sh = gdk_screen_get_height (gdk_screen_get_default ());
                   options.data.posy = sh - wh + options.data.posy;
                 }
-              gtk_window_move (GTK_WINDOW (dlg), options.data.posx, options.data.posy);              
+              gtk_window_move (GTK_WINDOW (dlg), options.data.posx, options.data.posy);
             }
         }
     }

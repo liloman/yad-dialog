@@ -122,6 +122,8 @@ static GOptionEntry general_options[] = {
     N_("Set window borders"), N_("NUMBER") },
   { "always-print-result", 0, 0, G_OPTION_ARG_NONE, &options.data.always_print,
     N_("Always print result"), NULL },
+  { "response", 0, 0, G_OPTION_ARG_INT, &options.data.def_resp,
+    N_("Set default response for Ctrl+Enter"), N_("NUMBER") },
   { "selectable-labels", 0, 0, G_OPTION_ARG_NONE, &options.data.selectable_labels,
     N_("Dialog text can be selected"), NULL },
   /* window settings */
@@ -1347,6 +1349,7 @@ yad_options_init (void)
   options.data.no_escape = FALSE;
   options.data.always_print = FALSE;
   options.data.selectable_labels = FALSE;
+  options.data.def_resp = YAD_RESPONSE_OK;
 
   /* Initialize window options */
   options.data.sticky = FALSE;
