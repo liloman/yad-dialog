@@ -1,3 +1,120 @@
+2016-12-11 09:38  v1c0nt
+
+	* ChangeLog, NEWS, configure.ac, src/list.c: prepare to release
+
+2016-12-11 08:52  v1c0nt
+
+	* configure.ac: bump version
+
+2016-12-11 08:52  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/list.c, src/option.c,
+	  src/yad.h: add --add-action option to list dialog
+
+2016-12-11 08:34  v1c0nt
+
+	* src/list.c: refactoring list dialog code
+
+2016-12-03 19:51  v1c0nt
+
+	* src/main.c: add custom css provider
+
+2016-12-03 14:55  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/option.c, src/scale.c,
+	  src/yad.h: add --inc-buttons option to scale dialog
+
+2016-12-03 13:46  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/main.c, src/option.c,
+	  src/text.c, src/yad.h: add ctrl+enter behavior for all kind of
+	  dialogs
+
+2016-12-03 08:58  v1c0nt
+
+	* README, README.md: update README
+
+2016-12-03 08:56  v1c0nt
+
+	* Makefile.am, README, README.md: update README
+
+2016-12-03 08:52  v1c0nt
+
+	* README: update README
+
+2016-12-03 08:46  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/calendar.c, src/option.c,
+	  src/yad.h: backport --show-weeks option to calendar dialog
+
+2016-12-03 08:26  v1c0nt
+
+	* configure.ac, data/yad.1, src/Makefile.am, src/browser.c,
+	  src/calendar.c, src/color.c, src/entry.c, src/file.c, src/font.c,
+	  src/form.c, src/html.c, src/list.c, src/main.c,
+	  src/multi-progress.c, src/notification.c, src/option.c,
+	  src/paned.c, src/picture.c, src/print.c, src/progress.c,
+	  src/scale.c, src/text.c, src/util.c, src/yad.h: get back to
+	  legacy branch
+
+2016-11-14 13:08  v1c0nt
+
+	* src/main.c, src/option.c, src/print.c, src/yad.h: remove some
+	  deprecations
+
+2016-11-14 09:57  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/main.c, src/option.c,
+	  src/text.c, src/yad.h: add ctrl+enter behavior for all dialogs
+
+2016-11-14 09:38  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/option.c, src/scale.c,
+	  src/yad.h: add --inc-buttons option to scale dialog
+
+2016-11-13 10:27  v1c0nt
+
+	* src/util.c: fix alignment
+
+2016-11-02 20:35  v1c0nt
+
+	* data/yad.1: update man page
+
+2016-11-02 20:34  v1c0nt
+
+	* po/ru.po, po/uk.po: update translations
+
+2016-11-02 20:33  v1c0nt
+
+	* configure.ac, src/option.c: cleanup options
+
+2016-10-29 13:04  v1c0nt
+
+	* src/Makefile.am, src/form.c, src/main.c, src/picture.c: fix
+	  makefile
+
+2016-10-29 11:45  v1c0nt
+
+	* src/multi-progress.c: fix some deprecations
+
+2016-10-29 10:06  v1c0nt
+
+	* src/picture.c: fix build
+
+2016-10-29 10:04  v1c0nt
+
+	* src/html.c: fix some deprecations
+
+2016-10-29 10:04  v1c0nt
+
+	* src/browser.c, src/form.c, src/html.c, src/main.c,
+	  src/multi-progress.c, src/util.c: fix some deprecations
+
+2016-10-29 09:52  v1c0nt
+
+	* configure.ac, src/picture.c, src/print.c, src/yad.h: bump minimal
+	  gtk version to 3.16.0
+
 2016-10-09 17:06  v1c0nt
 
 	* src/main.c: fix --no-escape handling
