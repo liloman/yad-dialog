@@ -750,25 +750,25 @@ add_row_cb (GtkMenuItem * item, gpointer data)
 
   if (options.list_data.add_action)
     {
-          gchar *data = NULL;
-          gint exit;
+      gchar *data = NULL;
+      gint exit;
 
-          g_spawn_command_line_sync (options.list_data.add_action, &data, NULL, &exit, NULL);
-          if (exit == 0)
+      g_spawn_command_line_sync (options.list_data.add_action, &data, NULL, &exit, NULL);
+      if (exit == 0)
+        {
+          guint i, n_cols = gtk_tree_model_get_n_columns (model);
+          gchar **lines = g_strsplit (data, "\n", 0);
+
+          for (i = 0; i < n_cols; i++)
             {
-              guint i, n_cols = gtk_tree_model_get_n_columns (model);
-              gchar **lines = g_strsplit (data, "\n", 0);
+              if (lines[i] == NULL)
+                break;
 
-              for (i = 0; i < n_cols; i++)
-                {
-                  if (lines[i] == NULL)
-                    break;
-
-                  cell_set_data (&iter, i, lines[i]);
-                }
-              g_strfreev (lines);
+              cell_set_data (&iter, i, lines[i]);
             }
-          g_free (data);
+          g_strfreev (lines);
+        }
+      g_free (data);
     }
 }
 

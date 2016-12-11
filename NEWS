@@ -1,4 +1,11 @@
-version 0.37.0
+Version 0.38.0
+    - add ctrl+enter behavior for all dialogs
+    - add --inc-button option to scale dialog
+    - fix --no-escape handling
+    - add --show-week option to calendar dialog
+    - improve behavior of --filename option of file dialog
+
+Version 0.37.0
     - new layout management (fix gtk3 warning about missing parent)
     - fix single-click selection in list dialog
     - add --grid-lines option to list dialog

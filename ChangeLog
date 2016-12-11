@@ -1,3 +1,108 @@
+2016-10-09 17:06  v1c0nt
+
+	* src/main.c: fix --no-escape handling
+
+2016-10-05 04:49  v1c0nt
+
+	* src/picture.c: add some error handling
+
+2016-10-03 04:47  v1c0nt
+
+	* configure.ac, po/ru.po, po/uk.po, src/option.c: fix typo
+
+2016-08-31 05:42  v1c0nt
+
+	* data/yad.1, src/list.c, src/option.c, src/picture.c, src/yad.h:
+	  remove some deprecations from list dialog
+
+2016-08-31 03:59  v1c0nt
+
+	* data/yad.1: update man page
+
+2016-08-31 03:57  v1c0nt
+
+	* po/ru.po, po/uk.po: update translations
+
+2016-08-31 03:55  v1c0nt
+
+	* src/color.c, src/form.c, src/option.c, src/util.c, src/yad.h: use
+	  aplha in color dialogs. modify color arguments
+
+2016-08-30 17:33  v1c0nt
+
+	* README: update README
+
+2016-08-30 17:28  v1c0nt
+
+	* src/color.c, src/form.c, src/option.c, src/util.c, src/yad.h:
+	  port color dialogs to GtkColorChooser
+
+2016-08-30 16:47  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/calendar.c, src/option.c,
+	  src/paned.c, src/yad.h: add --show-week option to calendar
+	  widget.cleanup code
+
+2016-08-29 14:24  v1c0nt
+
+	* data/yad.1: fix typo
+
+2016-08-29 05:19  v1c0nt
+
+	* src/font.c: port font dialog to GtkFontChooser
+
+2016-08-29 04:38  v1c0nt
+
+	* data/yad.1, src/file.c: fix behavior of --filename option in file
+	  directory and appropriately update man page
+
+2016-08-29 04:32  v1c0nt
+
+	* po/ru.po, po/uk.po: update translation
+
+2016-08-29 04:31  v1c0nt
+
+	* data/yad.1, src/option.c: fix typos
+
+2016-08-28 10:48  v1c0nt
+
+	* src/file.c: rewrite --filename handling in file dialog. now
+	  dirname in arg sets the current directory for file dialog
+
+2016-08-27 01:11  v1c0nt
+
+	* data/get-lang.c, data/yad.1, po/POTFILES.in, po/ru.po, po/uk.po,
+	  src/Makefile.am, src/entry.c, src/main.c, src/option.c,
+	  src/yad.h: remove entry dialog
+
+2016-08-27 00:58  v1c0nt
+
+	* src/html.c: update html dialog
+
+2016-08-26 14:00  v1c0nt
+
+	* src/html.c: initial port to webkit2
+
+2016-08-14 09:56  v1c0nt
+
+	* configure.ac, src/Makefile.am: change default binary name to yad3
+
+2016-08-14 09:49  v1c0nt
+
+	* configure.ac, src/browser.c, src/color.c, src/entry.c,
+	  src/form.c, src/list.c, src/main.c, src/multi-progress.c,
+	  src/notification.c, src/print.c, src/progress.c, src/scale.c,
+	  src/text.c, src/util.c, src/yad.h: remove ifdef-ed gtk2 code.
+	  bump configure version
+
+2016-08-12 11:34  v1c0nt
+
+	* NEWS, configure.ac: bump version to 0.37.0. prepare to release
+
+2016-08-06 11:32  v1c0nt
+
+	* ChangeLog:
+
 2016-08-06 11:18  v1c0nt
 
 	* data/yad.1: update man page
