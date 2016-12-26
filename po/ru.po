@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-11 10:51+0200\n"
+"POT-Creation-Date: 2016-12-26 06:44+0200\n"
 "PO-Revision-Date: 2009-04-30 16:47+0300\n"
 "Last-Translator: Victor Ananjevsky <ananasik@gmail.com>\n"
 "Language-Team: \n"
@@ -77,6 +77,21 @@ msgstr ""
 #, c-format
 msgid "Cannot open file '%s': %s\n"
 msgstr "Не могу открыть файл %s: %s\n"
+
+#: ../src/entry.c:172 ../src/scale.c:80
+#, c-format
+msgid "Maximum value must be greater than minimum value.\n"
+msgstr "Максимальное значение должно быть больше, чем минимальное.\n"
+
+#: ../src/entry.c:179 ../src/scale.c:89
+#, c-format
+msgid "Initial value less than minimal.\n"
+msgstr "Начальное значение меньше минимального.\n"
+
+#: ../src/entry.c:184 ../src/scale.c:94
+#, c-format
+msgid "Initial value greater than maximum.\n"
+msgstr "Начальное значение больше маскимального.\n"
 
 #: ../src/form.c:429
 msgid "Select files"
@@ -161,21 +176,6 @@ msgstr "Неизвестная команда '%s'\n"
 #: ../src/notification.c:380
 msgid "Yad notification"
 msgstr "Диалог уведомлений"
-
-#: ../src/scale.c:80
-#, c-format
-msgid "Maximum value must be greater than minimum value.\n"
-msgstr "Максимальное значение должно быть больше, чем минимальное.\n"
-
-#: ../src/scale.c:89
-#, c-format
-msgid "Initial value less than minimal.\n"
-msgstr "Начальное значение меньше минимального.\n"
-
-#: ../src/scale.c:94
-#, c-format
-msgid "Initial value greater than maximum.\n"
-msgstr "Начальное значение больше маскимального.\n"
 
 #: ../src/list.c:853
 msgid "Add row"
