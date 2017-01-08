@@ -1,3 +1,20 @@
+2017-01-08 10:23  v1c0nt
+
+	* configure.ac, src/about.c: bump copyright years and version
+
+2017-01-08 10:22  v1c0nt
+
+	* src/dnd.c, src/main.c, src/util.c: fix tooltip option in dnd
+	  dialog
+
+2016-12-26 04:45  v1c0nt
+
+	* po/POTFILES.in, po/ru.po, po/uk.po: fix translation
+
+2016-12-11 14:04  v1c0nt
+
+	* ChangeLog: release 0.38.0
+
 2016-12-11 09:38  v1c0nt
 
 	* ChangeLog, NEWS, configure.ac, src/list.c: prepare to release

@@ -1,3 +1,7 @@
+Version 0.38.1
+    - fix tooltip option in dnd dialog
+    - fix russian and ukrainian translations
+
 Version 0.38.0
     - add ctrl+enter behavior for all dialogs
     - add --inc-button option to scale dialog
