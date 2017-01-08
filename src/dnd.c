@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with YAD. If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2008-2016, Victor Ananjevsky <ananasik@gmail.com>
+ * Copyright (C) 2008-2017, Victor Ananjevsky <ananasik@gmail.com>
  */
 
 #include <glib/gprintf.h>
@@ -106,12 +106,9 @@ dnd_init (GtkWidget * w)
   /* set tooltip */
   if (options.dnd_data.tooltip)
     {
-      GtkWidget *box;
-
-      box = gtk_dialog_get_content_area (GTK_DIALOG (w));
       if (!options.data.no_markup)
-        gtk_widget_set_tooltip_markup (box, options.data.dialog_text);
+        gtk_widget_set_tooltip_markup (w, options.data.dialog_text);
       else
-        gtk_widget_set_tooltip_text (box, options.data.dialog_text);
+        gtk_widget_set_tooltip_text (w, options.data.dialog_text);
     }
 }

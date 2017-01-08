@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with YAD. If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2008-2016, Victor Ananjevsky <ananasik@gmail.com>
+ * Copyright (C) 2008-2017, Victor Ananjevsky <ananasik@gmail.com>
  */
 
 #include <sys/types.h>
@@ -239,9 +239,6 @@ create_layout (GtkWidget *dlg)
     case YAD_MODE_COLOR:
       mw = color_create_widget (dlg);
       break;
-    case YAD_MODE_DND:
-      dnd_init (dlg);
-      break;
     case YAD_MODE_ENTRY:
       mw = entry_create_widget (dlg);
       break;
@@ -345,6 +342,9 @@ create_layout (GtkWidget *dlg)
         gtk_box_pack_start (GTK_BOX (layout), image, FALSE, FALSE, 0);
       gtk_box_pack_start (GTK_BOX (layout), box, TRUE, TRUE, 0);
     }
+
+  if (options.mode == YAD_MODE_DND)
+    dnd_init (layout);
 
   return layout;
 }

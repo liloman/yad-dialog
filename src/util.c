@@ -458,7 +458,7 @@ escape_str (gchar *str)
         case '\\':
           strcpy (res + i, "\\\\");
           i += 2;
-          break;        
+          break;
         default:
           *(res + i) = *buf;
           i++;
