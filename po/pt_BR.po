@@ -8,18 +8,20 @@ msgstr ""
 "Project-Id-Version: Brazilian\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-07 09:25+0200\n"
-"PO-Revision-Date: 2013-10-27 02:12-0300\n"
+"PO-Revision-Date: 2017-01-11 14:33-0200\n"
 "Last-Translator: Gustavo Soares de Lima <gustavo@logicus.com.br>\n"
 "Language-Team: Brazilian\n"
-"Language: Brazilian Portuguese\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: ../src/about.c:30
 msgid "translator-credits"
-msgstr "Gustavo Soares de Lima <gustavo@logicus.com.br>"
+msgstr ""
+"Gustavo Soares de Lima <gustavo@logicus.com.br>\n"
+"Angela Fernanda Ferreira <angela@logicus.com.br>"
 
 #: ../src/about.c:32
 msgid ""
@@ -104,7 +106,7 @@ msgstr "Selecione o arquivo"
 
 #: ../src/form.c:703
 msgid "Select folder"
-msgstr "Selecioine a pasta"
+msgstr "Selecione a pasta"
 
 #: ../src/icons.c:321
 #, c-format
@@ -119,7 +121,7 @@ msgstr "Não foi possível abrir o diretório %s: %s\n"
 #: ../src/main.c:102 ../src/main.c:233
 #, c-format
 msgid "%d sec"
-msgstr ""
+msgstr "%d sec"
 
 #: ../src/main.c:656
 #, c-format
@@ -337,14 +339,12 @@ msgid "Don't show window in taskbar"
 msgstr "Não mostrar a janela na barra de tarefas"
 
 #: ../src/option.c:240
-#, fuzzy
 msgid "Set window maximized"
-msgstr "Definir janela não redimensionável"
+msgstr "Definir janela maximizada"
 
 #: ../src/option.c:246
-#, fuzzy
 msgid "Set window fulscreen"
-msgstr "Definir janela não redimensionável"
+msgstr "Definir janela na tela toda"
 
 #: ../src/option.c:252
 msgid "Special type of dialog for XEMBED"
@@ -372,12 +372,11 @@ msgstr "Imprimir o id da janela X em stderr"
 
 #: ../src/option.c:278
 msgid "Add path for search icons by name"
-msgstr ""
+msgstr "Adicionar caminho para ícones de pesquisa por nome"
 
 #: ../src/option.c:279
-#, fuzzy
 msgid "PATH"
-msgstr "ICONECAMINHO"
+msgstr "CAMINHO"
 
 #: ../src/option.c:288
 msgid "Display calendar dialog"
@@ -450,7 +449,7 @@ msgstr "Use o formato #rrrrggggbbbb ao invés de #rrggbb"
 
 #: ../src/option.c:362
 msgid "Display drag-n-drop box"
-msgstr "Exibir a caixa drag-n-drop"
+msgstr "Exibir a caixa arrastar e soltar"
 
 #: ../src/option.c:368
 msgid "Use dialog text as tooltip"
@@ -458,7 +457,7 @@ msgstr "Use o texto de diálogo como dica"
 
 #: ../src/option.c:374
 msgid "Set command for process d-n-d data"
-msgstr "Conjunto de comandos para o processo de dados d-n-d"
+msgstr "Conjunto de comandos para o processo de dados arrastar e soltar"
 
 #: ../src/option.c:375 ../src/option.c:433 ../src/option.c:445
 #: ../src/option.c:774 ../src/option.c:885
@@ -591,12 +590,11 @@ msgid "Display form dialog"
 msgstr "Exibir caixa de diálogo tipo formulário"
 
 #: ../src/option.c:559
-#, fuzzy
 msgid ""
 "Add field to form (TYPE - H, RO, NUM, CHK, CB, CBE, FL, SFL, MFL, DIR, CDIR, "
 "MDIR, FN, DT, SCL, CLR, BTN, FBTN, LBL or TXT)"
 msgstr ""
-"Adicionar campo de formulário (TYPE - H, RO, NUM, CHK, CB, CBE, FL, SFL, "
+"Adicionar campo de formulário (Tipo - H, RO, NUM, CHK, CB, CBE, FL, SFL, "
 "MFL, DIR, CDIR, MDIR, FN, DT, SCL, CLR, BTN, LBL or TXT)"
 
 #: ../src/option.c:560 ../src/option.c:808
@@ -695,7 +693,7 @@ msgstr "Use radioboxes para a primeira coluna"
 
 #: ../src/option.c:706
 msgid "Disable clickable column headers"
-msgstr ""
+msgstr "Desativar colunas clicáveis de cabeçalhos"
 
 #: ../src/option.c:719
 msgid "Allow multiple rows to be selected"
@@ -775,9 +773,9 @@ msgstr ""
 "Defina o alinhamento dos rótulos de barras (esquerda, centro ou direita)"
 
 #: ../src/option.c:826
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Dismiss the dialog when 100% of all bars has been reached"
-msgstr "Descartar diálogo quando não for alcançado 100%"
+msgstr "Descartar diálogo quando for alcançado 100% de todas as barras"
 
 #: ../src/option.c:833 ../src/option.c:996
 msgid "Kill parent process if cancel button is pressed"
@@ -800,10 +798,8 @@ msgid "LABEL"
 msgstr "ROTULO"
 
 #: ../src/option.c:862
-#, fuzzy
 msgid "Set position of a notebook tabs (top, bottom, left or right)"
-msgstr ""
-"Mostra indicador de tempo restante (superior, inferior, esquerda, direita)"
+msgstr "Definir a posição das guias do notebook (top, bottom, left ou direita)"
 
 #: ../src/option.c:868
 msgid "Set tab borders"
@@ -830,13 +826,12 @@ msgid "Set separator character for menu items"
 msgstr "Definir caractere separador para itens de menu"
 
 #: ../src/option.c:908
-#, fuzzy
 msgid "Set initial popup menu"
-msgstr "Definir tipo de letra inicial"
+msgstr "Definir menu pop-up inicial"
 
 #: ../src/option.c:909
 msgid "STRING"
-msgstr ""
+msgstr "STRING"
 
 #: ../src/option.c:914
 msgid "Disable exit on middle click"
@@ -889,7 +884,7 @@ msgstr "Pulsar barra de progresso"
 #: ../src/option.c:989
 #, no-c-format
 msgid "Dismiss the dialog when 100% has been reached"
-msgstr "Descartar diálogo quando não for alcançado 100%"
+msgstr "Descartar diálogo quando for alcançado 100%"
 
 #: ../src/option.c:1003
 msgid "Right-To-Left progress bar direction"
@@ -1041,9 +1036,9 @@ msgid "Unknown justification type: %s\n"
 msgstr "Tipo de justificação desconhecida: %s\n"
 
 #: ../src/option.c:1493
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown tab position type: %s\n"
-msgstr "Tipo de alinhamento desconhecido: %s\n"
+msgstr "Tipo de posição da guia desconhecido: %s\n"
 
 #: ../src/option.c:1529
 #, c-format
@@ -1070,7 +1065,7 @@ msgstr "Arquivo já existe. Deseja substituí-lo?"
 
 #: ../src/option.c:1900
 msgid "Yet another dialoging program"
-msgstr ""
+msgstr "Apenas outro programa de caixas de diálogo"
 
 #. Adds general option entries
 #: ../src/option.c:1904
@@ -1303,7 +1298,7 @@ msgstr "embutido"
 #. initialize GTK+ and parse the command line arguments
 #: ../src/browser.c:200
 msgid "- Icon browser"
-msgstr ""
+msgstr "- Icon browser"
 
 #: ../src/browser.c:213
 msgid "Icon browser"
