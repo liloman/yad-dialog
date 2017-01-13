@@ -50,6 +50,7 @@ paned_create_widget (GtkWidget * dlg)
     paned = w = gtk_hpaned_new ();
   else
     paned = w = gtk_vpaned_new ();
+  gtk_widget_set_name (w, "yad-paned-widget");
 
   gtk_paned_set_position (GTK_PANED (w), options.paned_data.splitter);
 

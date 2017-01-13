@@ -48,6 +48,7 @@ notebook_create_widget (GtkWidget * dlg)
 
   /* create widget */
   w = notebook = gtk_notebook_new ();
+  gtk_widget_set_name (w, "yad-notebook-widget");
   gtk_notebook_set_tab_pos (GTK_NOTEBOOK (w), options.notebook_data.pos);
   gtk_container_set_border_width (GTK_CONTAINER (w), 5);
 
