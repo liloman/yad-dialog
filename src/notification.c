@@ -131,14 +131,6 @@ set_icon (void)
 }
 
 static gboolean
-icon_size_changed_cb (GtkStatusIcon * icon, gint size, gpointer data)
-{
-  icon_size = size;
-  set_icon ();
-  return TRUE;
-}
-
-static gboolean
 activate_cb (GtkWidget * widget, YadData * data)
 {
   if ((action == NULL && !options.common_data.listen) || (action && g_ascii_strcasecmp (action, "quit") == 0))
@@ -367,7 +359,6 @@ yad_notification_run ()
   GIOChannel *channel = NULL;
 
   status_icon = gtk_status_icon_new ();
-  g_signal_connect (status_icon, "size-changed", G_CALLBACK (icon_size_changed_cb), NULL);
 
   if (options.data.dialog_text)
     {
