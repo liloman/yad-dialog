@@ -89,8 +89,10 @@ keys_cb (GtkWidget *w, GdkEventKey *ev, gpointer d)
     case GDK_KP_Enter:
 #endif
       if (ev->state & GDK_CONTROL_MASK)
-        yad_exit (options.data.def_resp);
-       return TRUE;
+        {
+          yad_exit (options.data.def_resp);
+          return TRUE;
+        }
      }
    return FALSE;
 }
