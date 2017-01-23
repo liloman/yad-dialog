@@ -1,3 +1,6 @@
+Version 0.38.2
+    - fix enter behavior
+
 Version 0.38.1
     - fix tooltip option in dnd dialog
     - fix russian and ukrainian translations
