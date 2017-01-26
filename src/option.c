@@ -457,6 +457,8 @@ static GOptionEntry notebook_options[] = {
     N_("Set position of a notebook tabs (top, bottom, left or right)"), N_("TYPE") },
   { "tab-borders", 0, 0, G_OPTION_ARG_INT, &options.notebook_data.borders,
     N_("Set tab borders"), N_("NUMBER") },
+  { "active-tab", 0, 0, G_OPTION_ARG_INT, &options.notebook_data.active,
+    N_("Set active tab"), N_("NUMBER") },
   { NULL }
 };
 
@@ -1504,6 +1506,7 @@ yad_options_init (void)
   options.notebook_data.tabs = NULL;
   options.notebook_data.borders = 5;
   options.notebook_data.pos = GTK_POS_TOP;
+  options.notebook_data.active = 1;
 
   /* Initialize notification data */
   options.notification_data.middle = TRUE;

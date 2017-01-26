@@ -69,6 +69,11 @@ notebook_create_widget (GtkWidget * dlg)
       gtk_notebook_append_page (GTK_NOTEBOOK (w), a, get_label ((gchar *) tab->data, 0));
     }
 
+  /* set active tab */
+  if (options.notebook_data.active <= 0)
+    options.notebook_data.active = 1;
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (w), options.notebook_data.active - 1);
+
   return w;
 }
 

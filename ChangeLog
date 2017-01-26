@@ -1,3 +1,36 @@
+2017-01-23 18:38  v1c0nt
+
+	* NEWS, configure.ac: release 0.38.2
+
+2017-01-23 18:37  v1c0nt
+
+	* src/main.c: fix enter behavior
+
+2017-01-22 08:22  v1c0nt
+
+	* src/notification.c: some cleanup
+
+2017-01-14 05:28  v1c0nt
+
+	* po/pt_BR.po: update brazilian translation
+
+2017-01-13 12:05  v1c0nt
+
+	* src/notebook.c, src/paned.c:
+
+2017-01-13 12:04  v1c0nt
+
+	* data/yad.1, src/notebook.c, src/paned.c: add names to notebook
+	  and pane widgets
+
+2017-01-12 02:58  v1c0nt
+
+	* po/pt_BR.po: update brazilian translation
+
+2017-01-08 10:25  v1c0nt
+
+	* ChangeLog, NEWS: release 0.38.1
+
 2017-01-08 10:23  v1c0nt
 
 	* configure.ac, src/about.c: bump copyright years and version
