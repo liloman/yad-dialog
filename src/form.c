@@ -994,6 +994,7 @@ form_create_widget (GtkWidget * dlg)
               e = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.0, 100.0, 1.0);
 #endif
               gtk_widget_set_name (e, "yad-form-scale");
+              gtk_scale_set_value_pos (GTK_SCALE (e), GTK_POS_LEFT);
 #if !GTK_CHECK_VERSION(3,0,0)
               gtk_table_attach (GTK_TABLE (tbl), e, 1 + col * 2, 2 + col * 2, row, row + 1,
                                 GTK_EXPAND | GTK_FILL, 0, 5, 5);
