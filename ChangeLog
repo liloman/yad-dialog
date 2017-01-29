@@ -1,3 +1,13 @@
+2017-01-29 14:41  v1c0nt
+
+	* src/form.c: change value position for scale field in form dialog
+
+2017-01-26 05:03  v1c0nt
+
+	* ChangeLog, data/yad.1, po/ru.po, po/uk.po, src/notebook.c,
+	  src/option.c, src/yad.h: add --active-tab option to notebook
+	  dialog
+
 2017-01-23 18:38  v1c0nt
 
 	* NEWS, configure.ac: release 0.38.2
