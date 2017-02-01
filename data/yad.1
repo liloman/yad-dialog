@@ -526,6 +526,9 @@ Set mime type of data passed to standard input to \fIMIME\fP. Default is \fItext
 .TP
 .B \-\-encodintg=\fIENCODING\fP
 Set encoding of data passed to standard input to \fIENCODING\fP. Default is \fIUTF-8\fP.
+.TP
+.B \-\-uri-handler=\fICMD\fP
+Set external handler for clicked uri. \fI%s\fP will be replaced by activated uri. Return code of the \fICMD\fP must be \fI0\fP for keep working, \fI1\fP for ignoring uri and \fI2\fP for downloading uri. This option works only in browser mode.
 
 .SS List options
 .TP

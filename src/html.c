@@ -98,7 +98,34 @@ link_cb (WebKitWebView * v, WebKitWebFrame * f, WebKitNetworkRequest * r,
       webkit_web_policy_decision_ignore (pd);
     }
   else
-    webkit_web_policy_decision_use (pd);
+    {
+      if (options.html_data.uri_cmd)
+        {
+          gint ret = -1;
+          gchar *cmd = g_strdup_printf (options.html_data.uri_cmd, uri);
+
+          g_spawn_command_line_sync (cmd, NULL, NULL, &ret, NULL);
+          switch (ret)
+            {
+            case 0:
+              webkit_web_policy_decision_use (pd);
+              break;
+            case 1:
+              webkit_web_policy_decision_ignore (pd);
+              break;
+            case 2:
+              webkit_web_policy_decision_download (pd);
+              break;
+            default:
+              g_printerr ("html: undefined result of external uri handler\n");
+              webkit_web_policy_decision_ignore (pd);
+              break;
+            }
+          g_free (cmd);
+        }
+      else
+        webkit_web_policy_decision_use (pd);
+    }
 
   return TRUE;
 }
@@ -106,10 +133,7 @@ link_cb (WebKitWebView * v, WebKitWebFrame * f, WebKitNetworkRequest * r,
 static void
 link_hover_cb (WebKitWebView * v, const gchar * t, const gchar * link, gpointer * d)
 {
-  if (link)
-    is_link = TRUE;
-  else
-    is_link = FALSE;
+  is_link = (link != NULL);
 }
 
 static void
