@@ -99,7 +99,7 @@ link_cb (WebKitWebView * v, WebKitWebFrame * f, WebKitNetworkRequest * r,
     }
   else
     {
-      if (options.html_data.uri_cmd)
+      if (is_loaded && options.html_data.uri_cmd)
         {
           gint ret = -1;
           gchar *cmd = g_strdup_printf (options.html_data.uri_cmd, uri);
