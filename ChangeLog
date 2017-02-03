@@ -1,3 +1,25 @@
+2017-02-03 15:30  v1c0nt
+
+	* data/yad.1, src/html.c:
+
+2017-02-01 06:35  v1c0nt
+
+	* src/html.c:
+
+2017-02-01 06:32  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/html.c, src/option.c,
+	  src/yad.h: add --uri-handler option to html dialog
+
+2017-01-29 14:54  v1c0nt
+
+	* ChangeLog, po/ru.po, po/uk.po, src/browser.c, src/calendar.c,
+	  src/color.c, src/entry.c, src/file.c, src/font.c, src/form.c,
+	  src/html.c, src/icons.c, src/list.c, src/multi-progress.c,
+	  src/notification.c, src/option.c, src/picture.c, src/print.c,
+	  src/progress.c, src/scale.c, src/text.c, src/util.c: update
+	  copyright years
+
 2017-01-29 14:41  v1c0nt
 
 	* src/form.c: change value position for scale field in form dialog
