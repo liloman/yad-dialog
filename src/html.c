@@ -30,7 +30,6 @@ static WebKitWebView *view;
 static GString *inbuf;
 
 static gboolean is_link = FALSE;
-static gboolean is_loaded = FALSE;
 
 #ifndef PATH_MAX
 #define PATH_MAX 4096
@@ -73,19 +72,22 @@ load_uri (const gchar * uri)
     g_printerr ("yad_html_load_uri: cannot load uri '%s'\n", uri);
 }
 
-static void
-loaded_cb (WebKitWebView * v, WebKitWebFrame * f, gpointer d)
-{
-  is_loaded = TRUE;
-}
-
 static gboolean
 link_cb (WebKitWebView * v, WebKitWebFrame * f, WebKitNetworkRequest * r,
          WebKitWebNavigationAction * act, WebKitWebPolicyDecision * pd, gpointer d)
 {
-  gchar *uri = (gchar *) webkit_network_request_get_uri (r);
+  gchar *uri;
 
-  if (is_loaded && !options.html_data.browser)
+  if (webkit_web_navigation_action_get_reason (act) != WEBKIT_WEB_NAVIGATION_REASON_LINK_CLICKED)
+    {
+      /* skip handling non clicked reasons */
+      webkit_web_policy_decision_use (pd);
+      return TRUE;
+    }
+
+  uri = (gchar *) webkit_network_request_get_uri (r);
+
+  if (!options.html_data.browser)
     {
       if (options.html_data.print_uri)
         g_printf ("%s\n", uri);
@@ -99,11 +101,21 @@ link_cb (WebKitWebView * v, WebKitWebFrame * f, WebKitNetworkRequest * r,
     }
   else
     {
-      if (is_loaded && options.html_data.uri_cmd)
+      if (options.html_data.uri_cmd)
         {
           gint ret = -1;
           gchar *cmd = g_strdup_printf (options.html_data.uri_cmd, uri);
+          static gchar *vb = NULL, *vm = NULL;
 
+          /* set environment */
+          g_free (vb);
+          vb = g_strdup_printf ("%d", webkit_web_navigation_action_get_button (act));
+          g_setenv ("YAD_HTML_BUTTON", vb, TRUE);
+          g_free (vm);
+          vm = g_strdup_printf ("%d", webkit_web_navigation_action_get_modifier_state (act));
+          g_setenv ("YAD_HTML_KEYS", vm, TRUE);
+
+          /* run handler */
           g_spawn_command_line_sync (cmd, NULL, NULL, &ret, NULL);
           switch (ret)
             {
@@ -311,8 +323,6 @@ html_create_widget (GtkWidget * dlg)
       if (strcmp (options.data.window_icon, "yad") == 0)
         g_signal_connect (view, "icon-loaded", G_CALLBACK (icon_cb), dlg);
     }
-  else
-    g_signal_connect (view, "document-load-finished", G_CALLBACK (loaded_cb), NULL);
 
   sess = webkit_get_default_session ();
   soup_session_add_feature_by_type (sess, SOUP_TYPE_PROXY_RESOLVER_DEFAULT);

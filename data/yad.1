@@ -528,7 +528,7 @@ Set mime type of data passed to standard input to \fIMIME\fP. Default is \fItext
 Set encoding of data passed to standard input to \fIENCODING\fP. Default is \fIUTF-8\fP.
 .TP
 .B \-\-uri-handler=\fICMD\fP
-Set external handler for clicked uri. \fI%s\fP will be replaced by activated uri. Return code of the \fICMD\fP must be \fI0\fP for keep working, \fI1\fP for ignoring uri and \fI2\fP for downloading uri. This option works only in browser mode.
+Set external handler for clicked uri. \fI%s\fP will be replaced by activated uri. Return code of the \fICMD\fP must be \fI0\fP for keep working, \fI1\fP for ignoring uri and \fI2\fP for downloading uri. This option works only in browser mode. There are two environment variables available in handler - \fIYAD_HTML_BUTTON\fP with value of pressed mouse button and \fIYAD_HTML_STATE\fP with value of bitmask with the the state of the modifier keys.
 
 .SS List options
 .TP
