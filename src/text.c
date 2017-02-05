@@ -501,6 +501,44 @@ text_create_widget (GtkWidget * dlg)
 #endif
     }
 
+#ifdef HAVE_SOURCEVIEW
+  if (options.source_data.theme)
+    {
+      GtkSourceStyleScheme *scheme = NULL;
+      GtkSourceStyleSchemeManager *mgr;
+      const gchar **ids;
+
+      mgr = gtk_source_style_scheme_manager_get_default ();
+      ids = (const gchar **) gtk_source_style_scheme_manager_get_scheme_ids (mgr);
+      if (ids)
+        {
+          gint i;
+          gboolean found = FALSE;
+
+          for (i = 0; ids[i]; i++)
+            {
+              const gchar *name;
+
+              scheme = gtk_source_style_scheme_manager_get_scheme (mgr, ids[i]);
+              name = gtk_source_style_scheme_get_name (scheme);
+              if (strcmp (name, options.source_data.theme) == 0)
+                {
+                  found = TRUE;
+                  break;
+                }
+            }
+
+          if (!found)
+            scheme = NULL;
+        }
+
+      if (scheme)
+        gtk_source_buffer_set_style_scheme (GTK_SOURCE_BUFFER (text_buffer), scheme);
+      else
+        g_printerr (_("Theme %s not found\n"), options.source_data.theme);
+    }
+#endif
+
   /* set font */
   if (options.common_data.font)
     fd = pango_font_description_from_string (options.common_data.font);

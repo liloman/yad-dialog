@@ -44,6 +44,8 @@
 #include <gtksourceview/gtksourcebuffer.h>
 #include <gtksourceview/gtksourcelanguage.h>
 #include <gtksourceview/gtksourcelanguagemanager.h>
+#include <gtksourceview/gtksourcestylescheme.h>
+#include <gtksourceview/gtksourcestyleschememanager.h>
 #endif
 
 G_BEGIN_DECLS
@@ -420,6 +422,7 @@ typedef struct {
 #ifdef HAVE_SOURCEVIEW
 typedef struct {
   gchar *lang;
+  gchar *theme;
 } YadSourceData;
 #endif
 

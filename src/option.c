@@ -589,6 +589,8 @@ static GOptionEntry text_options[] = {
 static GOptionEntry source_options[] = {
   { "lang", 0, 0, G_OPTION_ARG_STRING, &options.source_data.lang,
     N_("Use specified langauge for syntax highlighting"), N_("LANG") },
+  { "theme", 0, 0, G_OPTION_ARG_STRING, &options.source_data.theme,
+    N_("Use specified theme"), N_("THEME") },
   { NULL }
 };
 #endif
@@ -1567,8 +1569,9 @@ yad_options_init (void)
   options.text_data.uri_color = "blue";
 
 #ifdef HAVE_SOURCEVIEW
-  /* Initialize text data */
+  /* Initialize sourceview data */
   options.source_data.lang = NULL;
+  options.source_data.theme = NULL;
 #endif
 }
 

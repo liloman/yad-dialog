@@ -1,6 +1,6 @@
 /*
  * build with command:
- *     gcc $(pkg-config --cflags --libs gtkspell3-3.0) -o get-lang get-lang.c
+ *     gcc $(pkg-config --cflags --libs gtkspell3-2.0) -o get-lang get-lang.c
  */
 
 #include <glib.h>
