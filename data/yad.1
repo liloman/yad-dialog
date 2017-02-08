@@ -1,4 +1,4 @@
-.TH YAD 1 "January 26, 2017"
+.TH YAD 1 "February 8, 2017"
 .SH NAME
 yad \- display GTK+ dialogs in shell scripts
 
@@ -529,6 +529,12 @@ Set encoding of data passed to standard input to \fIENCODING\fP. Default is \fIU
 .TP
 .B \-\-uri-handler=\fICMD\fP
 Set external handler for clicked uri. \fI%s\fP will be replaced by activated uri. Return code of the \fICMD\fP must be \fI0\fP for keep working, \fI1\fP for ignoring uri and \fI2\fP for downloading uri. This option works only in browser mode. There are two environment variables available in handler - \fIYAD_HTML_BUTTON\fP with value of pressed mouse button and \fIYAD_HTML_STATE\fP with value of bitmask with the the state of the modifier keys.
+.TP
+.B \-\-user-agent=\fISTRING\fP
+Set user agent string. Default is \fIYAD-Webkit (@VERSION@)\fP
+.TP
+.B \-\-user-style=\fIURI\fP
+Set path or uri to custom user styles. Path to local file can be an absolute file name or uri with \fIfile://\fP prefix.
 
 .SS List options
 .TP

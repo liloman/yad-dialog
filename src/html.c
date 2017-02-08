@@ -300,7 +300,6 @@ html_create_widget (GtkWidget * dlg)
   GtkWidget *sw;
   WebKitWebSettings *settings;
   SoupSession *sess;
-  const gchar *enc;
 
   sw = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), options.hscroll_policy, options.vscroll_policy);
@@ -308,9 +307,15 @@ html_create_widget (GtkWidget * dlg)
   view = WEBKIT_WEB_VIEW (webkit_web_view_new ());
   gtk_container_add (GTK_CONTAINER (sw), GTK_WIDGET (view));
 
-  settings = webkit_web_view_get_settings (view);
-  g_get_charset (&enc);
-  g_object_set (G_OBJECT (settings), "default-encoding", enc, NULL);
+  settings = webkit_web_settings_new ();
+  g_object_set (G_OBJECT (settings), "default-encoding", g_get_codeset (), NULL);
+  g_object_set (G_OBJECT (settings), "user-agent", options.html_data.user_agent, NULL);
+  if (options.html_data.user_style)
+    {
+      gchar *uri = g_filename_to_uri (options.html_data.user_style, NULL, NULL);
+      g_object_set (G_OBJECT (settings), "user-stylesheet-uri", uri, NULL);
+    }
+  webkit_web_view_set_settings (view, settings);
 
   g_signal_connect (view, "hovering-over-link", G_CALLBACK (link_hover_cb), NULL);
   g_signal_connect (view, "navigation-policy-decision-requested", G_CALLBACK (link_cb), NULL);

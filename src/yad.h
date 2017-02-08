@@ -299,6 +299,8 @@ typedef struct {
   gchar *mime;
   gchar *encoding;
   gchar *uri_cmd;
+  gchar *user_agent;
+  gchar *user_style;
 } YadHtmlData;
 #endif
 

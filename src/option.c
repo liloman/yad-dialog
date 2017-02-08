@@ -342,6 +342,10 @@ static GOptionEntry html_options[] = {
     N_("Set encoding of input stream data"), N_("ENCODING") },
   { "uri-handler", 0, 0, G_OPTION_ARG_STRING, &options.html_data.uri_cmd,
     N_("Set external handler for clicked uri"), N_("CMD") },
+  { "user-agent", 0, 0, G_OPTION_ARG_STRING, &options.html_data.user_agent,
+    N_("Set user agent string"), N_("STRING") },
+  { "user-style", 0, 0, G_OPTION_ARG_STRING, &options.html_data.user_style,
+    N_("Set path or uri to user styles"), "URI" },
   { NULL }
 };
 #endif
@@ -1460,6 +1464,8 @@ yad_options_init (void)
   options.html_data.mime = NULL;
   options.html_data.encoding = NULL;
   options.html_data.uri_cmd = NULL;
+  options.html_data.user_agent = "YAD-Webkit (" VERSION ")";
+  options.html_data.user_style = NULL;
 #endif
 
   /* Initialize icons data */
