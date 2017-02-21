@@ -33,9 +33,3 @@ Additionally, you can build yad with the following libraries:
 * Webkit - for supporting HTML dialog (http://webkitgtk.org)
 * GtkSourceView - for enabling syntax highlighting in text-info dialog (https://wiki.gnome.org/Projects/GtkSourceView)
 * GtkSpell3 - for support spell checking in text fields (http://gtkspell.sourceforge.net/)
-
-# Spell check
-=============
-Get list of supported spell checking languages
-
-`gcc $(pkg-config --cflags --libs glib-2.0 gtkspell3-2.0) -o get-lang data/get-lang.c`
