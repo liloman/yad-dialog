@@ -1,5 +1,5 @@
 # Yet Another Dialog
-==================
+====================
 Program allows you to display GTK+ dialog boxes from command line or 
 shell scripts. YAD depends on GTK+ only. Minimal GTK+ version is 2.16.0
 
@@ -13,7 +13,7 @@ Some miscellaneous stuff can be found in data directory including notify-send sc
 and simple zenity-compatible wrapper 
 
 # Building SVN version
-====================
+======================
 Get svn version with command
 
 svn checkout svn://svn.code.sf.net/p/yad-dialog/code/trunk yad-dialog-code
@@ -35,7 +35,7 @@ Additionally, you can build yad with the following libraries:
 * GtkSpell3 - for support spell checking in text fields (http://gtkspell.sourceforge.net/)
 
 # Spell check
-===========
+=============
 Get list of supported spell checking languages
 
 `gcc $(pkg-config --cflags --libs glib-2.0 gtkspell3-2.0) -o get-lang data/get-lang.c`

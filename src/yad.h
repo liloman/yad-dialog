@@ -83,7 +83,9 @@ typedef enum {
   YAD_MODE_SCALE,
   YAD_MODE_TEXTINFO,
   YAD_MODE_ABOUT,
-  YAD_MODE_VERSION
+  YAD_MODE_VERSION,
+  YAD_MODE_LANGS,
+  YAD_MODE_THEMES
 } YadDialogMode;
 
 typedef enum {
@@ -611,6 +613,9 @@ gchar *escape_str (gchar *str);
 gchar *escape_char (gchar *str, gchar ch);
 
 gboolean check_complete (GtkEntryCompletion *c, const gchar *key, GtkTreeIter *iter, gpointer data);
+
+void show_langs ();
+void show_themes ();
 
 static inline void
 strip_new_line (gchar * str)

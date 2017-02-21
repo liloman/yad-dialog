@@ -905,6 +905,18 @@ main (gint argc, gchar ** argv)
       g_print ("%s (GTK+ %d.%d.%d)\n", VERSION, gtk_major_version, gtk_minor_version, gtk_micro_version);
       break;
 
+#ifdef HAVE_SPELL
+    case YAD_MODE_LANGS:
+      show_langs ();
+      break;
+#endif
+
+#ifdef HAVE_SOURCEVIEW
+    case YAD_MODE_THEMES:
+      show_themes ();
+      break;
+#endif
+
     case YAD_MODE_NOTIFICATION:
       ret = yad_notification_run ();
       break;
