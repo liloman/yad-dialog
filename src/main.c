@@ -367,16 +367,6 @@ create_dialog (void)
   g_signal_connect (G_OBJECT (dlg), "key-press-event", G_CALLBACK (keys_cb), NULL);
   g_signal_connect (G_OBJECT (dlg), "focus-out-event", G_CALLBACK (unfocus_cb), NULL);
 
-#ifndef  G_OS_WIN32
-  /* FIXME: is that very useful !? */
-  if (options.parent)
-    {
-      gdk_window_set_transient_for (gtk_widget_get_window (dlg),
-                                    gdk_x11_window_foreign_new_for_display (gdk_display_get_default (),
-                                                                            options.parent));
-    }
-#endif
-
   /* set window icon */
   if (options.data.window_icon)
     {

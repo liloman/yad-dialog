@@ -499,7 +499,6 @@ typedef struct {
   guint tabnum;
 
 #ifndef G_OS_WIN32
-  guint64 parent;
   guint kill_parent;
   gboolean print_xid;
 #endif

@@ -162,8 +162,6 @@ static GOptionEntry general_options[] = {
   { "tabnum", 0, 0, G_OPTION_ARG_INT, &options.tabnum,
     N_("Tab number of this dialog"), N_("NUMBER") },
 #ifndef G_OS_WIN32
-  { "parent-win", 0, 0, G_OPTION_ARG_INT, &options.parent,
-    N_("XID of parent window"), "XID" },
   { "kill-parent", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, parse_signal,
     N_("Send SIGNAL to parent"), N_("SIGNAL") },
   { "print-xid", 0, 0, G_OPTION_ARG_NONE, &options.print_xid,
@@ -1347,7 +1345,6 @@ yad_options_init (void)
   options.extra_data = NULL;
   options.gtkrc_file = NULL;
 #ifndef G_OS_WIN32
-  options.parent = 0;
   options.kill_parent = 0;
   options.print_xid = FALSE;
 #endif
