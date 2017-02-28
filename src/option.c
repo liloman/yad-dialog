@@ -113,7 +113,7 @@ static GOptionEntry general_options[] = {
   { "icon-theme", 0, G_OPTION_FLAG_NOALIAS, G_OPTION_ARG_STRING, &options.data.icon_theme,
     N_("Use specified icon theme instead of default"), N_("THEME") },
   { "expander", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, set_expander,
-    N_("Hide main widget with expander"), N_("TEXT") },
+    N_("Hide main widget with expander"), N_("[TEXT]") },
   { "button", 0, 0, G_OPTION_ARG_CALLBACK, add_button,
     N_("Add dialog button (may be used multiple times)"), N_("NAME:ID") },
   { "no-buttons", 0, 0, G_OPTION_ARG_NONE, &options.data.no_buttons,
@@ -163,7 +163,7 @@ static GOptionEntry general_options[] = {
     N_("Tab number of this dialog"), N_("NUMBER") },
 #ifndef G_OS_WIN32
   { "kill-parent", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, parse_signal,
-    N_("Send SIGNAL to parent"), N_("SIGNAL") },
+    N_("Send SIGNAL to parent"), N_("[SIGNAL]") },
   { "print-xid", 0, 0, G_OPTION_ARG_NONE, &options.print_xid,
     N_("Print X Window Id to the stderr"), NULL },
 #endif
@@ -240,7 +240,7 @@ static GOptionEntry color_options[] = {
   { "gtk-palette", 0, 0, G_OPTION_ARG_NONE, &options.color_data.gtk_palette,
     N_("Show system palette in color dialog"), NULL },
   { "palette", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, add_palette,
-    N_("Set path to palette file. Default - " RGB_FILE), N_("FILENAME") },
+    N_("Set path to palette file. Default - " RGB_FILE), N_("[FILENAME]") },
   { "expand-palette", 0, 0, G_OPTION_ARG_NONE, &options.color_data.expand_palette,
     N_("Expand user palette"), NULL },
   { "mode", 0, 0, G_OPTION_ARG_CALLBACK, set_color_mode,
@@ -533,7 +533,7 @@ static GOptionEntry progress_options[] = {
   { "rtl", 0, 0, G_OPTION_ARG_NONE, &options.progress_data.rtl,
     N_("Right-To-Left progress bar direction"), NULL },
   { "enable-log", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, set_progress_log,
-    N_("Show log window"), N_("TEXT") },
+    N_("Show log window"), N_("[TEXT]") },
   { "log-expanded", 0, 0, G_OPTION_ARG_NONE, &options.progress_data.log_expanded,
     N_("Expand log window"), NULL },
   { "log-on-top", 0, 0, G_OPTION_ARG_NONE, &options.progress_data.log_on_top,
@@ -609,7 +609,7 @@ static GOptionEntry filter_options[] = {
   { "mime-filter", 0, 0, G_OPTION_ARG_CALLBACK, add_file_filter,
     N_("Sets a mime-type filter"), N_("NAME | MIME1 MIME2 ...") },
   { "image-filter", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, add_file_filter,
-    N_("Add filter for images"), N_("NAME") },
+    N_("Add filter for images"), N_("[NAME]") },
   { NULL }
 };
 

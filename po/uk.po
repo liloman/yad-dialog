@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-23 19:22+0200\n"
+"POT-Creation-Date: 2017-02-28 23:08+0200\n"
 "PO-Revision-Date: 2009-04-30 16:47+0300\n"
 "Last-Translator: Victor Ananjevsky <ananasik@gmail.com>\n"
 "Language-Team: \n"
@@ -272,9 +272,9 @@ msgstr "ПОЗИЦІЯ"
 msgid "Set the dialog text"
 msgstr "Задати текст діалогу"
 
-#: ../src/option.c:106 ../src/option.c:116 ../src/option.c:267
-#: ../src/option.c:269 ../src/option.c:271 ../src/option.c:307
-#: ../src/option.c:426 ../src/option.c:521 ../src/option.c:536
+#: ../src/option.c:106 ../src/option.c:267 ../src/option.c:269
+#: ../src/option.c:271 ../src/option.c:307 ../src/option.c:426
+#: ../src/option.c:521
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
@@ -313,6 +313,10 @@ msgstr "ТЕМА"
 #: ../src/option.c:116
 msgid "Hide main widget with expander"
 msgstr "Приховати головний віджет"
+
+#: ../src/option.c:116 ../src/option.c:297 ../src/option.c:536
+msgid "[TEXT]"
+msgstr "[ТЕКСТ]"
 
 #: ../src/option.c:118
 msgid "Add dialog button (may be used multiple times)"
@@ -420,8 +424,8 @@ msgid "Send SIGNAL to parent"
 msgstr "Послати СИГНАЛ батьківському процесу"
 
 #: ../src/option.c:166
-msgid "SIGNAL"
-msgstr "СИГНАЛ"
+msgid "[SIGNAL]"
+msgstr "[СИГНАЛ]"
 
 #: ../src/option.c:168
 msgid "Print X Window Id to the stderr"
@@ -501,8 +505,8 @@ msgstr "Відобразити скриті файли у діалозі виб�
 msgid "Set source filename"
 msgstr "Задати ім'я файлу"
 
-#: ../src/option.c:201 ../src/option.c:227 ../src/option.c:243
-#: ../src/option.c:630 ../src/option.c:642
+#: ../src/option.c:201 ../src/option.c:227 ../src/option.c:630
+#: ../src/option.c:642
 msgid "FILENAME"
 msgstr "НАЗВА ФАЙЛУ"
 
@@ -590,6 +594,10 @@ msgstr "Відобразити системну палітру"
 #: ../src/option.c:243
 msgid "Set path to palette file. Default - "
 msgstr "Задати шлях до файлу кольорів. Без назви - "
+
+#: ../src/option.c:243
+msgid "[FILENAME]"
+msgstr "[НАЗВА ФАЙЛУ]"
 
 #: ../src/option.c:245
 msgid "Expand user palette"
@@ -679,10 +687,6 @@ msgstr "Активувати режим зберігання"
 #: ../src/option.c:297
 msgid "Confirm file selection if filename already exists"
 msgstr "Підтвердити вибір файлу, якщо файл вже існує"
-
-#: ../src/option.c:297
-msgid "[TEXT]"
-msgstr "[ТЕКСТ]"
 
 #: ../src/option.c:303
 msgid "Display font selection dialog"
@@ -1232,8 +1236,8 @@ msgid "Add filter for images"
 msgstr "Додати фільтр для зображень"
 
 #: ../src/option.c:612
-msgid "NAME"
-msgstr "ІМ'Я"
+msgid "[NAME]"
+msgstr "[ІМ'Я]"
 
 #: ../src/option.c:618
 msgid "Show about dialog"
@@ -1716,4 +1720,3 @@ msgstr "Павігатор іконок"
 #: ../data/yad-icon-browser.desktop.in.h:2
 msgid "Inspect GTK Icon Theme"
 msgstr "Перегляд теми іконок GTK"
-
