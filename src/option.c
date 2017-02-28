@@ -46,6 +46,7 @@ static gboolean set_size (const gchar *, const gchar *, gpointer, GError **);
 static gboolean set_posx (const gchar *, const gchar *, gpointer, GError **);
 static gboolean set_posy (const gchar *, const gchar *, gpointer, GError **);
 #ifndef G_OS_WIN32
+static gboolean set_xid_file (const gchar *, const gchar *, gpointer, GError **);
 static gboolean parse_signal (const gchar *, const gchar *, gpointer, GError **);
 #endif
 static gboolean add_image_path (const gchar *, const gchar *, gpointer, GError **);
@@ -164,8 +165,8 @@ static GOptionEntry general_options[] = {
 #ifndef G_OS_WIN32
   { "kill-parent", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, parse_signal,
     N_("Send SIGNAL to parent"), N_("[SIGNAL]") },
-  { "print-xid", 0, 0, G_OPTION_ARG_NONE, &options.print_xid,
-    N_("Print X Window Id to the stderr"), NULL },
+  { "print-xid", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, set_xid_file,
+    N_("Print X Window Id to the file/stderr"), N_("[FILENAME]") },
 #endif
   { NULL }
 };
@@ -1181,6 +1182,14 @@ set_scroll_policy (const gchar * option_name, const gchar * value, gpointer data
 
 #ifndef G_OS_WIN32
 static gboolean
+set_xid_file (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
+{
+  options.print_xid = TRUE;
+  if (value && value[0])
+    options.xid_file = g_strdup (value);
+}
+
+static gboolean
 parse_signal (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
 {
   guint sn = 0;
@@ -1347,6 +1356,7 @@ yad_options_init (void)
 #ifndef G_OS_WIN32
   options.kill_parent = 0;
   options.print_xid = FALSE;
+  options.xid_file = NULL;
 #endif
 
   options.hscroll_policy = GTK_POLICY_AUTOMATIC;

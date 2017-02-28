@@ -647,8 +647,22 @@ create_dialog (void)
   /* print xid */
   if (options.print_xid)
     {
-      fprintf (stderr, "0x%lX", GDK_WINDOW_XID (gtk_widget_get_window (dlg)));
-      fflush (stderr);
+      FILE *xf;
+
+      if (options.xid_file)
+        xf = fopen (options.xid_file, "w");
+      else
+        xf = stderr;
+
+      if (xf)
+        {
+          fprintf (xf, "0x%lX", GDK_WINDOW_XID (gtk_widget_get_window (dlg)));
+
+          if (options.xid_file)
+            fclose (xf);
+          else
+            fflush (xf);
+        }
     }
 #endif
 

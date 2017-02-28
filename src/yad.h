@@ -501,6 +501,7 @@ typedef struct {
 #ifndef G_OS_WIN32
   guint kill_parent;
   gboolean print_xid;
+  gchar *xid_file;
 #endif
 } YadOptions;
 
