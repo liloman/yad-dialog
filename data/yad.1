@@ -104,7 +104,7 @@ Show timeout indicator in given position. Positions are \fItop\fP, \fIbottom\fP,
 Style of indicator may be set through the gtkrc file.
 See \fIhttp://code.google.com/p/yad/wiki/TimeoutIndicator\fP for details.
 .TP
-.B \-\-kill-parent\fI[=SIGNAL]\fP
+.B \-\-kill-parent=\fI[SIGNAL]\fP
 Send SIGNAL to parent process. Default value of SIGNAL is a SIGTERM.
 SIGNAL may be specified by it's number or symbolic name with or without SIG prefix.
 See signal(7) for details about signals.
@@ -131,7 +131,7 @@ Show image above main widget instead of left. This option is always on for print
 .B \-\-icon-theme=\fITHEME\fP
 Use specified GTK icon theme instead of default.
 .TP
-.B \-\-expander=\fITEXT\fP
+.B \-\-expander=\fI[TEXT]\fP
 Hide main widget with expander. \fITEXT\fP is an optional argument with expander's label.
 .TP
 .B \-\-button=\fIBUTTON:ID\fP
@@ -270,7 +270,7 @@ Show extra information about color in returned string.
 .B \-\-alpha
 Add opacity to output color string.
 .TP
-.B \-\-palette\fI[=FILENAME]\fP
+.B \-\-palette=\fI[FILENAME]\fP
 Show palette and set predefined colors from given filename.
 By default used \fI/etc/X11/rgb.txt\fP.
 .TP
@@ -390,7 +390,7 @@ Activate save mode.
 .B \-\-separator=\fISTRING\fP
 Specify separator character when returning multiple filenames.
 .TP
-.B \-\-confirm\-overwrite\fI[=TEXT]\fP
+.B \-\-confirm\-overwrite=\fI[TEXT]\fP
 Confirm file selection if filename already exists.
 Optional argument is a text for confirmation dialog.
 .TP
