@@ -444,7 +444,7 @@ msgstr "ШАБЛОН"
 
 #: ../src/option.c:178
 msgid "Set presicion of floating numbers (default - 3)"
-msgstr "Задать точность чисел с плавающей точкой (по-умолчанию - 3)"
+msgstr "Задать точность чисел с плавающей точкой (по умолчанию - 3)"
 
 #: ../src/option.c:180
 msgid "Set command handler"
@@ -596,7 +596,7 @@ msgstr "Показывать системную палитру"
 
 #: ../src/option.c:244
 msgid "Set path to palette file. Default - "
-msgstr "Задать путь к файлу цветов. По-умолчанию - "
+msgstr "Задать путь к файлу цветов. По умолчанию - "
 
 #: ../src/option.c:246
 msgid "Expand user palette"
@@ -900,7 +900,7 @@ msgid ""
 "Print a specific column. By default or if 0 is specified will be printed all "
 "columns"
 msgstr ""
-"Распечатать только определённую колонку. По-умолчанию или если колонка равна "
+"Распечатать только определённую колонку. По умолчанию или если колонка равна "
 "0, будут распечатаны все колонки"
 
 #: ../src/option.c:417
@@ -910,14 +910,14 @@ msgstr "Скрыть указанную колонку"
 #: ../src/option.c:419
 msgid "Set the column expandable by default. 0 sets all columns expandable"
 msgstr ""
-"Задать колонку, расширяемую по-умолчанию. 0 устанавливает расширяемыми все "
+"Задать колонку, расширяемую по умолчанию. 0 устанавливает расширяемыми все "
 "колонки"
 
 #: ../src/option.c:421
 msgid ""
 "Set the quick search column. Default is first column. Set it to 0 for "
 "disable searching"
-msgstr "Задать колонку поиска. По-умолчанию первая. 0 запрещает поиск"
+msgstr "Задать колонку поиска. По умолчанию первая. 0 запрещает поиск"
 
 #: ../src/option.c:423
 msgid "Set the tooltip column"
