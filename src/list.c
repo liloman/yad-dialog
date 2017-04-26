@@ -30,6 +30,13 @@ static gint fore_col, back_col, font_col;
 
 static gulong select_hndl = 0;
 
+#define YAD_LIST_ADD_ROW(M, I) do \
+    if (options.list_data.add_on_top) \
+      gtk_list_store_prepend (M, I);  \
+    else \
+      gtk_list_store_append (M, I); \
+  while (0)
+
 static gboolean
 list_activate_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
@@ -529,7 +536,7 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
             }
 
           if (row_count == 0 && column_count == 0)
-            gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+            YAD_LIST_ADD_ROW (GTK_LIST_STORE (model), &iter);
           else if (column_count == n_columns)
             {
               /* We're starting a new row */
@@ -540,7 +547,7 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
                   gtk_tree_model_get_iter_first (model, &iter);
                   gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
                 }
-              gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+              YAD_LIST_ADD_ROW (GTK_LIST_STORE (model), &iter);
             }
 
           cell_set_data (&iter, column_count, string->str);
@@ -577,7 +584,7 @@ fill_data (gint n_columns)
         {
           gint j;
 
-          gtk_list_store_append (model, &iter);
+          YAD_LIST_ADD_ROW (model, &iter);
           for (j = 0; j < n_columns; j++, i++)
             {
               if (args[i] == NULL)
@@ -746,7 +753,7 @@ add_row_cb (GtkMenuItem * item, gpointer data)
   GtkTreeIter iter;
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (list_view));
-  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+  YAD_LIST_ADD_ROW (GTK_LIST_STORE (model), &iter);
 
   if (options.list_data.add_action)
     {

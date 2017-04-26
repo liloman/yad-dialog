@@ -347,6 +347,7 @@ typedef struct {
   gboolean regex_search;
   gboolean clickable;
   gboolean no_selection;
+  gboolean add_on_top;
 } YadListData;
 
 typedef struct {

@@ -437,6 +437,8 @@ static GOptionEntry list_options[] = {
     N_("Use regex in search"), NULL },
   { "no-selection", 0, 0, G_OPTION_ARG_NONE, &options.list_data.no_selection,
     N_("Disable selection"), NULL },
+  { "add-on-top", 0, 0, G_OPTION_ARG_NONE, &options.list_data.add_on_top,
+    N_("Add new records on the top of a list"), NULL },
   { NULL }
 };
 
@@ -1537,6 +1539,7 @@ yad_options_init (void)
   options.list_data.regex_search = FALSE;
   options.list_data.clickable = TRUE;
   options.list_data.no_selection = FALSE;
+  options.list_data.add_on_top = FALSE;
 
   /* Initialize multiprogress data */
   options.multi_progress_data.bars = NULL;
