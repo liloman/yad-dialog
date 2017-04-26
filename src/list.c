@@ -753,6 +753,11 @@ add_row_cb (GtkMenuItem * item, gpointer data)
       gchar *out = NULL;
       gint exit;
 
+      /* hide menu first */
+      gtk_menu_popdown (GTK_MENU (data));
+      while (gtk_events_pending ())
+        gtk_main_iteration ();
+
       g_spawn_command_line_sync (options.list_data.add_action, &out, NULL, &exit, NULL);
       if (exit == 0)
         {
@@ -855,21 +860,21 @@ popup_menu_cb (GtkWidget * w, GdkEventButton * ev, gpointer data)
                                          gtk_image_new_from_stock (GTK_STOCK_ADD, GTK_ICON_SIZE_MENU));
           gtk_widget_show (item);
           gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-          g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (add_row_cb), NULL);
+          g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (add_row_cb), menu);
 
           item = gtk_image_menu_item_new_with_label (_("Delete row"));
           gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
                                          gtk_image_new_from_stock (GTK_STOCK_REMOVE, GTK_ICON_SIZE_MENU));
           gtk_widget_show (item);
           gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-          g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (del_row_cb), NULL);
+          g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (del_row_cb), menu);
 
           item = gtk_image_menu_item_new_with_label (_("Duplicate row"));
           gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
                                          gtk_image_new_from_stock (GTK_STOCK_COPY, GTK_ICON_SIZE_MENU));
           gtk_widget_show (item);
           gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-          g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (copy_row_cb), NULL);
+          g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (copy_row_cb), menu);
 
           gtk_widget_show (menu);
         }
