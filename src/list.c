@@ -30,12 +30,18 @@ static gint fore_col, back_col, font_col;
 
 static gulong select_hndl = 0;
 
-#define YAD_LIST_ADD_ROW(M, I) do \
-    if (options.list_data.add_on_top) \
-      gtk_list_store_prepend (M, I);  \
-    else \
-      gtk_list_store_append (M, I); \
-  while (0)
+static inline void
+yad_list_add_row (GtkListStore *m, GtkTreeIter *it)
+{
+  if (options.list_data.add_on_top)
+    gtk_list_store_prepend (m, it);
+  else
+    gtk_list_store_append (m, it);
+
+  if (options.common_data.tail)
+    gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (list_view), gtk_tree_model_get_path (GTK_TREE_MODEL (m), it),
+                                  NULL, FALSE, 1.0, 1.0);
+}
 
 static gboolean
 list_activate_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
@@ -536,7 +542,7 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
             }
 
           if (row_count == 0 && column_count == 0)
-            YAD_LIST_ADD_ROW (GTK_LIST_STORE (model), &iter);
+            yad_list_add_row (GTK_LIST_STORE (model), &iter);
           else if (column_count == n_columns)
             {
               /* We're starting a new row */
@@ -547,7 +553,7 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
                   gtk_tree_model_get_iter_first (model, &iter);
                   gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
                 }
-              YAD_LIST_ADD_ROW (GTK_LIST_STORE (model), &iter);
+              yad_list_add_row (GTK_LIST_STORE (model), &iter);
             }
 
           cell_set_data (&iter, column_count, string->str);
@@ -584,7 +590,7 @@ fill_data (gint n_columns)
         {
           gint j;
 
-          YAD_LIST_ADD_ROW (model, &iter);
+          yad_list_add_row (model, &iter);
           for (j = 0; j < n_columns; j++, i++)
             {
               if (args[i] == NULL)
@@ -753,7 +759,7 @@ add_row_cb (GtkMenuItem * item, gpointer data)
   GtkTreeIter iter;
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (list_view));
-  YAD_LIST_ADD_ROW (GTK_LIST_STORE (model), &iter);
+  yad_list_add_row (GTK_LIST_STORE (model), &iter);
 
   if (options.list_data.add_action)
     {
@@ -765,6 +771,7 @@ add_row_cb (GtkMenuItem * item, gpointer data)
       while (gtk_events_pending ())
         gtk_main_iteration ();
 
+      /* run command */
       g_spawn_command_line_sync (options.list_data.add_action, &out, NULL, &exit, NULL);
       if (exit == 0)
         {
