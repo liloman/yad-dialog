@@ -750,14 +750,14 @@ add_row_cb (GtkMenuItem * item, gpointer data)
 
   if (options.list_data.add_action)
     {
-      gchar *data = NULL;
+      gchar *out = NULL;
       gint exit;
 
-      g_spawn_command_line_sync (options.list_data.add_action, &data, NULL, &exit, NULL);
+      g_spawn_command_line_sync (options.list_data.add_action, &out, NULL, &exit, NULL);
       if (exit == 0)
         {
           guint i, n_cols = gtk_tree_model_get_n_columns (model);
-          gchar **lines = g_strsplit (data, "\n", 0);
+          gchar **lines = g_strsplit (out, "\n", 0);
 
           for (i = 0; i < n_cols; i++)
             {
@@ -768,7 +768,7 @@ add_row_cb (GtkMenuItem * item, gpointer data)
             }
           g_strfreev (lines);
         }
-      g_free (data);
+      g_free (out);
     }
 }
 
