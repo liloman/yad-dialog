@@ -418,7 +418,6 @@ typedef struct {
   gboolean wrap;
   GtkJustification justify;
   gint margins;
-  gboolean tail;
   gboolean uri;
   gboolean hide_cursor;
   gchar *uri_color;
@@ -439,6 +438,7 @@ typedef struct {
   gboolean editable;
   gboolean multi;
   gboolean vertical;
+  gboolean tail;
   gchar *command;
   gchar *date_format;
   guint float_precision;

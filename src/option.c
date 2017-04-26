@@ -186,6 +186,8 @@ static GOptionEntry common_options[] = {
     N_("Set item separator character"), N_("SEPARATOR") },
   { "editable", 0, 0, G_OPTION_ARG_NONE, &options.common_data.editable,
     N_("Allow changes to text in some cases"), NULL },
+  { "tail", 0, 0, G_OPTION_ARG_NONE, &options.common_data.tail,
+    N_("Autoscroll to end of text"), NULL },
   { "quoted-output", 0, 0, G_OPTION_ARG_NONE, &options.common_data.quoted_output,
     N_("Quote dialogs output"), NULL },
   { "num-output", 0, 0, G_OPTION_ARG_NONE, &options.common_data.num_output,
@@ -585,8 +587,6 @@ static GOptionEntry text_options[] = {
     N_("Set justification (left, right, center or fill)"), N_("TYPE") },
   { "margins", 0, 0, G_OPTION_ARG_INT, &options.text_data.margins,
     N_("Set text margins"), N_("SIZE") },
-  { "tail", 0, 0, G_OPTION_ARG_NONE, &options.text_data.tail,
-    N_("Autoscroll to end of text"), NULL },
   { "show-cursor", 0, G_OPTION_FLAG_REVERSE, G_OPTION_ARG_NONE, &options.text_data.hide_cursor,
     N_("Show cursor in read-only mode"), NULL },
   { "show-uri", 0, 0, G_OPTION_ARG_NONE, &options.text_data.uri,
@@ -1417,6 +1417,7 @@ yad_options_init (void)
   options.common_data.item_separator = "!";
   options.common_data.multi = FALSE;
   options.common_data.editable = FALSE;
+  options.common_data.tail = FALSE;
   options.common_data.command = NULL;
   options.common_data.date_format = settings.date_format;
   options.common_data.float_precision = 3;
@@ -1601,8 +1602,6 @@ yad_options_init (void)
   options.text_data.wrap = FALSE;
   options.text_data.justify = GTK_JUSTIFY_LEFT;
   options.text_data.margins = 0;
-  options.text_data.tail = FALSE;
-  options.text_data.uri = FALSE;
   options.text_data.hide_cursor = TRUE;
   options.text_data.uri_color = "blue";
 

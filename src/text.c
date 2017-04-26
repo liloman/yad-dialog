@@ -344,7 +344,7 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
           else
             gtk_text_buffer_insert (GTK_TEXT_BUFFER (text_buffer), &end, string->str, string->len);
 
-          if (options.text_data.tail)
+          if (options.common_data.tail)
             {
               while (gtk_events_pending ())
                 gtk_main_iteration ();
