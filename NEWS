@@ -1,3 +1,12 @@
+Version 0.39.0
+    - add --active-tab to notebook widget
+    - place value position of scale form field to the left
+    - add --uri-handler option to html dialog
+    - add --theme option to text-info dialog (works with GtkSourceView)
+    - add --user-agent and --user-style options to html dialog
+    - remove --parent-win option
+    - add --add-on-top and --tail options to list dialog
+
 Version 0.38.2
     - fix enter behavior
 

@@ -1,3 +1,75 @@
+2017-04-26 15:15  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/list.c: add --tail option to
+	  the list dialog
+
+2017-04-26 12:46  v1c0nt
+
+	* src/option.c, src/text.c, src/yad.h: move tail option to common
+	  section
+
+2017-04-26 12:12  v1c0nt
+
+	* configure.ac, data/yad.1, po/ru.po, po/uk.po, src/list.c,
+	  src/option.c, src/yad.h: add --add-on-top option to list dialog
+
+2017-04-26 11:21  v1c0nt
+
+	* src/list.c: some fixes of add action handler in list dialog
+
+2017-04-26 10:53  v1c0nt
+
+	* src/list.c:
+
+2017-03-12 16:39  v1c0nt
+
+	* po/ru.po: fix russian translation
+
+2017-02-28 21:30  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/main.c, src/option.c,
+	  src/yad.h: write xid to a file in additional to stderr
+
+2017-02-28 21:13  v1c0nt
+
+	* data/yad.1: correct man page
+
+2017-02-28 21:09  v1c0nt
+
+	* po/ru.po, po/uk.po, src/option.c: fix help output
+
+2017-02-23 17:22  v1c0nt
+
+	* data/yad.1, po/ru.po, po/uk.po, src/main.c, src/option.c,
+	  src/yad.h: remove --parent-win option
+
+2017-02-21 15:18  v1c0nt
+
+	* README.md, data/yad.1: update documentation according to previous
+	  commit
+
+2017-02-21 15:14  v1c0nt
+
+	* README.md, data/Makefile.am, data/get-lang.c, data/yad.1,
+	  po/ru.po, po/uk.po, src/main.c, src/option.c, src/util.c,
+	  src/yad.h: add some descriptive options
+
+2017-02-08 18:42  v1c0nt
+
+	* TODO, configure.ac, data/yad.1, po/ru.po, po/uk.po, src/html.c,
+	  src/option.c, src/yad.h: add --user-agent and --user-style
+	  options to html dialog. bump version
+
+2017-02-05 17:37  v1c0nt
+
+	* data/get-lang.c, data/yad.1, po/ru.po, po/uk.po, src/option.c,
+	  src/text.c, src/yad.h: add --theme option to text-info dialog
+
+2017-02-03 15:31  v1c0nt
+
+	* ChangeLog: for previous - add scpetial variables to url handler
+	  in html dialog
+
 2017-02-03 15:30  v1c0nt
 
 	* data/yad.1, src/html.c:
