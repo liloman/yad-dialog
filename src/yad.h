@@ -255,6 +255,7 @@ typedef struct {
 
 typedef struct {
   gboolean tooltip;
+  guint exit_on_drop;
 } YadDNDData;
 
 typedef struct {

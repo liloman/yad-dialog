@@ -260,6 +260,8 @@ static GOptionEntry dnd_options[] = {
     N_("Display drag-n-drop box"), NULL },
   { "tooltip", 0, 0, G_OPTION_ARG_NONE, &options.dnd_data.tooltip,
     N_("Use dialog text as tooltip"), NULL },
+  { "exit-on-drop", 0, 0, G_OPTION_ARG_INT, &options.dnd_data.exit_on_drop,
+    N_("Exit after NUMBER of drops"), N_("NUMBER") },
   { NULL }
 };
 
@@ -1455,6 +1457,7 @@ yad_options_init (void)
 
   /* Initialize DND data */
   options.dnd_data.tooltip = FALSE;
+  options.dnd_data.exit_on_drop = 0;
 
   /* Initialize entry data */
   options.entry_data.entry_text = NULL;

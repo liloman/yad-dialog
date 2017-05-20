@@ -26,6 +26,7 @@ drop_data_cb (GtkWidget * w, GdkDragContext * dc, gint x, gint y,
               GtkSelectionData * sel, guint info, guint t, gpointer data)
 {
   GdkAtom stgt;
+  static guint drop_cnt = 0;
 
   stgt = gtk_selection_data_get_target (sel);
 
@@ -81,6 +82,13 @@ drop_data_cb (GtkWidget * w, GdkDragContext * dc, gint x, gint y,
           g_free (dstr);
           g_free (str);
         }
+    }
+
+  if (options.dnd_data.exit_on_drop)
+    {
+      drop_cnt++;
+      if (drop_cnt == options.dnd_data.exit_on_drop)
+        gtk_main_quit ();
     }
 }
 
