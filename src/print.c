@@ -199,7 +199,7 @@ raw_print_done (GtkPrintJob * job, gint * ret, GError * err)
       g_printerr (_("Printing failed: %s\n"), err->message);
       *ret = 1;
     }
-  gtk_main_quit ();
+  yad_exit (options.data.def_resp);
 }
 
 static void
