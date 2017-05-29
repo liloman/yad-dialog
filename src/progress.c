@@ -119,7 +119,7 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
                     {
                       gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progress_bar), 1.0);
                       if (options.progress_data.autoclose && options.plug == -1)
-                        yad_exit (YAD_RESPONSE_OK);
+                        yad_exit (options.data.def_resp);
                     }
                   else
                     gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progress_bar), percentage / 100.0);
@@ -142,7 +142,7 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
         }
 
       if (options.progress_data.autoclose && options.plug == -1)
-        yad_exit (YAD_RESPONSE_OK);
+        yad_exit (options.data.def_resp);
 
       g_io_channel_shutdown (channel, TRUE, NULL);
       return FALSE;

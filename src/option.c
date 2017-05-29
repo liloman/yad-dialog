@@ -133,7 +133,7 @@ static GOptionEntry general_options[] = {
   { "always-print-result", 0, 0, G_OPTION_ARG_NONE, &options.data.always_print,
     N_("Always print result"), NULL },
   { "response", 0, 0, G_OPTION_ARG_INT, &options.data.def_resp,
-    N_("Set default response for Ctrl+Enter"), N_("NUMBER") },
+    N_("Set default return code"), N_("NUMBER") },
   { "selectable-labels", 0, 0, G_OPTION_ARG_NONE, &options.data.selectable_labels,
     N_("Dialog text can be selected"), NULL },
   /* window settings */

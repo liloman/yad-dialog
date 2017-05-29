@@ -52,7 +52,7 @@ sa_usr1 (gint sig)
   if (options.plug != -1)
     yad_print_result ();
   else
-    yad_exit (YAD_RESPONSE_OK);
+    yad_exit (options.data.def_resp);
 }
 
 static void

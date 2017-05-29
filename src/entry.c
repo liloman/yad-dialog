@@ -26,7 +26,7 @@ static void
 entry_activate_cb (GtkEntry * entry, gpointer data)
 {
   if (options.plug == -1)
-    yad_exit (YAD_RESPONSE_OK);
+    yad_exit (options.data.def_resp);
 }
 
 static gboolean
@@ -39,7 +39,7 @@ combo_activate_cb (GtkWidget * w, GdkEventKey * ev, gpointer data)
 #endif
     {
       if (options.plug == -1)
-        yad_exit (YAD_RESPONSE_OK);
+        yad_exit (options.data.def_resp);
       return TRUE;
     }
   return FALSE;

@@ -173,7 +173,7 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
                         }
 
                       if (need_close && close)
-                        yad_exit (YAD_RESPONSE_OK);
+                        yad_exit (options.data.def_resp);
                     }
                 }
             }

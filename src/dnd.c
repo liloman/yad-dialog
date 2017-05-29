@@ -88,7 +88,7 @@ drop_data_cb (GtkWidget * w, GdkDragContext * dc, gint x, gint y,
     {
       drop_cnt++;
       if (drop_cnt == options.dnd_data.exit_on_drop)
-        gtk_main_quit ();
+        yad_exit (options.data.def_resp);
     }
 }
 

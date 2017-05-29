@@ -27,7 +27,7 @@ static void
 file_activated_cb (GtkFileChooser * chooser, gpointer data)
 {
   if (options.plug == -1)
-    yad_exit (YAD_RESPONSE_OK);
+    yad_exit (options.data.def_resp);
 }
 
 gboolean
