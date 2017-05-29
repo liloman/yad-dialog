@@ -212,7 +212,7 @@ static GOptionEntry common_options[] = {
   { "complete", 0, 0, G_OPTION_ARG_CALLBACK, set_complete_type,
     N_("Set extended completion for entries (any, all, or regex)"), N_("TYPE") },
 #if GLIB_CHECK_VERSION(2,30,0)
-  { "iec-format", 0, 0, G_OPTION_ARG_CALLBACK, set_size_format,
+  { "iec-format", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, set_size_format,
     N_("Use IEC (base 1024) units with for size values"), NULL },
 #endif
 #ifdef HAVE_SPELL
