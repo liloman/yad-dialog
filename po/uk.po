@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-29 12:32+0300\n"
+"POT-Creation-Date: 2017-05-29 13:22+0300\n"
 "PO-Revision-Date: 2009-04-30 16:47+0300\n"
 "Last-Translator: Victor Ananjevsky <ananasik@gmail.com>\n"
 "Language-Team: \n"
@@ -352,8 +352,8 @@ msgid "Always print result"
 msgstr "Завжди виводити результат"
 
 #: ../src/option.c:136
-msgid "Set default response for Ctrl+Enter"
-msgstr "Задати значення відповіді для Ctrl+Enter"
+msgid "Set default return code"
+msgstr "Задати значення відповіді за умовчанням"
 
 #: ../src/option.c:138
 msgid "Dialog text can be selected"
