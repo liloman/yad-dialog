@@ -53,6 +53,9 @@ static gboolean add_image_path (const gchar *, const gchar *, gpointer, GError *
 static gboolean set_complete_type (const gchar *, const gchar *, gpointer, GError **);
 static gboolean set_grid_lines (const gchar *, const gchar *, gpointer, GError **);
 static gboolean set_scroll_policy (const gchar *, const gchar *, gpointer, GError **);
+#if GLIB_CHECK_VERSION(2,30,0)
+static gboolean set_size_format (const gchar *, const gchar *, gpointer, GError **);
+#endif
 
 static gboolean about_mode = FALSE;
 static gboolean version_mode = FALSE;
@@ -208,6 +211,10 @@ static GOptionEntry common_options[] = {
     N_("Identifier of embedded dialogs"), N_("KEY") },
   { "complete", 0, 0, G_OPTION_ARG_CALLBACK, set_complete_type,
     N_("Set extended completion for entries (any, all, or regex)"), N_("TYPE") },
+#if GLIB_CHECK_VERSION(2,30,0)
+  { "iec-format", 0, 0, G_OPTION_ARG_CALLBACK, set_size_format,
+    N_("Use IEC (base 1024) units with for size values"), NULL },
+#endif
 #ifdef HAVE_SPELL
   { "enable-spell", 0, 0, G_OPTION_ARG_NONE, &options.common_data.enable_spell,
     N_("Enable spell check for text"), NULL },
@@ -1184,6 +1191,14 @@ set_scroll_policy (const gchar * option_name, const gchar * value, gpointer data
     options.vscroll_policy = pt;
 }
 
+#if GLIB_CHECK_VERSION(2,30,0)
+static gboolean
+set_size_format (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
+{
+  options.common_data.size_fmt = G_FORMAT_SIZE_IEC_UNITS;
+}
+#endif
+
 #ifndef G_OS_WIN32
 static gboolean
 set_xid_file (const gchar * option_name, const gchar * value, gpointer data, GError ** err)
@@ -1433,6 +1448,9 @@ yad_options_init (void)
   options.common_data.filters = NULL;
   options.common_data.key = -1;
   options.common_data.complete = YAD_COMPLETE_SIMPLE;
+#if GLIB_CHECK_VERSION(2,30,0)
+  options.common_data.size_fmt = G_FORMAT_SIZE_DEFAULT;
+#endif
 #ifdef HAVE_SPELL
   options.common_data.enable_spell = FALSE;
   options.common_data.spell_lang = NULL;

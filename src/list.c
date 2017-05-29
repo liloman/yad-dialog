@@ -261,7 +261,7 @@ size_col_format (GtkTreeViewColumn *col, GtkCellRenderer *cell, GtkTreeModel *mo
 
   gtk_tree_model_get (model, iter, GPOINTER_TO_INT (data), &val, -1);
 #if GLIB_CHECK_VERSION(2,30,0)
-  sz = g_format_size (val);
+  sz = g_format_size_full (val, options.common_data.size_fmt);
 #elif  GLIB_CHECK_VERSION(2,16,0)
   sz = g_format_size_for_display (val);
 #else
