@@ -24,11 +24,7 @@
 
 #include <glib/gprintf.h>
 
-#ifdef HAVE_WEBKIT2
-#include <webkit2/webkit2.h>
-#else
 #include <webkit/webkit.h>
-#endif
 
 static WebKitWebView *view;
 
