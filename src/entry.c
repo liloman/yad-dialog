@@ -147,14 +147,18 @@ entry_create_widget (GtkWidget * dlg)
         {
           min = g_ascii_strtod (options.extra_data[0], NULL);
           if (options.extra_data[1])
-            max = g_ascii_strtod (options.extra_data[1], NULL);
-          if (options.extra_data[2])
-            step = g_ascii_strtod (options.extra_data[2], NULL);
-          if (options.extra_data[3])
             {
-              prec = (guint) g_ascii_strtoull (options.extra_data[3], NULL, 0);
-              if (prec > 20)
-                prec = 20;
+              max = g_ascii_strtod (options.extra_data[1], NULL);
+              if (options.extra_data[2])
+                {
+                  step = g_ascii_strtod (options.extra_data[2], NULL);
+                  if (options.extra_data[3])
+                    {
+                      prec = (guint) g_ascii_strtoull (options.extra_data[3], NULL, 0);
+                      if (prec > 20)
+                        prec = 20;
+                    }
+                }
             }
         }
 
