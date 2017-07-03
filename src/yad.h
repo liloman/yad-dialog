@@ -215,6 +215,7 @@ typedef struct {
   gboolean no_buttons;
   gboolean no_markup;
   gboolean no_escape;
+  gboolean escape_ok;
   gboolean always_print;
   gboolean selectable_labels;
   GtkButtonBoxStyle buttons_layout;

@@ -149,7 +149,10 @@ middle_quit_cb (GtkStatusIcon * icon, GdkEventButton * ev, gpointer data)
 {
   if (ev->button == 2)
     {
-      exit_code = YAD_RESPONSE_ESC;
+      if (options.data.escape_ok)
+        exit_code = YAD_RESPONSE_OK;
+      else
+        exit_code = YAD_RESPONSE_ESC;
       gtk_main_quit ();
     }
 

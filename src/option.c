@@ -128,6 +128,8 @@ static GOptionEntry general_options[] = {
     N_("Don't use pango markup language in dialog's text"), NULL },
   { "no-escape", 0, 0, G_OPTION_ARG_NONE, &options.data.no_escape,
     N_("Don't close dialog if Escape was pressed"), NULL },
+  { "escape-ok", 0, 0, G_OPTION_ARG_NONE, &options.data.escape_ok,
+    N_("Escape acts like OK button"), NULL },
   { "borders", 0, 0, G_OPTION_ARG_INT, &options.data.borders,
     N_("Set window borders"), N_("NUMBER") },
   { "always-print-result", 0, 0, G_OPTION_ARG_NONE, &options.data.always_print,
@@ -1409,6 +1411,7 @@ yad_options_init (void)
   options.data.borders = 2;
   options.data.no_markup = FALSE;
   options.data.no_escape = FALSE;
+  options.data.escape_ok = FALSE;
   options.data.always_print = FALSE;
   options.data.selectable_labels = FALSE;
   options.data.def_resp = YAD_RESPONSE_OK;
