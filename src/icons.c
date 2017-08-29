@@ -174,6 +174,14 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
               return FALSE;
             }
 
+          /* clear list if ^L received */
+          if (string->str[0] == '\014')
+            {
+              gtk_list_store_clear (GTK_LIST_STORE (model));
+              row_count = column_count = 0;
+              continue;
+            }
+
           if (column_count == NUM_COLS)
             {
               /* We're starting a new row */
