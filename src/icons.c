@@ -178,7 +178,8 @@ handle_stdin (GIOChannel * channel, GIOCondition condition, gpointer data)
           if (string->str[0] == '\014')
             {
               gtk_list_store_clear (GTK_LIST_STORE (model));
-              row_count = column_count = 0;
+              row_count = 0;
+              column_count = 1;
               continue;
             }
 
